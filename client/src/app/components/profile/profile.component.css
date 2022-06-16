@@ -1,0 +1,13 @@
+#profile-picture{
+    max-width: 20em;
+    max-height: 14em;
+}
+
+#quiz-header{
+    text-align: center;
+}
+
+.quiz{
+    text-align: center;
+    cursor: pointer;
+}
