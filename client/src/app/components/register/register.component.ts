@@ -1,8 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ValidateService } from 'src/app/services/validate.service';
 import { Router } from '@angular/router';
-import { RegisterInfo } from './register.modal';
+import { RegisterInfo } from '../../model/register.model';
 
 // Services
 import { AuthService } from 'src/app/services/auth.service';
@@ -17,7 +16,7 @@ export class RegisterComponent implements OnInit {
   @ViewChild('f') signupForm: NgForm;
   public showPassword: boolean = false;
 
-  constructor(private validateService: ValidateService, private authService: AuthService, private httpService: HttpService, private router: Router) { }
+  constructor(private authService: AuthService, private httpService: HttpService, private router: Router) { }
 
   ngOnInit(): void {
   }

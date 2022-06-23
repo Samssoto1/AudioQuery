@@ -7,6 +7,9 @@ const getUsers = operation.toGetAll(userSchema);
 // funct to get all the tasks in the database
 const getAUser = operation.toGet(userSchema);
 // funct to get all the tasks in the database
+
+const getAUserByUsername = operation.getUserByUsername(userSchema);
+
 const createUser = operation.toCreate(userSchema);
 // funct to get all the tasks in the database
 const updateUser = operation.toUpdate(userSchema);
@@ -21,5 +24,6 @@ module.exports = {
     deleteUser,
     createUser,
     getAUser,
-    loginUser
+    loginUser,
+    getAUserByUsername
 }

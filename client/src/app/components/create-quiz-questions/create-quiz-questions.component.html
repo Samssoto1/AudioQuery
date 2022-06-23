@@ -1,0 +1,61 @@
+<body class="text-center">    
+    <main class="form-signin">
+      <h1>Question</h1>
+        <form (ngSubmit)="onCreateQuizQuestion()" #f="ngForm">
+          <!-- Question -->
+          <div class="form-floating">
+            <input #questionTitle="ngModel" ngModel required type="text" name="questionTitle" class="form-control" id="questionTitle" placeholder="...">
+            <label for="questionTitle">Question</label>
+          </div>
+          <!-- Validation -->
+          <span class="help-block d-flex justify-content-left m-2" *ngIf="!f.valid && questionTitle.touched">This field is required!</span>
+          
+          <!-- Pick a song -->
+          <app-song-list></app-song-list>
+
+          <!-- Answer1 -->
+          <div class="form-floating">
+            <input #answerOne="ngModel" ngModel required type="text" name="answerOne" class="form-control" id="answerOne" placeholder="...">
+            <label for="answerOne">Answer 1</label>
+          </div>
+          <!-- Validation -->
+          <span class="help-block d-flex justify-content-left m-2" *ngIf="!f.valid && answerOne.touched">This field is required!</span>
+          
+           <!-- Answer2 -->
+           <div class="form-floating">
+            <input #answerTwo="ngModel" ngModel required type="text" name="answerTwo" class="form-control" id="answerTwo" placeholder="...">
+            <label for="answerTwo">Answer 2</label>
+          </div>
+          <!-- Validation -->
+          <span class="help-block d-flex justify-content-left m-2" *ngIf="!f.valid && answerTwo.touched">This field is required!</span>
+
+          <!-- Answer3 -->
+          <div class="form-floating">
+            <input #answerThree="ngModel" ngModel required type="text" name="answerThree" class="form-control" id="answerThree" placeholder="...">
+            <label for="answerThree">Answer 3</label>
+          </div>
+          <!-- Validation -->
+          <span class="help-block d-flex justify-content-left m-2" *ngIf="!f.valid && answerThree.touched">This field is required!</span>
+
+          <!-- Answer4 -->
+          <div class="form-floating">
+            <input #answerFour="ngModel" ngModel required type="text" name="answerFour" class="form-control" id="answerFour" placeholder="...">
+            <label for="answerFour">Answer 3</label>
+          </div>
+          <!-- Validation -->
+          <span class="help-block d-flex justify-content-left m-2" *ngIf="!f.valid && answerFour.touched">This field is required!</span>
+          
+          <!-- Correct Answer -->
+          <label for="correctAnswer">Correct Answer</label>
+          <select  class="form-control" name="correctAnswer" id="correctAnswer">
+            <option value=1>Question 1</option>
+            <option value=2>Question 2</option>
+            <option value=3>Question 3</option>
+            <option value=4>Question 4</option>
+          </select>
+
+          <button class="w-100 btn btn-lg btn-primary" [disabled]="!f.valid" type="submit">Next Question-></button>
+        </form>
+        <button class="w-100 btn btn-lg btn-primary" [disabled]="!f.valid" type="button">Done</button>
+    </main>
+    </body>

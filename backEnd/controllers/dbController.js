@@ -18,6 +18,26 @@ operation.toGetAll = function (schema) {
 	}
 }
 
+operation.getUserByUsername = function (schema) {
+	return async (req, res) => {
+		schema.find({username: req.params.username}, function (err, docs) {
+			console.log(req.params.username);
+			console.log(docs);
+			if (err) {
+				res.status(400).send(err)
+			}
+			else {
+				if (docs === null) {
+					res.status(200).send("No such user")
+				}
+				else {
+					res.status(200).json(docs)
+				}
+			}
+		});
+	}
+}
+
 // Get one specific Item in the database
 operation.toGet = function (schema) {
 	console.log('in toGet function')
@@ -119,6 +139,24 @@ operation.loginUser = function (schema) {
 			user:{
 				id: user._id,
 				username: user.username
+			}
+		})
+	}
+}
+
+// QUIZ STUFF
+
+// Create an object in the database
+operation.createQuiz = function (schema) {
+	console.log('creating a quiz')
+	return async (req, res) => {
+		const quizInfo = req.body;
+
+		schema.create(quizInfo, null, (err, data) => {
+			if (err) {
+				res.status(500).send(err)
+			} else {
+				res.status(201).send(data);
 			}
 		})
 	}

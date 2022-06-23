@@ -22,8 +22,8 @@
         <a *ngIf="!userIsAuthenticated"[routerLink]="['/login']" class="btn btn-outline-light me-2">Login</a>
         <a *ngIf="!userIsAuthenticated"[routerLink]="['register']" class="btn btn-warning">Sign-up</a>
         <a *ngIf="userIsAuthenticated" (click)="goToAccount()" class="btn btn-outline-light me-2">My Account</a>
-        <a *ngIf="userIsAuthenticated" class="btn btn-warning">Create Quiz</a>
-        <a *ngIf="userIsAuthenticated" (click)="onLogout()" class="btn btn-warning">Log Out</a>
+        <a *ngIf="userIsAuthenticated" (click)="createAQuiz()" class="btn btn-warning me-2">Create Quiz</a>
+        <a *ngIf="userIsAuthenticated" (click)="onLogout()" class="btn btn-warning ">Log Out</a>
         <!-- <button type="button" class="btn btn-outline-light me-2">Login</button> -->
         <!-- <button type="button" class="btn btn-warning">Sign-up</button> -->
       </div>

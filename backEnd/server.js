@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const Cors = require('cors')
 
 const checkAuth = require("./middleware/check-auth");
-const checkAuth2 = require("./controllers/auth.js")
+const auth = require("./controllers/auth.js")
 
 
 // define port for server
@@ -25,22 +25,13 @@ app.use((req, res, next) => {
   next();
 });
 
-
-
-//app.use(bodyParser.urlencoded({ extended: true })) 
 app.use(bodyParser.json())
 
-app.get('/admin', checkAuth2.verifyToken, (req, res) => {
-  console.log("In admin view")
+app.get('/admin', auth.verifyToken, (req, res) => {
   res.status(200).json({message: "success"})
 })
-
 
 app.use('/api', require('./routes.js'))
-
-app.use('/test', (req, res) =>{
-  res.status(200).json({message: "success"})
-})
 
 app.listen(PORT, () => {
   console.log(`Server Connected on ${PORT}...`)

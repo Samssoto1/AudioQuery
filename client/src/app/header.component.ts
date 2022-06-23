@@ -12,6 +12,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private authListenerSubs: Subscription;
   userIsAuthenticated = false;
   userId: string;
+  username: string;
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -24,10 +25,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   goToAccount(){
-    this.userId = this.authService.getId();
-    console.log(this.userId);
+    this.username = this.authService.getUsername();
+    console.log(this.username);
     // this.router.navigate(['/profile', this.userId]);
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/profile', this.username]);
 
   }
 
@@ -38,6 +39,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onLogout(){
     this.authService.logout();
     console.log('logging out')
+  }
+
+  createAQuiz(){
+    this.router.navigate(['/create-a-quiz'])
   }
 
 }

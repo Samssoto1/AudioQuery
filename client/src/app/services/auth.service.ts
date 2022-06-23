@@ -10,8 +10,10 @@ export class AuthService {
   private tokenTimer: NodeJS.Timer;
   private token: string;
   private authStatusListener = new Subject<boolean>();
+  errorMsg = new Subject<string>();
   private isAuth = false;
   private userId: string;
+  private username: string;
   
 
   constructor(private httpService: HttpService, private router: Router) { }
@@ -24,8 +26,10 @@ export class AuthService {
     this.httpService.post("login", object).subscribe((data) => {
       console.log(data);
       if (data['success'] == true) {
+        console.log('data is successful')
         this.token = data['token']
         this.userId = data['user']['id'];
+        this.username = data['user']['username'];
         console.log(this.userId);
         const expiresInDuration = data['expiresIn'];
         this.setAuthTimer(expiresInDuration);
@@ -35,15 +39,34 @@ export class AuthService {
         const expirationDate = new Date(
           now.getTime() + expiresInDuration * 1000
         ); // miliseconds again
-        this.saveAuthData(this.token, expirationDate, this.userId);
-        this.router.navigate(['/profile']);
+        this.saveAuthData(this.token, expirationDate, this.userId, this.username);
+
+        // this.isLoading = true;
+    const username = localStorage.getItem('username');
+    // this.httpService.get('profile', userId).subscribe((data) => {
+    //   this.isLoading = false;
+    //   this.username = data['username'];
+    //   this.registrationDate = data['registrationDate'];
+    //   this.list_of_quizzes = data['quizzes'];
+    //   console.log(this.list_of_quizzes);
+    // });
+
+        this.router.navigate(['/profile', username ]);
       } 
-      else {}
+      else{
+      this.errorMsg.next(data['error']) // pass subject containing error msg to the login component to notify the user
+      }
     }); 
   }
 
   getId(){
+    this.userId = localStorage.getItem('userId')
     return this.userId;
+  }
+
+  getUsername(){ // for "My account button"
+    this.username = localStorage.getItem('username')
+    return this.username;
   }
 
   getAuthStatusListener() {
@@ -63,23 +86,27 @@ export class AuthService {
     this.token = null;
     this.isAuth = false;
     this.authStatusListener.next(false);
-    this.router.navigate(['/']);
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
+    localStorage.clear();
+    this.router.navigate(['']);
+    // this.router.navigate(['login']);
   }
 
   private setAuthTimer(duration: number) {
     this.tokenTimer = setTimeout(() => {
       this.logout();
+      localStorage.clear();
     }, duration * 1000); // setTimeout works with miliseconds. Multiplying seconds by *1000 for mili..
   }
 
-  private saveAuthData(token: string, expirationDate: Date, userId: string) {
+  private saveAuthData(token: string, expirationDate: Date, userId: string, username: string) {
     console.log(expirationDate);
     console.log(expirationDate.toISOString);
     localStorage.setItem('token', token);
     localStorage.setItem('expiration', expirationDate.toISOString());
     localStorage.setItem('userId', userId);
+    localStorage.setItem('username', username);
   }
 
   autoAuthUser() {

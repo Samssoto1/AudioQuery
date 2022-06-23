@@ -16,20 +16,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getDataFromApi();// on app startup - run
 
     this.authService.autoAuthUser();
 
   }
 
-  getDataFromApi(){
-    this.httpService.getData().subscribe((res)=>{
-      console.log('here')
-      console.log('Response from API is ', res);
-    }, (error) => {
-      console.log('Error is ', error);
-    })
-  }
 
 }
 

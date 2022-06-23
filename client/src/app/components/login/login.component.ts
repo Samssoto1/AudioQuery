@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpHeaders } from '@angular/common/http';
+import { Subscription } from 'rxjs';
+
 
 // Services
 import { AuthService } from 'src/app/services/auth.service';
@@ -11,13 +12,22 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   @ViewChild('f') signinForm: NgForm;
   public showPassword: boolean = false;
+  errorMsg: string;
+  errorSub: Subscription;
 
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+    this.errorSub = this.authService.errorMsg.subscribe(errorMsg => {
+      this.errorMsg = errorMsg;
+      console.log(errorMsg);
+    });  
+
+    // give list to quiz (Child) component
+
   }
 
   onLoginSubmit(){
@@ -33,6 +43,10 @@ export class LoginComponent implements OnInit {
 
   public toggleShow(): void {
     this.showPassword = !this.showPassword;
+  }
+
+  ngOnDestroy(): void {
+    this.errorSub.unsubscribe();
   }
   
 

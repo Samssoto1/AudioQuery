@@ -30,7 +30,7 @@ export class HttpService {
       }
         case 'profile':
           {
-          return this.http.get(`${this.api}/api/users/singleuser/${object}`);
+          return this.http.get(`${this.api}/api/users/singleuserByUsername/${object}`);
         }
     }
   }
@@ -45,6 +45,9 @@ export class HttpService {
       case 'login': {
         return this.http.post(`${this.api}/api/users/login`, object)
         }
+      case 'create-a-quiz': {
+        return this.http.post(`${this.api}/api/quiz/create-a-quiz`, object)
+      }
       default:
         {
           break;
@@ -109,10 +112,6 @@ export class HttpService {
   // getIsAuth() {
   //   return this.isAuth;
   // }
-
-  getData() {
-    return this.http.get('http://localhost:8000/test');
-  }
 
 
 

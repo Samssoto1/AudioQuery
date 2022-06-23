@@ -7,15 +7,16 @@ import { LoginComponent } from "./components/login/login.component";
 import { PinComponent } from "./components/pin/pin.component";
 import { ProfileComponent } from "./components/profile/profile.component";
 import { RegisterComponent } from "./components/register/register.component";
+import { CreateAQuizComponent } from "./components/create-a-quiz/create-a-quiz.component";
+import { CreateQuizQuestionsComponent } from "./components/create-quiz-questions/create-quiz-questions.component";
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'profile', component: ProfileComponent, children: 
-  [
-  {path: ':id', component: ProfileComponent}
-  ]}, // Fix this to get to profile by ID later
+  {path: 'create-a-quiz', component: CreateAQuizComponent, canActivate: [AuthGuard]},
+  {path: 'profile/:username', component: ProfileComponent},
+  {path: 'create-a-quiz-question', component: CreateQuizQuestionsComponent},
   {path: 'pin', component: PinComponent},
   {path: 'admin', component: AdminDashboardComponent, canActivate: [AuthGuard]}
   // {path: 'dashboard', component: },

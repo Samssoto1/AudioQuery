@@ -38,14 +38,14 @@
               fill="currentColor"
             ></path>
           </svg>
-          <span class="fs-4">Jumbotron example</span>
+          <span class="fs-4">Profile</span>
         </a>
       </header>
 
       <div class="p-5 mb-4 bg-light rounded-3">
         <div class="container-fluid py-5">
           <h1 class="display-5 fw-bold">{{username}}</h1>
-          <h4>Account created: {{registrationDate}}</h4>
+          <h4>Account created: {{registrationDate | date: 'longDate' }}</h4>
           <!-- <img src={{imgUrl}} alt="profile picture">   -->
           <img id="profile-picture" class="img-responsive img-thumbnail" src={{imgUrl}} alt="profile picture">
 
@@ -62,13 +62,16 @@
           </button> -->
         </div>
       </div>
-      <div class="col-md-12">
+      <div class="col-md-12" *ngIf="isGuest == false">
         <h2 id="quiz-header">Quizzes</h2>
         <hr>
         <div class="col-md-12">
           <div class="quiz" *ngFor="let quiz of list_of_quizzes">
-            {{quiz}}
+            <!-- <div>{{quiz}}</div> -->
+            <app-quiz [quiz]=quiz></app-quiz>
           </div>
+          <p *ngIf="isLoading"> Loading....</p>
+          <p *ngIf="(list_of_quizzes?.length < 1)">No Quizzes exist yet. Create one?</p>
         </div>
       </div>
       <!-- <div class="row align-items-md-stretch">

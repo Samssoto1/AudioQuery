@@ -1,0 +1,18 @@
+<body class="text-center">    
+    <main class="form-signin">
+      <h1>Create your quiz!</h1>
+        <form (ngSubmit)="onCreateQuizSubmit()" #f="ngForm">
+          <!-- <h4 class="d-flex justify-content-center">{{quizTitle}}</h4> -->
+          <div class="form-floating">
+            <input #quizTitle="ngModel" ngModel required type="text" name="quizTitle" class="form-control" id="quizTitle" placeholder="Title your quiz">
+            <label for="quizTitle">Quiz Title</label>
+          </div>
+          <span class="help-block d-flex justify-content-left m-2" *ngIf="!f.valid && quizTitle.touched">A title for your quiz is required!</span>
+          <div class="form-floating">
+            <textarea  #quizDescription="ngModel" ngModel class="form-control" name="quizDescription" id="quizDescription" cols="30" rows="10"></textarea>
+            <label for="quizDescription">Description</label>
+          </div>
+          <button class="w-100 btn btn-lg btn-primary" [disabled]="!f.valid" type="submit">Create</button>
+        </form>
+    </main>
+    </body>
