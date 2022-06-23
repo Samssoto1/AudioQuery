@@ -32,6 +32,11 @@ export class HttpService {
           {
           return this.http.get(`${this.api}/api/users/singleuserByUsername/${object}`);
         }
+      case 'quizzesForUser' : {
+        console.log({userId: object});
+        console.log(object);
+        return this.http.get(`${this.api}/api/quiz/quizzesForUser/${object}`);
+      }
     }
   }
 

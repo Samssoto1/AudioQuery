@@ -162,4 +162,26 @@ operation.createQuiz = function (schema) {
 	}
 }
 
+operation.getQuizzesForUser = function (schema) {
+	return async (req, res) => {
+		schema.find({authorId: req.params.userId}, function (err, docs) {
+			if (err) {
+				res.status(400).send(err)
+			}
+			else {
+				console.log(req.params.userId);
+				console.log('quiz info for user')
+				console.log(docs);
+				if (docs === null) {	
+					res.status(200).send("No such Item")
+				}
+				else {
+					res.status(200).json(docs)
+				}
+			}
+		});
+	}
+}
+
+
 module.exports = operation;

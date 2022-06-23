@@ -12,7 +12,8 @@ export class ProfileComponent implements OnInit {
   username: string;
   registrationDate;
   isLoading: boolean = false;
-  list_of_quizzes: Array<any>; // any for now (implement quiz model later)
+  // list_of_quizzes: Array<any>; // any for now (implement quiz model later)
+  list_of_quizzes: any;
   imgUrl: string = "https://www.listchallenges.com/f/lists/57789dce-7a91-4176-9733-cdfdc7d6d350.jpg"
   isGuest: boolean;
 
@@ -26,6 +27,7 @@ export class ProfileComponent implements OnInit {
           this.isLoading = false;
           console.log(data)
           // this.username = data['username'];
+          this.userId = data[0]['_id']
           this.username = data[0]['username'];
           this.registrationDate = data[0]['registrationDate'];
 
@@ -34,10 +36,16 @@ export class ProfileComponent implements OnInit {
             const username = localStorage.getItem('username');
           
             if(this.username == username){
+              console.log("Is not a guest")
+              console.log(this.userId);
               this.isGuest = false;
-              this.list_of_quizzes = data[0]['quizzes'];
+              this.httpService.get("quizzesForUser", this.userId).subscribe((data) => {
+                console.log(data);
+                this.list_of_quizzes = data;
+                // this.list_of_quizzes = data[];
+              });
+              // this.list_of_quizzes = data[0]['quizzes'];
             }
-            console.log(this.list_of_quizzes);
           }
           catch{
             this.isGuest = true;

@@ -26,10 +26,8 @@ export class CreateAQuizComponent implements OnInit {
       const authorId = this.authService.getId();
 
       const title = this.createAQuizForm.value.quizTitle
-      console.log(title)
 
       const description = this.createAQuizForm.value.quizDescription;
-      console.log(description);
       
       console.log(this.createAQuizForm);
       
