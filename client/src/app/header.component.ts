@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   createAQuiz(){
-    this.router.navigate(['/create-a-quiz'])
+    this.router.navigate(['/quiz/create-a-quiz'])
   }
 
 }

@@ -1,3 +1,15 @@
-<app-song-item>
-    
-</app-song-item>
+<h1 mat-dialog-title>Select a song</h1>
+<h2></h2>
+<div mat-dialog-content>
+    Search for a song or choose a song from the list below to base your question on.
+</div>
+<div mat-dialog-actions>
+  <input class="form-control" type="text" name="" id="" placeholder="Enter a search value" (keyup)="search(searchBox.value)" #searchBox>
+  <div class="glyphicon glyphicon-search input-group-addon" (click)="search(searchBox.value)"></div> 
+  <!-- Glyph Icon not working, replace with Material UI search icon later -->
+  <ul>
+    <app-song-item (selectedSong)="getSelectedSong($event)" *ngFor="let songs of songData | songFilter: term;" [songData]="songs"></app-song-item>
+  </ul>
+  <button (click)="canSelect = false" mat-button mat-dialog-close>Cancel</button>
+  <button (click)="canSelect = true" mat-button mat-dialog-close cdkFocusInitial>Okay</button>
+</div>

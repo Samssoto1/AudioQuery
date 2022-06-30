@@ -20,12 +20,21 @@ import { AdminDashboardComponent } from './components/admin-dashboard/admin-dash
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { QuizComponent } from './components/quiz/quiz.component';
 import { CreateAQuizComponent } from './components/create-a-quiz/create-a-quiz.component';
 import { CreateQuizQuestionsComponent } from './components/create-quiz-questions/create-quiz-questions.component';
 import { SongListComponent } from './components/song-list/song-list.component';
 import { SongItemComponent } from './components/song-item/song-item.component';
+import { DeleteQuizComponent } from './components/dialog/delete-quiz/delete-quiz.component';
+import { QuizDashboardComponent } from './components/quiz-dashboard/quiz-dashboard.component';
+import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
+import { AddSongComponent } from './components/add-song/add-song.component';
+import { MatTableModule } from '@angular/material/table'  
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ShowSongsButtonComponent } from './components/show-songs-button/show-songs-button.component';
+import { SongFilterPipe } from './pipes/song-filter.pipe';
 
 
 @NgModule({
@@ -43,7 +52,13 @@ import { SongItemComponent } from './components/song-item/song-item.component';
     CreateAQuizComponent,
     CreateQuizQuestionsComponent,
     SongListComponent,
-    SongItemComponent
+    SongItemComponent,
+    DeleteQuizComponent,
+    QuizDashboardComponent,
+    NotFoundPageComponent,
+    AddSongComponent,
+    ShowSongsButtonComponent,
+    SongFilterPipe
   ],
   imports: [
     BrowserModule,
@@ -54,7 +69,11 @@ import { SongItemComponent } from './components/song-item/song-item.component';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatDialogModule,
+    MatTableModule,
+    MatPaginatorModule
+
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]

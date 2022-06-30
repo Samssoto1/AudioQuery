@@ -1,6 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -17,7 +17,7 @@ export class ProfileComponent implements OnInit {
   imgUrl: string = "https://www.listchallenges.com/f/lists/57789dce-7a91-4176-9733-cdfdc7d6d350.jpg"
   isGuest: boolean;
 
-  constructor(private httpService: HttpService, private activatedRoute: ActivatedRoute ) {}
+  constructor(private httpService: HttpService, private activatedRoute: ActivatedRoute, private router: Router ) {}
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
@@ -64,6 +64,10 @@ export class ProfileComponent implements OnInit {
     //   console.log(this.list_of_quizzes);
     // });
     
+  }
+
+  createAQuiz(){
+    this.router.navigate(['/quiz/create-a-quiz'])
   }
 
 }

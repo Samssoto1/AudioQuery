@@ -5,7 +5,6 @@ const userSchema = mongoose.Schema({
   email: {type: String, unique: true},
   password: String,
   registrationDate: {type: Date, default: Date.now },
-  quizzes: {type: Array, default: []},
   admin: {type: Boolean, default: false}
 })
 

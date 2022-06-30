@@ -5,9 +5,7 @@ const quizSchema = mongoose.Schema({
   description: {type: String},
   author: {type: String},
   authorId: {type: String},
-  // quizId: {type: String},
-  questions: []
 })
 
-const quizDb = mongoose.model('quizDb', quizSchema)
+const quizDb = mongoose.model('quiz', quizSchema)
 module.exports = quizDb

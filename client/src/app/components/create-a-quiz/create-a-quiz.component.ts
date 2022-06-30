@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpService } from 'src/app/services/http.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-a-quiz',
@@ -13,7 +14,7 @@ export class CreateAQuizComponent implements OnInit {
   quizMode: string = "new";
   
 
-  constructor(private httpService: HttpService, private authService: AuthService) { }
+  constructor(private httpService: HttpService, private authService: AuthService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
   }
@@ -38,8 +39,12 @@ export class CreateAQuizComponent implements OnInit {
         author: author,
         authorId: authorId
       }
-      ).subscribe();
-      console.log('quiz thing')
+      ).subscribe(
+        (data) => {
+          console.log(data);
+          this.router.navigate(["/quiz/create-a-quiz-question", data['_id']], { relativeTo: this.activatedRoute })
+        }
+      );
 
     }
   }

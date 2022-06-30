@@ -1,17 +1,22 @@
 const express = require('express');
 
 const router = express.Router();
-const { createQuiz, getQuizzesForUser } = require ('../controllers/quizController');
+const { createQuiz, getQuizzesForUser, deleteQuiz, uploadSong, getListOfSongs, getQuizById } = require ('../controllers/quizController');
+const { getQuizQuestions, createQuestion, deleteQuizQuestion, deleteAllQuizQuestions } = require('../controllers/questionsController')
 
 router.post('/create-a-quiz', createQuiz)
+router.post('/create-a-question', createQuestion)
 router.get('/view-quiz/:id')// currently unfinished
 router.get('/quizzesForUser/:userId', getQuizzesForUser)
-// router.get('/allusers', getUsers)
-// router.get('/singleuser/:id', getAUser)
-// router.get('/singleuserByUsername/:username', getAUserByUsername)
-// router.post('/login', loginUser)
-// router.post('/createuser', createUser)
-// router.put('/updateuser/:id', updateUser)
-// router.delete('/deleteuser/:id', deleteUser)
+router.get('/getQuizQuestions/:quizId', getQuizQuestions)
+router.get('/getQuizById/:quizId', getQuizById)
+router.delete('/delete/:quizId', deleteQuiz)
+
+// MOVE THIS LATER (!IMPORTANT) shouldnt be in quiz routes. Api route could be changed for admin route.
+router.post('/songUpload', uploadSong)
+router.get('/getListOfSongs', getListOfSongs);
+
+router.delete('/deleteQuestion/:questionId', deleteQuizQuestion)
+router.delete('/deleteAllQuizQuestions/:quizId', deleteAllQuizQuestions)
 
 module.exports = router;

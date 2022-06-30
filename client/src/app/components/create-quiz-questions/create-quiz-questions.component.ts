@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, Input} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpService } from 'src/app/services/http.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Question } from 'src/app/model/question.model';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-a-quiz',
@@ -11,39 +12,46 @@ import { Question } from 'src/app/model/question.model';
 })
 export class CreateQuizQuestionsComponent implements OnInit {
   @ViewChild('f') createAQuizQuestionForm: NgForm;
-  list_of_quiz_questions: Array<Question> = []
-  
+  quizId: string;
+  list_of_songs;
+  selectedSongData;
 
-  constructor(private httpService: HttpService, private authService: AuthService) { }
+  constructor(private httpService: HttpService, private authService: AuthService, private router: Router,private activatedRoute: ActivatedRoute ) { }
+
+  getSelectedSongData(selectedSongData){
+    this.selectedSongData = selectedSongData;
+    console.log(this.selectedSongData);
+  }
 
   ngOnInit(): void {
+    this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+      this.quizId = params['params']['quizId'];
+    });
   }
 
   onCreateQuizQuestion(){
-    if(this.createAQuizQuestionForm.valid){
-
-      // const author = this.authService.getUsername();
-
-      // const authorId = this.authService.getId();
-
-      // const title = this.createAQuizQuestionForm.value.quizTitle
-      // console.log(title)
-
-      // const description = this.createAQuizQuestionForm.value.quizDescription;
-      // console.log(description);
+    if(this.createAQuizQuestionForm.valid && this.selectedSongData != undefined){
       
       console.log(this.createAQuizQuestionForm);
-      
-      // create a new quiz object
-      this.httpService.post('create-a-quiz-question', {
-        // title: title,
-        // description: description,
-        // author: author,
-        // authorId: authorId
-      }
-      ).subscribe();
-      console.log('quiz thing')
+      console.log(this.selectedSongData)
+      console.log(this.selectedSongData['_id'])
 
+      this.httpService.post('create-a-question', {
+        // questionTitle: this.createAQuizQuestionForm.value.questionTitle, 
+        answerOne: this.createAQuizQuestionForm.value.answerOne,
+        answerTwo: this.createAQuizQuestionForm.value.answerTwo,
+        answerThree: this.createAQuizQuestionForm.value.answerThree,
+        answerFour: this.createAQuizQuestionForm.value.answerFour,
+        correctAnswer: this.createAQuizQuestionForm.value.correctAnswer,
+        quizId: this.quizId,
+        songId: this.selectedSongData['_id'],
+        songTitle: this.selectedSongData['title']
+      }).subscribe(
+        (data) => {
+
+          this.router.navigate(['/quiz/dashboard', this.quizId]);
+        }
+      )
     }
   }
 

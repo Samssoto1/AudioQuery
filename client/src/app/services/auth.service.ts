@@ -41,15 +41,7 @@ export class AuthService {
         ); // miliseconds again
         this.saveAuthData(this.token, expirationDate, this.userId, this.username);
 
-        // this.isLoading = true;
     const username = localStorage.getItem('username');
-    // this.httpService.get('profile', userId).subscribe((data) => {
-    //   this.isLoading = false;
-    //   this.username = data['username'];
-    //   this.registrationDate = data['registrationDate'];
-    //   this.list_of_quizzes = data['quizzes'];
-    //   console.log(this.list_of_quizzes);
-    // });
 
         this.router.navigate(['/profile', username ]);
       } 

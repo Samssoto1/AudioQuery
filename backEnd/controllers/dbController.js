@@ -183,5 +183,152 @@ operation.getQuizzesForUser = function (schema) {
 	}
 }
 
+operation.deleteQuiz = function (schema) {
+	return async (req, res) => {
+		console.log('deleting quiz')
+		schema.findByIdAndDelete(req.params.quizId, function (err, docs) {
+			if (err) {
+				res.status(400).send("You have error")
+			}
+			else {
+				if (docs === null) {
+					res.status(200).send("Already Deleted")
+				}
+				else {
+					res.status(200).send(docs)
+					console.log("Deleted : ", docs);
+				}
+			}
+		});
+	}
+}
+
+operation.getQuizQuestions = function (schema) {
+	return async (req, res) => {
+		console.log('reached');
+		console.log(req.params.quizId);
+		schema.find({quizId: req.params.quizId}, function (err, docs) {
+			console.log(req.params.quizId)
+			if (err) {
+				res.status(400).send(err)
+			}
+			else {
+				if (docs === null) {	
+					res.status(200).send("No such Item")
+				}
+				else {
+					res.status(200).json(docs)
+				}
+			}
+		});
+	}
+}
+
+// createQuestion
+
+operation.createQuestion = function (schema) {
+	console.log('creating a question')
+	return async (req, res) => {
+		const questionInfo = req.body;
+		console.log('in questionInfo')
+		console.log(questionInfo)
+
+		schema.create(questionInfo, null, (err, data) => {
+			if (err) {
+				res.status(500).send(err)
+			} else {
+				res.status(201).send(data);
+			}
+		})
+	}
+}
+
+operation.deleteQuizQuestion = function (schema) {
+	return async (req, res) => {
+		schema.findByIdAndDelete(req.params.questionId, function (err, docs) {
+			if (err) {
+				res.status(400).send("You have error")
+			}
+			else {
+				if (docs === null) {
+					res.status(200).send("Already Deleted")
+				}
+				else {
+					res.status(200).send(docs)
+					console.log("Deleted : ", docs);
+				}
+			}
+		});
+	}
+}
+
+operation.deleteAllQuizQuestions = function (schema) {
+	return async (req, res) => {
+		console.log('deleting quiz QUESTIONS')
+		schema.deleteMany({quizId: req.params.quizId}, function (err, docs) {
+			if (err) {
+				res.status(400).send("You have error")
+			}
+			else {
+				if (docs === null) {
+					res.status(200).send("Already Deleted")
+				}
+				else {
+					res.status(200).send(docs)
+					console.log("Deleted : ", docs);
+				}
+			}
+		});
+	}
+}
+
+// upload song (move this later)
+operation.uploadSong = function (schema) {
+	console.log('creating a song')
+	return async (req, res) => {
+		const songInfo = req.body;
+
+		schema.create(songInfo, null, (err, data) => {
+			if (err) {
+				res.status(500).send(err)
+			} else {
+				res.status(201).send(data);
+			}
+		})
+	}
+}
+
+// get list of songs
+
+operation.getListOfSongs = function (schema) {
+	return (req, res) => {
+		// our null can be used a a security params
+		schema.find(null, (err, data) => {
+			if (err) {
+				res.status(500).send(err)
+			} else {
+				res.status(200).send(data);
+			}
+		});
+	}
+}
+
+operation.getQuizById = function (schema) {
+	return async (req, res) => {
+		schema.findById(req.params.quizId, function (err, docs) {
+			if (err) {
+				res.status(400).send(err)
+			}
+			else {
+				if (docs === null) {
+					res.status(200).send("No such Item")
+				}
+				else {
+					res.status(200).json(docs)
+				}
+			}
+		});
+	}
+}
 
 module.exports = operation;

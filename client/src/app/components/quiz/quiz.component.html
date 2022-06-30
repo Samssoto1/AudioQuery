@@ -1,21 +1,6 @@
-<!-- <div class="quiz-cont container-md"> -->
-<!-- Quiz Title -->
-<!-- <span class="quiz-title">{{quiz}}</span> -->
-<!-- Buttons -->
-<!-- <a>Play</a>
-    <a>Edit</a>
-    <a>Delete</a>
-</div> -->
-
-
     <li class="quiz-cont"><a>{{quiz?.title}}</a>
         <div>
-            
-            <a class="quiz-btns">Play</a><a class="quiz-btns">Edit</a><a class="quiz-btns">Delete</a>
+            <button class="quiz-btns" mat-raised-button (click)="onEdit(quiz?._id)">Edit</button>
+            <button class="quiz-btns" mat-raised-button (click)="onDelete(quiz?._id)">Delete</button>
         </div>
         </li>
-
-
-<!-- <a>Play</a>
-    <a>Edit</a>
-    <a>Delete</a> -->

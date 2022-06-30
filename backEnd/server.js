@@ -28,9 +28,9 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json())
 
-app.get('/admin', auth.verifyToken, (req, res) => {
-  res.status(200).json({message: "success"})
-})
+// app.get('/admin', auth.verifyToken, (req, res) => {
+//   res.status(200).json({message: "success"})
+// })
 
 app.use('/api', require('./routes.js'))
 

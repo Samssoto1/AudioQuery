@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Inject,Optional} from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-song-list',
@@ -6,22 +7,32 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./song-list.component.css']
 })
 export class SongListComponent implements OnInit {
+  canSelect: boolean;
+  songData;
+  term: string;
+  selectedSong;
+//@Optional() is used to prevent error if no data is passed
+  constructor( @Optional() @Inject(MAT_DIALOG_DATA) public list_of_songs, private matDialogRef: MatDialogRef<SongListComponent>) {
+  }
 
-  constructor() { }
+  search(value: string){
+    this.term = value;
+
+  }
+
+  getSelectedSong(song){
+    console.log(song);
+    this.selectedSong = song
+  }
 
   ngOnInit(): void {
+    
+    this.songData = this.list_of_songs.list_of_songs;
+    console.log(this.list_of_songs);
+  }
 
-    // if (quizMode = "new"){
-      // push each question onto a temp array.
-      // once done button is clicked, push the questions to db ( this will be done in create-a-quiz-questions component)
-    // }
-    // else{
-      // If we're in this else block... we're editing.
-      // get list_of_questions by providing the quiz name and authorId and store into temp array. Populate the info and resave until user presses done
-      // once user press done push the questions to db (this will be done in create-a-quiz-questions component)
-      // 
-    // }
-
+  ngOnDestroy(){
+    this.matDialogRef.close(this.selectedSong);
   }
 
 }
