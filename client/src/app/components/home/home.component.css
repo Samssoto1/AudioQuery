@@ -22,13 +22,8 @@ body {
 }
 
 .cover-container {
-  max-width: 42em;
+  max-width: 41em;
 }
-
-
-/*
- * Header
- */
 
 .nav-masthead .nav-link {
   padding: .25rem 0;

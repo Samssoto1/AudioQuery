@@ -13,7 +13,7 @@ export class QuizDashboardComponent implements OnInit {
   questionInfo
 
 
-  constructor(private httpService: HttpService, private route: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(private httpService: HttpService, private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
     // get quiz title
@@ -23,8 +23,8 @@ export class QuizDashboardComponent implements OnInit {
       this.quizId = params['params']['quizId'];
 
       this.httpService.get('getQuizById', this.quizId).subscribe((data) => {
-         this.quizTitle = data['title'];
-         })
+        this.quizTitle = data['title'];
+        })
 
       this.httpService.get('quizQuestions', this.quizId).subscribe(
         (data) => {
@@ -34,6 +34,12 @@ export class QuizDashboardComponent implements OnInit {
       );
 
     });
+  }
+
+  newQuestion(quizId: string){
+    console.log(quizId);
+    this.router.navigate(["/quiz/create-a-quiz-question", quizId])
+    
   }
 
 }

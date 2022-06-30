@@ -29,7 +29,7 @@
           <div class="question" *ngFor="let question of questionInfo">
             <p>{{question?.songTitle}}</p>
           </div>
-          <div class="new">
+          <div class="new" (click)="newQuestion(quizId)">
             + Add Question
           </div>
         </div>
