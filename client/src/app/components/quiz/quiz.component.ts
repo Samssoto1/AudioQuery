@@ -3,6 +3,7 @@ import { DeleteQuizComponent } from '../dialog/delete-quiz/delete-quiz.component
 import {MatDialog} from '@angular/material/dialog';
 import { HttpService } from 'src/app/services/http.service';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-quiz',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class QuizComponent implements OnInit {
   @Input() quiz;
-  canDelete: boolean;
+  canDelete = new Subject<boolean>();
 
   constructor(public dialog: MatDialog, private httpService: HttpService, private router: Router) { }
 
@@ -35,6 +36,9 @@ export class QuizComponent implements OnInit {
           this.httpService.delete("allQuizQuestions", quizId).subscribe( res => {
 
           })
+
+        // Use a Subject to reload 
+        this.canDelete.next(true);
         }
       }
       )
@@ -42,7 +46,7 @@ export class QuizComponent implements OnInit {
 
   onEdit(quizId: string){
     this.router.navigate(['/quiz/dashboard', quizId]);
-   }
+  }
 
   onChanges(){
     {{}}

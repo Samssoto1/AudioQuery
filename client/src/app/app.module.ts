@@ -35,6 +35,7 @@ import { MatTableModule } from '@angular/material/table'
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ShowSongsButtonComponent } from './components/show-songs-button/show-songs-button.component';
 import { SongFilterPipe } from './pipes/song-filter.pipe';
+import { QuizListComponent } from './components/quiz-list/quiz-list.component';
 
 
 @NgModule({
@@ -58,7 +59,8 @@ import { SongFilterPipe } from './pipes/song-filter.pipe';
     NotFoundPageComponent,
     AddSongComponent,
     ShowSongsButtonComponent,
-    SongFilterPipe
+    SongFilterPipe,
+    QuizListComponent
   ],
   imports: [
     BrowserModule,

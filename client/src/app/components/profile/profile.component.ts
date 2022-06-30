@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, EventEmitter} from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
@@ -26,7 +26,6 @@ export class ProfileComponent implements OnInit {
       this.httpService.get('profile', this.username).subscribe((data) => {
           this.isLoading = false;
           console.log(data)
-          // this.username = data['username'];
           this.userId = data[0]['_id']
           this.username = data[0]['username'];
           this.registrationDate = data[0]['registrationDate'];
@@ -39,12 +38,9 @@ export class ProfileComponent implements OnInit {
               console.log("Is not a guest")
               console.log(this.userId);
               this.isGuest = false;
-              this.httpService.get("quizzesForUser", this.userId).subscribe((data) => {
-                console.log(data);
-                this.list_of_quizzes = data;
-                // this.list_of_quizzes = data[];
-              });
-              // this.list_of_quizzes = data[0]['quizzes'];
+              
+              // set bool to true which allows quiz-list to be loaded
+
             }
           }
           catch{
