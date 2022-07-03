@@ -13,14 +13,17 @@ import { QuizDashboardComponent } from "./components/quiz-dashboard/quiz-dashboa
 import { NotFoundPageComponent } from "./components/not-found-page/not-found-page.component";
 
 import { AddSongComponent } from "./components/add-song/add-song.component";
+import { ForgotPasswordComponent } from "./components/forgot-password/forgot-password.component";
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
+  {path: 'forgotPassword', component: ForgotPasswordComponent},
   {path: 'quiz', children: [
     {path: 'create-a-quiz', component: CreateAQuizComponent, pathMatch: 'full'},
     {path: 'create-a-quiz-question/:quizId', component: CreateQuizQuestionsComponent},
+    {path: 'edit-a-quiz-question/:questionId', component: CreateQuizQuestionsComponent},
     {path: 'dashboard/:quizId', component: QuizDashboardComponent, pathMatch: 'full'}
   ], canActivate: [AuthGuard]},
   {path: 'pin', component: PinComponent},

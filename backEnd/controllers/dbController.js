@@ -1,6 +1,7 @@
 //Initialize object that will have the operation functions.
 
 const auth = require('./auth.js'); // Needed for hashing operations
+const nodemailer = require("nodemailer");
 
 
 operation = {};
@@ -328,6 +329,121 @@ operation.getQuizById = function (schema) {
 				}
 			}
 		});
+	}
+}
+
+operation.getQuestionById = function (schema) {
+	return async (req, res) => {
+		schema.findById(req.params.questionId, function (err, docs) {
+			if (err) {
+				res.status(400).send(err)
+			}
+			else {
+				if (docs === null) {
+					res.status(200).send("No such Item")
+				}
+				else {
+					res.status(200).json(docs)
+				}
+			}
+		});
+	}
+}
+
+
+
+operation.forgotPassword = function (schema) {
+	console.log('forgot password')
+	return async (req, res) => {
+		// const { email } = req.body;
+		const {email} = req.body;
+		console.log(email);
+
+
+		const user = await schema.findOne({ email }).lean() // grab that users(email) data from the database
+
+		// validation to see if username / email exists in db
+		if(!user){
+			return res.json({status: 'No User Found', error: 'No user exists with this email. Please try again'})
+		}
+		
+		const token = auth.jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET2, { expiresIn: '10m' })
+		const link = `http://localhost:3000/resetPassword/${user.id}/${token}`;
+
+		// res.send('Password reset link has been sent to your email...'); 
+		
+		// (Using NodeMailer to send emails ......... (Send Grid or Gmail API can be future options... currently using Nodemailer)
+		// let testAccount = await nodemailer.createTestAccount();
+		console.log(process.env.SONG_SLEUTH_EMAILER, " ", process.env.SONG_SLUETH_APP_PASS)
+		let transporter = nodemailer.createTransport({
+			service: "gmail",
+			// host: "smtp.ethereal.email",
+			// port: 587,
+			// secure: false, //true for 465, false for other ports
+			auth: {
+				// user: testAccount.user,
+				// pass: testAccount.pass
+				user: process.env.SONG_SLEUTH_EMAILER,
+				pass: process.env.SONG_SLUETH_APP_PASS
+			},
+			tls: {
+				rejectUnauthorized: false
+			  }
+		});
+
+		console.log(email);
+
+		// email: SongSleuthEmailer@gmail.com
+		// pass: Pqwk4hjgi0oqijnew!s
+
+		// send the mail
+			let info = await transporter.sendMail({
+			from: 'SongSleuthEmailer@gmail.com',
+			to: email,
+			subject: "Reset Password",
+			// text: + link,
+			html: `<p>You are receiving this email for attempting to reset your password. If this isn't you, you can safely ignore this. Otherwise, click the link below:</p><a href="${link}">Reset Password</a>`
+			});
+
+			console.log("Message sent", info.messageId);
+			// console.log("Preview", nodemailer.getTestMessageUrl(info));
+
+
+
+		console.log('email should have sent?')
+
+
+		return res.status(200).json({
+			success: true,
+			token: token,
+			expiresIn: 600, // this is 10m in seconds
+			link: link
+		})
+	}
+}
+
+operation.resetPassword = function (schema) {
+	return async (req, res) => {
+		const {id, resetPasswordToken} = req.params;
+
+		const user = await schema.findOne({ email }).lean() // grab that users(email) data from the database
+
+		// check if id exists in db
+		if (id !== !user.id){
+			return
+		}
+
+		// If here.. have a valid id, and has a valid user with this id
+		try{
+			const payload = jwt.verify(resetPasswordToken, process.env.JWT_SECRET2)
+			res.status(200).json({status: ok}); // if status res = this on frontend... take to reset form
+		}
+		catch{
+			console.log('error verifying payload');
+		}
+
+
+
 	}
 }
 

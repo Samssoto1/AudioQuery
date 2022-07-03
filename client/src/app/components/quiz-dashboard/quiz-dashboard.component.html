@@ -26,7 +26,7 @@
         </div>
         <div class="col-md-12">
           <h2 id="quiz-header">Questions</h2>
-          <div class="question" *ngFor="let question of questionInfo">
+          <div class="question" *ngFor="let question of questionInfo" (click)="navigateToQuestion(question._id)">
             <p>{{question?.songTitle}}</p>
           </div>
           <div class="new" (click)="newQuestion(quizId)">

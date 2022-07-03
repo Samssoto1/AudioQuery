@@ -2,9 +2,9 @@ const mongoose = require('mongoose')
 
 const songSchema = mongoose.Schema({
   title: {type: String},
-  artist: {type: String}
+  artist: {type: String},
   // audioImg,
-  // audioFile: {}
+  audioFile: {type: String}
 })
 
 const userDb = mongoose.model('songs', songSchema)

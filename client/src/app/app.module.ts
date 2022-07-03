@@ -36,6 +36,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { ShowSongsButtonComponent } from './components/show-songs-button/show-songs-button.component';
 import { SongFilterPipe } from './pipes/song-filter.pipe';
 import { QuizListComponent } from './components/quiz-list/quiz-list.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 
 @NgModule({
@@ -60,7 +62,9 @@ import { QuizListComponent } from './components/quiz-list/quiz-list.component';
     AddSongComponent,
     ShowSongsButtonComponent,
     SongFilterPipe,
-    QuizListComponent
+    QuizListComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

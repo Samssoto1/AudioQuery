@@ -18,6 +18,10 @@ const deleteUser = operation.toDelete(userSchema);
 
 const loginUser = operation.loginUser(userSchema);
 
+const forgotPassword = operation.forgotPassword(userSchema);
+
+const resetPassword = operation.resetPassword(userSchema);
+
 module.exports = {
     getUsers,
     updateUser,
@@ -25,5 +29,7 @@ module.exports = {
     createUser,
     getAUser,
     loginUser,
-    getAUserByUsername
+    getAUserByUsername,
+    forgotPassword,
+    resetPassword
 }

@@ -33,12 +33,13 @@ export class HttpService {
           return this.http.get(`${this.api}/api/users/singleuserByUsername/${object}`);
         }
       case 'quizzesForUser' : {
-        console.log({userId: object});
-        console.log(object);
         return this.http.get(`${this.api}/api/quiz/quizzesForUser/${object}`);
       }
       case 'quizQuestions': {
         return this.http.get(`${this.api}/api/quiz/getQuizQuestions/${object}`);
+      }
+      case 'getQuestionById': {
+        return this.http.get(`${this.api}/api/quiz/getQuestionById/${object}`);
       }
       case 'getQuizById': {
         return this.http.get(`${this.api}/api/quiz/getQuizById/${object}`);
@@ -71,6 +72,9 @@ export class HttpService {
       }
       case 'adminSongUpload': {
         return this.http.post(`${this.api}/api/quiz/songUpload`, object)
+      }
+      case 'forgotPassword': {
+        return this.http.post(`${this.api}/api/users/forgotPassword`, object);
       }
       default:
         {

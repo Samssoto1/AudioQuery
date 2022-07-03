@@ -42,4 +42,9 @@ export class QuizDashboardComponent implements OnInit {
     
   }
 
+  navigateToQuestion(questionId: string){
+    // this.router.navigate(["/quiz/create-a-quiz-question", this.quizId, questionId]);
+    this.router.navigate(["/quiz/edit-a-quiz-question", questionId]);
+  }
+
 }

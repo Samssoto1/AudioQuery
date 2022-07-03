@@ -2,13 +2,14 @@ const express = require('express');
 
 const router = express.Router();
 const { createQuiz, getQuizzesForUser, deleteQuiz, uploadSong, getListOfSongs, getQuizById } = require ('../controllers/quizController');
-const { getQuizQuestions, createQuestion, deleteQuizQuestion, deleteAllQuizQuestions } = require('../controllers/questionsController')
+const { getQuizQuestions, createQuestion, deleteQuizQuestion, deleteAllQuizQuestions, getQuestionById } = require('../controllers/questionsController')
 
 router.post('/create-a-quiz', createQuiz)
 router.post('/create-a-question', createQuestion)
 router.get('/view-quiz/:id')// currently unfinished
 router.get('/quizzesForUser/:userId', getQuizzesForUser)
 router.get('/getQuizQuestions/:quizId', getQuizQuestions)
+router.get('/getQuestionById/:questionId', getQuestionById)
 router.get('/getQuizById/:quizId', getQuizById)
 router.delete('/delete/:quizId', deleteQuiz)
 

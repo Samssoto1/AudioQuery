@@ -5,10 +5,12 @@ const getQuizQuestions = operation.getQuizQuestions(questionSchema);
 const createQuestion = operation.createQuestion(questionSchema)
 const deleteQuizQuestion = operation.deleteQuizQuestion(questionSchema)
 const deleteAllQuizQuestions = operation.deleteAllQuizQuestions(questionSchema)
+const getQuestionById = operation.getQuestionById(questionSchema);
 
 module.exports = {
     getQuizQuestions,
     createQuestion,
     deleteQuizQuestion,
-    deleteAllQuizQuestions
+    deleteAllQuizQuestions,
+    getQuestionById
 }

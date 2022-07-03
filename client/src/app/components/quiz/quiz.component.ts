@@ -4,6 +4,7 @@ import {MatDialog} from '@angular/material/dialog';
 import { HttpService } from 'src/app/services/http.service';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { QuizService } from '../../services/quiz.service';
 
 @Component({
   selector: 'app-quiz',
@@ -12,9 +13,8 @@ import { Subject } from 'rxjs';
 })
 export class QuizComponent implements OnInit {
   @Input() quiz;
-  canDelete = new Subject<boolean>();
 
-  constructor(public dialog: MatDialog, private httpService: HttpService, private router: Router) { }
+  constructor(public dialog: MatDialog, private httpService: HttpService, private router: Router, private quizService: QuizService) { }
 
   ngOnInit(): void {
     console.log(this.quiz);
@@ -38,7 +38,7 @@ export class QuizComponent implements OnInit {
           })
 
         // Use a Subject to reload 
-        this.canDelete.next(true);
+        this.quizService.updateQuizList(quizId);
         }
       }
       )
