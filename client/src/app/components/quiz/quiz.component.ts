@@ -3,8 +3,8 @@ import { DeleteQuizComponent } from '../dialog/delete-quiz/delete-quiz.component
 import {MatDialog} from '@angular/material/dialog';
 import { HttpService } from 'src/app/services/http.service';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
 import { QuizService } from '../../services/quiz.service';
+import { PlayQuizComponent} from '../play-quiz-component/play-quiz-component.component';
 
 @Component({
   selector: 'app-quiz',
@@ -18,6 +18,16 @@ export class QuizComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.quiz);
+  }
+
+  onPlay(quizId: string){
+    let dialogRef = this.dialog.open(PlayQuizComponent);
+    dialogRef.afterClosed().subscribe( (result) => {
+      if(result == true){
+        // this.router.navigate(['game'])
+        this.router.navigate(['nickname'])
+      }
+    })
   }
 
   onDelete(quizId: string){
