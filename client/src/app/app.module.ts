@@ -1,3 +1,5 @@
+import { environment } from 'src/environments/environment'
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -38,7 +40,17 @@ import { SongFilterPipe } from './pipes/song-filter.pipe';
 import { QuizListComponent } from './components/quiz-list/quiz-list.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { PlayQuizComponent } from './components/play-quiz-component/play-quiz-component.component';
+import { GameComponent } from './components/game/game/game.component';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { PromptForNicknameComponent } from './components/game/prompt-for-nickname/prompt-for-nickname.component';
 
+const config: SocketIoConfig = {
+  url: environment.socketUrl, //socket server url;
+  options: {
+    transports: ['websocket']
+  }
+}
 
 @NgModule({
   declarations: [
@@ -64,7 +76,10 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
     SongFilterPipe,
     QuizListComponent,
     ForgotPasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    PlayQuizComponent,
+    GameComponent,
+    PromptForNicknameComponent
   ],
   imports: [
     BrowserModule,
@@ -78,7 +93,8 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
     MatIconModule,
     MatDialogModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    SocketIoModule.forRoot(config)
 
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],

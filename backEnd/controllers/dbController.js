@@ -361,6 +361,7 @@ operation.forgotPassword = function (schema) {
 
 
 		const user = await schema.findOne({ email }).lean() // grab that users(email) data from the database
+		console.log(user);
 
 		// validation to see if username / email exists in db
 		if(!user){
@@ -368,7 +369,7 @@ operation.forgotPassword = function (schema) {
 		}
 		
 		const token = auth.jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET2, { expiresIn: '10m' })
-		const link = `http://localhost:3000/resetPassword/${user.id}/${token}`;
+		const link = `http://localhost:4200/resetPassword/${user._id}/${token}`;
 
 		// res.send('Password reset link has been sent to your email...'); 
 		
@@ -424,23 +425,30 @@ operation.forgotPassword = function (schema) {
 
 operation.resetPassword = function (schema) {
 	return async (req, res) => {
-		const {id, resetPasswordToken} = req.params;
+		let {userId, password, resetPasswordToken} = req.body;
+		console.log(userId);
+		console.log(password);
+		console.log(resetPasswordToken);
 
-		const user = await schema.findOne({ email }).lean() // grab that users(email) data from the database
-
-		// check if id exists in db
-		if (id !== !user.id){
-			return
-		}
-
-		// If here.. have a valid id, and has a valid user with this id
-		try{
-			const payload = jwt.verify(resetPasswordToken, process.env.JWT_SECRET2)
-			res.status(200).json({status: ok}); // if status res = this on frontend... take to reset form
-		}
-		catch{
-			console.log('error verifying payload');
-		}
+		// try{
+			// const payload = auth.verify(resetPasswordToken, process.env.JWT_SECRET2)
+			password = await auth.hashPassword(password);
+			schema.findByIdAndUpdate(userId, {password: password}, function (err, docs) {
+				if (err) {
+					res.status(400).send(err)
+					console.log('error resetting')
+				}
+				else {
+					res.status(200).json(docs)
+					console.log('reset successful')
+				}
+			});
+			// change password
+			
+		// }
+		// catch{
+		// 	console.log('error verifying payload');
+		// }
 
 
 

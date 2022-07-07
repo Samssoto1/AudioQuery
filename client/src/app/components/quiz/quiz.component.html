@@ -1,5 +1,6 @@
     <li class="quiz-cont"><a>{{quiz?.title}}</a>
         <div>
+            <button class="quiz-btns" mat-raised-button (click)="onPlay(quiz?._id)">Play</button>
             <button class="quiz-btns" mat-raised-button (click)="onEdit(quiz?._id)">Edit</button>
             <button class="quiz-btns" mat-raised-button (click)="onDelete(quiz?._id)">Delete</button>
         </div>

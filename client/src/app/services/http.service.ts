@@ -76,6 +76,9 @@ export class HttpService {
       case 'forgotPassword': {
         return this.http.post(`${this.api}/api/users/forgotPassword`, object);
       }
+      case 'resetPassword': {
+        return this.http.post(`${this.api}/api/users/resetPassword`, object);
+      }
       default:
         {
           break;

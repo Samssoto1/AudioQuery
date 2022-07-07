@@ -14,18 +14,24 @@ import { NotFoundPageComponent } from "./components/not-found-page/not-found-pag
 
 import { AddSongComponent } from "./components/add-song/add-song.component";
 import { ForgotPasswordComponent } from "./components/forgot-password/forgot-password.component";
+import { ResetPasswordComponent } from "./components/reset-password/reset-password.component";
+import { GameComponent } from "./components/game/game/game.component";
+import { PromptForNicknameComponent } from "./components/game/prompt-for-nickname/prompt-for-nickname.component";
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
   {path: 'forgotPassword', component: ForgotPasswordComponent},
+  {path: 'resetPassword/:userId/:tokenId', component: ResetPasswordComponent},
   {path: 'quiz', children: [
     {path: 'create-a-quiz', component: CreateAQuizComponent, pathMatch: 'full'},
     {path: 'create-a-quiz-question/:quizId', component: CreateQuizQuestionsComponent},
     {path: 'edit-a-quiz-question/:questionId', component: CreateQuizQuestionsComponent},
     {path: 'dashboard/:quizId', component: QuizDashboardComponent, pathMatch: 'full'}
   ], canActivate: [AuthGuard]},
+  {path: 'nickname', component: PromptForNicknameComponent},
+  {path: 'game', component: GameComponent},
   {path: 'pin', component: PinComponent},
   {path: 'profile/:username', component: ProfileComponent},
   {path: 'admin', component: AdminDashboardComponent, canActivate: [AuthGuard]},
