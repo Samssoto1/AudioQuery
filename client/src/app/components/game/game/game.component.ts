@@ -13,7 +13,7 @@ export class GameComponent implements OnInit {
   subscription: Subscription;
   useNickname: boolean;
 
-  @Input() nickname: string;
+  @Input() sendNickname: string;
 
 
   constructor(private socketService: SocketService, private authService: AuthService) { }
@@ -24,9 +24,7 @@ export class GameComponent implements OnInit {
     
     // if user is signed in... load quiz id from params and set bool to true and display game options
     if(isLoggedIn == true){
-
-      // Prompt for nickname
-      this.promptForNickname()
+      
 
       // If useNickname == false... use username
       // if(){
@@ -42,11 +40,6 @@ export class GameComponent implements OnInit {
     }
     // else, guest user.. prompt nickname and wait for game to start.
   }
-
-  promptForNickname(){
-
-  }
-
 
 
   ngOnDestroy(){
