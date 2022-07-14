@@ -47,10 +47,26 @@ export class HttpService {
       case 'listOfSongs': {
         return this.http.get(`${this.api}/api/quiz/getListOfSongs`);
       }
+      case 'getRoom': {
+        return this.http.get(`${this.api}/api/room/getRoom/${object}`);
+      }
       default:
         {
           break;
         }
+    }
+  }
+
+  // Handle Put Routes
+  put(route: string, object: any){
+    switch (route) {
+      case 'updateQuestionByQuestionId': {
+        return this.http.put(`${this.api}/api/quiz/updateQuestionByQuestionId`, object);
+      }
+      default:
+      {
+        break;
+      }
     }
   }
 
@@ -79,6 +95,9 @@ export class HttpService {
       case 'resetPassword': {
         return this.http.post(`${this.api}/api/users/resetPassword`, object);
       }
+      case 'createRoom': {
+        return this.http.post(`${this.api}/api/room/createRoom`, object);
+      }
       default:
         {
           break;
@@ -97,6 +116,9 @@ export class HttpService {
       }
       case "allQuizQuestions":{
         return this.http.delete(`${this.api}/api/quiz/deleteAllQuizQuestions/${object}`);
+      }
+      case 'deleteRoom': {
+        return this.http.delete(`${this.api}/api/room/deleteRoom/${object}`);
       }
       default:
         {

@@ -14,7 +14,7 @@ import { AppRoutingModule } from './app-routing-module';
 import { ProfileComponent } from './components/profile/profile.component';
 import { FooterComponent } from './footer.component';
 import { HomeComponent } from './components/home/home.component';
-import { PinComponent } from './components/pin/pin.component';
+import { PinComponent } from './components/game/game/pin/pin.component';
 import { AuthInterceptor } from './interceptor/auth-interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
@@ -29,7 +29,7 @@ import { CreateAQuizComponent } from './components/create-a-quiz/create-a-quiz.c
 import { CreateQuizQuestionsComponent } from './components/create-quiz-questions/create-quiz-questions.component';
 import { SongListComponent } from './components/song-list/song-list.component';
 import { SongItemComponent } from './components/song-item/song-item.component';
-import { DeleteQuizComponent } from './components/dialog/delete-quiz/delete-quiz.component';
+import { DeleteComponent } from './components/dialog/delete/delete.component';
 import { QuizDashboardComponent } from './components/quiz-dashboard/quiz-dashboard.component';
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 import { AddSongComponent } from './components/add-song/add-song.component';
@@ -44,10 +44,14 @@ import { PlayQuizComponent } from './components/play-quiz-component/play-quiz-co
 import { GameComponent } from './components/game/game/game.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { PromptForNicknameComponent } from './components/game/prompt-for-nickname/prompt-for-nickname.component';
+import { ReloadQuizDirective } from './directives/reload-quiz.directive';
+import { QuestionListComponent } from './components/question-list/question-list.component';
+import { QuestionComponent } from './components/question/question.component';
 
 const config: SocketIoConfig = {
   url: environment.socketUrl, //socket server url;
   options: {
+    autoConnect: false,
     transports: ['websocket']
   }
 }
@@ -68,7 +72,7 @@ const config: SocketIoConfig = {
     CreateQuizQuestionsComponent,
     SongListComponent,
     SongItemComponent,
-    DeleteQuizComponent,
+    DeleteComponent,
     QuizDashboardComponent,
     NotFoundPageComponent,
     AddSongComponent,
@@ -79,7 +83,10 @@ const config: SocketIoConfig = {
     ResetPasswordComponent,
     PlayQuizComponent,
     GameComponent,
-    PromptForNicknameComponent
+    PromptForNicknameComponent,
+    ReloadQuizDirective,
+    QuestionListComponent,
+    QuestionComponent
   ],
   imports: [
     BrowserModule,

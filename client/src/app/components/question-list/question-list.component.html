@@ -1,0 +1,7 @@
+
+<div class="question" *ngFor="let question of questionInfo">
+    <app-question [question]=question></app-question>
+</div>
+<div class="new" (click)="newQuestion(quizId)">
+    + Add Question
+</div>

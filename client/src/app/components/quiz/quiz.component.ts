@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { DeleteQuizComponent } from '../dialog/delete-quiz/delete-quiz.component';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { DeleteComponent } from '../dialog/delete/delete.component';
 import {MatDialog} from '@angular/material/dialog';
 import { HttpService } from 'src/app/services/http.service';
 import { Router } from '@angular/router';
@@ -24,15 +24,20 @@ export class QuizComponent implements OnInit {
     let dialogRef = this.dialog.open(PlayQuizComponent);
     dialogRef.afterClosed().subscribe( (result) => {
       if(result == true){
-        // this.router.navigate(['game'])
+        // this.router.navigate(['game', quizId]);
+        console.log(quizId);
         this.router.navigate(['nickname'])
+        this.quizService.getSelectedQuiz(quizId);
+        console.log(quizId);
+        // this.router.navigate(['game']);
+        // this.quizService.getSelectedQuiz(quizId);
       }
     })
   }
 
   onDelete(quizId: string){
     // confirm delete
-    let dialogRef = this.dialog.open(DeleteQuizComponent);
+    let dialogRef = this.dialog.open(DeleteComponent, {data: {type: "quiz"}});
     dialogRef.afterClosed().subscribe(
       result => {
         // result tells us whether the user selected yes or no

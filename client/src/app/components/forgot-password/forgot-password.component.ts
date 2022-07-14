@@ -10,7 +10,8 @@ import { HttpService } from 'src/app/services/http.service';
 })
 export class ForgotPasswordComponent implements OnInit {
   @ViewChild('f') forgotPasswordForm: NgForm;
-  errorMsg
+  errorMsg;
+  successMsg;
 
   constructor(private httpService: HttpService, private router: Router) { }
 
@@ -19,12 +20,23 @@ export class ForgotPasswordComponent implements OnInit {
 
   onFormSubmit(){
     if(this.forgotPasswordForm.valid){
-      this.httpService.post('forgotPassword', {email: this.forgotPasswordForm.value.email}).subscribe( (res) => {
-        console.log(res['token'])
-        localStorage.setItem('resetPasswordToken', res['token']);
-        // navigate to success message
-        // this.router.navigate('')
+      // Reset Msgs
+      this.errorMsg = undefined
+      this.successMsg = undefined
 
+
+      this.httpService.post('forgotPassword', {email: (this.forgotPasswordForm.value.email.toLowerCase())}).subscribe((res) => {
+        console.log(res['standing'])
+        if(res['standing'] == 'valid'){
+          this.successMsg = res['message'];
+          localStorage.setItem('resetPasswordToken', res['token']);
+        }
+        // if(res['standing'] == 'error'){
+        // }
+      }, error => {
+        console.log(error)
+        this.errorMsg = error['error']['message'];
+        
       });
   }
 }

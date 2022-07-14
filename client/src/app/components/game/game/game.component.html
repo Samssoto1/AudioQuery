@@ -1,6 +1,19 @@
-<!-- <div>
-    <h1>{{roomId}}</h1>
-    <h2>test</h2>
-    <p>game works!</p>
-</div> -->
+<div *ngIf="isLoaded">
+    <h2>Invite and play with your friends using:</h2>
+    <h1>Game Pin: {{roomId}}</h1>
+    <!-- IF HOST -->
+    <div *ngIf="isHost">
+        <button (click)="startGame()">Start</button>
+    </div>
+    <ul>
+        <li *ngFor="let users of list_of_users">
+            qwer
+        </li>
+    </ul>
+</div>
+
+
+
+
+
 

@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     if(this.signinForm.valid){
       this.authService.loginUser( 
       {
-        email: this.signinForm.value.email,
+        email: (this.signinForm.value.email).toLowerCase(),
         password: this.signinForm.value.password
       })
       // const headers = new HttpHeaders({'Content-Type': 'application/json'})

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,11 +7,19 @@ import { Observable, Subject } from 'rxjs';
 export class QuizService {
 
   updateQList = new Subject<boolean>();
+  // selectedQuizInfo = new Subject<string>();
+  selectedQuizInfo = new BehaviorSubject<string>('');
+  
+  constructor() { }
 
   updateQuizList(quizId){
     // theres really no need for quizId but I need to send something to use next and subscribe...
-    this.updateQList.next(quizId)
+    this.updateQList.next(quizId);
   }
 
-  constructor() { }
+  getSelectedQuiz(quizId){
+    console.log(quizId);
+    this.selectedQuizInfo.next(quizId);
+  }
+
 }

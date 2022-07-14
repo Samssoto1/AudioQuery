@@ -51,28 +51,26 @@ export class CreateQuizQuestionsComponent implements OnInit {
               this.answerTwo = res['answerTwo'];
               this.answerThree = res['answerThree'];
               this.answerFour = res['answerFour'];
-              this.correctAnswer = res['answerOne'];
+              this.correctAnswer = res['correctAnswer'];
+              this.selectedSongData = {title: res['songTitle']}
               this.songId = res['songId'];
               this.songTitle = res['songTitle']
+              this.quizId = res['quizId']
             }
           );
         }
         catch{
           // give error (pulling data failed.. etc)
         }
-
       }
-
     });
   }
 
   onCreateQuizQuestion(){
     if(this.createAQuizQuestionForm.valid && this.selectedSongData != undefined){
-      
-      console.log(this.createAQuizQuestionForm);
-      console.log(this.selectedSongData)
-      console.log(this.selectedSongData['_id'])
 
+      if(this.editMode == false){
+        console.log('creating question')
       this.httpService.post('create-a-question', {
         // questionTitle: this.createAQuizQuestionForm.value.questionTitle, 
         answerOne: this.createAQuizQuestionForm.value.answerOne,
@@ -89,6 +87,26 @@ export class CreateQuizQuestionsComponent implements OnInit {
           this.router.navigate(['/quiz/dashboard', this.quizId]);
         }
       )
+      }
+      // updateQuestionByQuizId
+      if(this.editMode == true){
+        this.httpService.put('updateQuestionByQuestionId', {
+          questionId: this.questionId,
+          answerOne: this.createAQuizQuestionForm.value.answerOne,
+          answerTwo: this.createAQuizQuestionForm.value.answerTwo,
+          answerThree: this.createAQuizQuestionForm.value.answerThree,
+          answerFour: this.createAQuizQuestionForm.value.answerFour,
+          correctAnswer: this.createAQuizQuestionForm.value.correctAnswer,
+          songId: this.selectedSongData['_id'],
+          songTitle: this.selectedSongData['title']
+        }).subscribe(
+          (data) => {
+  
+            this.router.navigate(['/quiz/dashboard', this.quizId]);
+          }
+        )
+      }
+
     }
   }
 

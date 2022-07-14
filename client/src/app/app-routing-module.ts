@@ -4,7 +4,7 @@ import { AuthGuard } from "./auth.guard";
 import { AdminDashboardComponent } from "./components/admin-dashboard/admin-dashboard.component";
 import { HomeComponent } from "./components/home/home.component";
 import { LoginComponent } from "./components/login/login.component";
-import { PinComponent } from "./components/pin/pin.component";
+import { PinComponent } from "./components/game/game/pin/pin.component";
 import { ProfileComponent } from "./components/profile/profile.component";
 import { RegisterComponent } from "./components/register/register.component";
 import { CreateAQuizComponent } from "./components/create-a-quiz/create-a-quiz.component";
@@ -25,21 +25,20 @@ const appRoutes: Routes = [
   {path: 'forgotPassword', component: ForgotPasswordComponent},
   {path: 'resetPassword/:userId/:tokenId', component: ResetPasswordComponent},
   {path: 'quiz', children: [
-    {path: 'create-a-quiz', component: CreateAQuizComponent, pathMatch: 'full'},
-    {path: 'create-a-quiz-question/:quizId', component: CreateQuizQuestionsComponent},
-    {path: 'edit-a-quiz-question/:questionId', component: CreateQuizQuestionsComponent},
-    {path: 'dashboard/:quizId', component: QuizDashboardComponent, pathMatch: 'full'}
+    {path: 'create-a-quiz', component: CreateAQuizComponent, pathMatch: 'full', canActivate: [AuthGuard]},
+    {path: 'create-a-quiz-question/:quizId', component: CreateQuizQuestionsComponent, canActivate: [AuthGuard]},
+    {path: 'edit-a-quiz-question/:questionId', component: CreateQuizQuestionsComponent, canActivate: [AuthGuard]},
+    {path: 'dashboard/:quizId', component: QuizDashboardComponent, pathMatch: 'full', canActivate: [AuthGuard]}
   ], canActivate: [AuthGuard]},
   {path: 'nickname', component: PromptForNicknameComponent},
   {path: 'game', component: GameComponent},
+  {path: 'game/:quizId', component: GameComponent},
   {path: 'pin', component: PinComponent},
   {path: 'profile/:username', component: ProfileComponent},
   {path: 'admin', component: AdminDashboardComponent, canActivate: [AuthGuard]},
-  // {path: 'admin', component: AdminDashboardComponent, canActivate: [AuthGuard]},
    //Wild Card Route for 404 request
-   { path: '**', pathMatch: 'full', 
-   component: NotFoundPageComponent },
-
+  { path: '**', pathMatch: 'full', 
+  component: NotFoundPageComponent },
 ]
 
 @NgModule({

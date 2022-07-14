@@ -17,6 +17,7 @@ export class ResetPasswordComponent implements OnInit {
   errorMsg: string;
   paramUserId: string;
   localStoragePasswordToken: string;
+  successMsg: string;
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe( (params: ParamMap) => {
@@ -40,9 +41,21 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   onSubmit(){
-    if(this.tokenValid == true && this.resetPasswordForm.valid == true){
-      this.httpService.post('resetPassword', {userId: this.paramUserId ,password: this.resetPasswordForm.value.password, resetPasswordToken: this.localStoragePasswordToken }).subscribe( (res) => {
+    this.errorMsg = undefined
+    this.successMsg = undefined
 
+    if(this.localStoragePasswordToken == undefined){
+      this.tokenValid = false;
+      this.errorMsg = "Your password reset window has expired.. please try again"
+      return
+    }
+
+    if(this.tokenValid == true && this.resetPasswordForm.valid == true){
+      this.httpService.post('resetPassword', {userId: this.paramUserId, password: this.resetPasswordForm.value.password, resetPasswordToken: this.localStoragePasswordToken }).subscribe( (res) => {
+        if(res['standing'] == 'valid'){
+          this.successMsg = res['message'];
+          localStorage.setItem('resetPasswordToken', res['token']);
+        }
       })
     }
   }

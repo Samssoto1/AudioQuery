@@ -1,0 +1,197 @@
+import { Component, OnInit, Input, OnDestroy, NgZone} from '@angular/core';
+import { ActivatedRoute, ParamMap} from '@angular/router';
+import { Subscription, pipe, skip, first } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
+import { GameService } from 'src/app/services/game.service';
+import { HttpService } from 'src/app/services/http.service';
+import { QuizService } from 'src/app/services/quiz.service';
+import { SocketService } from 'src/app/services/socket.service';
+
+
+@Component({
+  selector: 'app-game',
+  templateUrl: './game.component.html',
+  styleUrls: ['./game.component.css']
+})
+export class GameComponent implements OnInit, OnDestroy {
+  isLoaded: boolean = false;
+  list_of_users_joined = [];
+  roomId: any;
+  subs: Subscription[] = [];
+  // subscriptionSelectedQuiz: Subscription;
+  subscriptionGetSocketRoom: Subscription;
+  // subscriptionProcessNick: Subscription;
+  // subscriptionGetPin: Subscription;
+
+  // Socket subscriptions
+  // subscriptionSocketGetNickname: Subscription
+  // subscriptionSocketSendNickname: Subscription
+  // subscriptionSocketJoinedLobby: Subscription
+
+
+  subscriptionHandleQidAndNickname: Subscription
+
+  subscriptionHttpQID: Subscription
+  subscriptionHttpR: Subscription
+
+  username;
+  nickname;
+
+  isHost: boolean = false;
+
+  @Input() sendNickname: string;
+
+  quizId;
+
+  bob: boolean = false;
+
+  constructor(private zone:NgZone, private activatedRoute: ActivatedRoute, private httpService: HttpService, private socketService: SocketService, private authService: AuthService, private gameService: GameService, private quizService: QuizService) {
+
+  }
+  
+  
+  ngOnInit() {
+    // this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+    //   this.quizId = params['params']['quizId'];
+    // });
+    
+    // let isLoggedIn = this.authService.getIsAuth(); // Check if user is currently logged in.
+    // if(isLoggedIn){
+      
+      // Subscribe and attempt to get Qid & NN. If user is a host, they will get info. Otherwise, subscribe will never occur but will be
+      // unsubscribed upon leaving component
+      this.subscriptionHandleQidAndNickname = this.gameService.processQidAndNickname.pipe(first()).subscribe((res) => {
+        
+        console.log('reach here')
+        // this.subscriptionHandleQidAndNickname = this.gameService.processQidAndNickname.pipe(skip(1)).subscribe((res) => {
+          console.log(res);
+          this.subscriptionHttpQID = this.httpService.get('getQuizById', res['quizId']).pipe(first()).subscribe((quizInfo) => {
+            console.log('in get quizId')
+            console.log(quizInfo['authorId'])
+            // If user is the host
+            if(quizInfo['authorId'] == localStorage.getItem('userId')){
+              // if user passes these conditions they are the host...
+              this.isHost = true;
+              console.log('qwerrwqe')
+              this.socketService.connect()
+              this.socketService.emit("createLobby", "");
+              console.log('dup')
+              this.subscriptionGetSocketRoom = this.socketService.createLobby().pipe(first()).subscribe((socketId) => {
+                console.log('qqqq');
+                console.log(socketId);
+                // this.subscriptionGetSocketRoom = this.socketService.roomId.subscribe((socketId) => { // subscribe to the subject from the service to get the roomId
+                console.log(socketId);
+                console.log('rewq');
+                // Create a room in the DB
+                console.log('creating room');
+                this.subscriptionHttpR = this.httpService.post('createRoom', {quizId: this.quizId, socketId: socketId}).pipe(first()).subscribe((roomId) => {
+                  console.log('room created');
+                  // this.roomId = roomId;
+                  this.zone.run(() => this.roomId = roomId);
+                  this.bob = true;
+                  console.log(this.roomId);
+                  console.log(this.bob);
+                  this.isLoaded = true;
+                  this.zone.run(() => this.isLoaded = true);
+                });
+              })
+            }
+          });  
+      });
+    // }
+    /*
+    // FLOW FOR EVERYONE ELSE
+    if((isLoggedIn && this.quizId == undefined) || !isLoggedIn){
+        this.isHost = false;
+        this.isLoaded = true;
+  
+        // prompt for pin
+        this.gameService.processPin.subscribe((pin) => {
+
+          try{
+            this.httpService.get('getRoom', pin).subscribe((res) => {
+              console.log(res);
+              this.quizId = res['quizId'];
+
+              // get nickname
+              this.subscriptionProcessNick = this.gameService.processNick.subscribe((nickname) => {
+                this.nickname = nickname;
+                console.log('qwer');
+                
+
+                // join socket room
+                this.socketService.joinLobby({socketId: res['socketId'], nickname: this.nickname});
+                this.subscriptionSocketJoinedLobby = this.socketService.joinedLobby.subscribe( () => { // subscribe to the subject from the service to get the roomId
+                console.log('rewq');
+                this.showPromptForNickname = false; // Hide NicknamePrompt Component
+                })
+              });  
+          })
+              
+            // })
+          }
+          catch{
+            alert('Incorrect Pin - failed');
+          }
+        });
+        
+        }
+        */
+    }
+
+
+  ngOnDestroy(){
+    this.socketService.disconnect();
+    console.log('in destroy')
+
+    if(this.isHost){
+      // If user is host and has left the room - delete the room from db
+      console.log('deleting room')
+      this.subscriptionHandleQidAndNickname.unsubscribe();
+      this.subscriptionGetSocketRoom.unsubscribe();
+
+      this.subscriptionHttpQID.unsubscribe();
+      this.subscriptionHttpR.unsubscribe();
+      // this.httpService.delete('deleteRoom', this.roomId).subscribe( () => {
+      
+      // this.subscriptionHttpQID.unsubscribe();
+      // })
+
+
+
+
+
+
+
+
+
+      
+      // if(this.subscriptionGetSocketRoom){
+      //   console.log('unsubscribing from getSocketRoom')
+      //   this.subscriptionGetSocketRoom.unsubscribe();
+      // }
+
+      // if(this.subscriptionProcessNick){
+      //   this.subscriptionProcessNick.unsubscribe();
+      // }
+
+      // if(this.subscriptionGetPin){
+      //   this.subscriptionGetPin.unsubscribe();
+      // }
+      
+      // if(this.subscriptionSocketGetNickname){
+      //   this.subscriptionSocketGetNickname.unsubscribe()
+      // }
+    
+      // if(this.subscriptionSocketSendNickname){
+      //   this.subscriptionSocketSendNickname.unsubscribe();
+      // }
+
+      // if(this.subscriptionSocketJoinedLobby){
+      //   this.subscriptionSocketJoinedLobby.unsubscribe();
+      // }
+  }
+
+}
+
+}

@@ -26,7 +26,7 @@ export class RegisterComponent implements OnInit {
     if(this.signupForm.valid && this.signupForm.value.password == this.signupForm.value.passwordConfirmation){
       
       this.authService.createUser({username: this.signupForm.value.username,
-        email: this.signupForm.value.email,
+        email: (this.signupForm.value.email).toLowerCase(),
         password: this.signupForm.value.password
       });
       

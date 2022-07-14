@@ -41,7 +41,6 @@ operation.getUserByUsername = function (schema) {
 
 // Get one specific Item in the database
 operation.toGet = function (schema) {
-	console.log('in toGet function')
 	return async (req, res) => {
 		schema.findById(req.params.id, function (err, docs) {
 			if (err) {
@@ -61,7 +60,6 @@ operation.toGet = function (schema) {
 
 // Create an object in the database
 operation.toCreate = function (schema) {
-	console.log('why not here')
 	return async (req, res) => {
 		const userInfo = req.body;
 		console.log(userInfo);
@@ -149,7 +147,6 @@ operation.loginUser = function (schema) {
 
 // Create an object in the database
 operation.createQuiz = function (schema) {
-	console.log('creating a quiz')
 	return async (req, res) => {
 		const quizInfo = req.body;
 
@@ -228,7 +225,6 @@ operation.getQuizQuestions = function (schema) {
 // createQuestion
 
 operation.createQuestion = function (schema) {
-	console.log('creating a question')
 	return async (req, res) => {
 		const questionInfo = req.body;
 		console.log('in questionInfo')
@@ -285,7 +281,6 @@ operation.deleteAllQuizQuestions = function (schema) {
 
 // upload song (move this later)
 operation.uploadSong = function (schema) {
-	console.log('creating a song')
 	return async (req, res) => {
 		const songInfo = req.body;
 
@@ -350,10 +345,32 @@ operation.getQuestionById = function (schema) {
 	}
 }
 
+// Update Question by Id
+
+operation.updateQuestionByQuestionId = function (schema) {
+	return async (req, res) => {
+		let {answerOne, answerTwo, answerThree, answerFour, correctAnswer, songId, songTitle, questionId} = req.body;
+
+		schema.findByIdAndUpdate(questionId, {answerOne: answerOne, answerTwo: answerTwo, answerThree: answerThree, answerFour: answerFour, correctAnswer: correctAnswer, songId: songId, songTitle: songTitle}, function (err, docs) {
+			if (err) {
+				res.status(400).send(err)
+			}
+			else {
+				if (docs === null) {
+					res.status(200).send("No such Item")
+					console.log('here')
+				}
+				else {
+					res.status(201).json(docs)
+				}
+			}
+		});
+	}
+}
+
 
 
 operation.forgotPassword = function (schema) {
-	console.log('forgot password')
 	return async (req, res) => {
 		// const { email } = req.body;
 		const {email} = req.body;
@@ -365,7 +382,7 @@ operation.forgotPassword = function (schema) {
 
 		// validation to see if username / email exists in db
 		if(!user){
-			return res.json({status: 'No User Found', error: 'No user exists with this email. Please try again'})
+			return res.status(422).json({standing: 'error', message: 'No user was found to exist with this email. Please confirm the spelling and try again.'})
 		}
 		
 		const token = auth.jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET2, { expiresIn: '10m' })
@@ -389,7 +406,7 @@ operation.forgotPassword = function (schema) {
 			},
 			tls: {
 				rejectUnauthorized: false
-			  }
+			}
 		});
 
 		console.log(email);
@@ -415,7 +432,8 @@ operation.forgotPassword = function (schema) {
 
 
 		return res.status(200).json({
-			success: true,
+			standing: 'valid',
+			message: `A password reset form has been successfully emailed to: ${email}`,
 			token: token,
 			expiresIn: 600, // this is 10m in seconds
 			link: link
@@ -439,7 +457,7 @@ operation.resetPassword = function (schema) {
 					console.log('error resetting')
 				}
 				else {
-					res.status(200).json(docs)
+					res.status(200).json({standing: "valid", message: "Your password has been sucessfully reset."})
 					console.log('reset successful')
 				}
 			});
@@ -449,9 +467,57 @@ operation.resetPassword = function (schema) {
 		// catch{
 		// 	console.log('error verifying payload');
 		// }
+	}
+}
 
+// Create an object in the database
+operation.createRoom = function (schema) {
+	return async (req, res) => {
+		const roomInfo = req.body;
 
+		schema.create(roomInfo, null, (err, data) => {
+			if (err) {
+				res.status(500).send(err)
+			} else {
+				// res.status(201).send(data._id);
+				res.status(201).send(data._id);
+			}
+		})
+	}
+}
 
+// Create an object in the database
+operation.getRoom = function (schema) {
+	return async (req, res) => {
+		const roomId = req.params.roomId;
+
+		schema.findById(roomId, null, (err, data) => {
+			if (err) {
+				res.status(500).send(err)
+			} else {
+				res.status(201).send(data);
+			}
+		})
+	}
+}
+
+operation.deleteRoom = function (schema) {
+	return async (req, res) => {
+		console.log('deleting room')
+		schema.findByIdAndDelete(req.params.roomId, function (err, docs) {
+			if (err) {
+				res.status(400).send("You have error")
+			}
+			else {
+				if (docs === null) {
+					res.status(200).send("Already Deleted")
+				}
+				else {
+					res.status(200).send(docs)
+					console.log("Deleted : ", docs);
+				}
+			}
+		});
 	}
 }
 
