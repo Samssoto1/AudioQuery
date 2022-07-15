@@ -47,6 +47,7 @@ import { PromptForNicknameComponent } from './components/game/prompt-for-nicknam
 import { ReloadQuizDirective } from './directives/reload-quiz.directive';
 import { QuestionListComponent } from './components/question-list/question-list.component';
 import { QuestionComponent } from './components/question/question.component';
+import { GameAnswerComponent } from './components/game/game-answer/game-answer.component';
 
 const config: SocketIoConfig = {
   url: environment.socketUrl, //socket server url;
@@ -86,7 +87,8 @@ const config: SocketIoConfig = {
     PromptForNicknameComponent,
     ReloadQuizDirective,
     QuestionListComponent,
-    QuestionComponent
+    QuestionComponent,
+    GameAnswerComponent
   ],
   imports: [
     BrowserModule,

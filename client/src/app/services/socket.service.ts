@@ -47,10 +47,6 @@ export class SocketService {
   }
 
   startGame(){
-    // this.socket.emit("startGame", "");
-    // this.socket.on('lobbyJoined', () => {
-      // this.confirmStartGame.next("");
-    // })
     let observable = new Observable(observer => {
       this.socket.on('startGameConfirmed', (socketId) => {
         // console.log(socketId);

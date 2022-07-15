@@ -26,40 +26,40 @@
                         Question
                     </p>
                     <h1 class="hud-main-text" id="questionCounter">
-                        
+                        {{questionCounter}}/{{length}}
                     </h1>
                 </div>
 
-                <!-- <div class="hud-item">
+                <div class="hud-item">
                     <p class="hud-prefix">
                         Score
                     </p>
                     <h1 class="hud-main-text" id="score">
-                        0
+                        {{points}}
                     </h1>
-                </div> -->
+                </div>
             </div>
 
             <h2 id="question"> What's the name of the song playing?</h2>
 
             <div class="choice-container">
                 <p class="choice-prefix">A</p>
-                <p class="choice-text">Choice 1</p>
+                <app-game-answer (outputAnswer)="getSelectedAnswer($event)" [answer]="currentQuestion?.answerOne"></app-game-answer>
             </div>
 
             <div class="choice-container">
                 <p class="choice-prefix">B</p>
-                <p class="choice-text">Choice 2</p>
+                <app-game-answer (outputAnswer)="getSelectedAnswer($event)" [answer]="currentQuestion?.answerTwo"></app-game-answer>
             </div>
 
             <div class="choice-container">
                 <p class="choice-prefix">C</p>
-                <p class="choice-text">Choice 3</p>
+                <app-game-answer (outputAnswer)="getSelectedAnswer($event)" [answer]="currentQuestion?.answerThree"></app-game-answer>
             </div>
 
             <div class="choice-container">
                 <p class="choice-prefix">D</p>
-                <p class="choice-text">Choice 4</p>
+                <app-game-answer [answer]="currentQuestion?.answerFour"></app-game-answer>
             </div>
 
         </div>

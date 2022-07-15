@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy, NgZone, ChangeDetectorRef, ChangeDetectionStrategy} from '@angular/core';
 import { ActivatedRoute, ParamMap} from '@angular/router';
-import { Subscription, pipe, skip, first, mergeMap, filter, catchError, concatMap, tap } from 'rxjs';
+import { Subscription, pipe, skip, first, mergeMap, filter, catchError, concatMap, tap, take } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { GameService } from 'src/app/services/game.service';
 import { HttpService } from 'src/app/services/http.service';
@@ -53,13 +53,41 @@ export class GameComponent implements OnInit, OnDestroy {
   isGameStart
   quizQuestions;
   currentQuestion;
+  questionCounter = 0;
+  length;
+  selectedAnswer: string;
+  points: number = 0;
 
+  answerSelected: Subscription;
 
   constructor(private httpService: HttpService, private socketService: SocketService, private authService: AuthService, private gameService: GameService, private quizService: QuizService) {
 
   }
-  
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+async quizLoop(length, quizQuestions) {
+  for ( let i=0; i < length;) {
+    
+      console.log(`Waiting ${i} seconds...`);
+      this.currentQuestion = this.quizQuestions[i];
+      i++;
+      console.log(this.currentQuestion.correctAnswer.correctAnswer)
+      console.log(this.selectedAnswer)
+      await this.sleep(i * 10000);
+      if(this.currentQuestion.correctAnswer.correctAnswer == this.selectedAnswer){
+        console.log('in here')
+              this.points += 10;
+              this.questionCounter = i
+      }
+  }
+  console.log('Done');
+}
+
   ngOnInit() {
+
     // Using params because it's faster than subject subscription. Allows me to segregate the host from another user
     // Host check is kind of unsafe... need to find another way to fix this. Currently it checks if a quizId isn't provided & if user is logged in, and if LS username = to quizId owner. IF JWT token validation is changed upon editing username.. this is safe. Otherwise, not.
     
@@ -69,16 +97,37 @@ export class GameComponent implements OnInit, OnDestroy {
     })
 
     // Handle Game after Host presses start button
-    this.subscriptionStartGame = this.socketService.startGame().subscribe((res) => {
+    this.subscriptionStartGame = this.socketService.startGame().pipe(take(1),).subscribe((res) => {
       this.isLoaded = false;
       this.isGameStart = true
       // this.quizQuestions = res;
       console.log(this.quizQuestions)
+      console.log(this.quizQuestions[0])
+      this.length = this.quizQuestions.length;
       console.log("starting game now :)")
 
-      this.quizQuestions.forEach(questions => {
-        this.currentQuestion = this.quizQuestions[questions]
-      })
+      // Handle first initial display
+      console.log(this.questionCounter)
+      console.log(this.length);
+    
+      this.quizLoop(this.length, this.quizQuestions)
+    
+
+
+
+      // while(this.questionCounter <= this.length){
+      //   console.log('qqwerwqer')
+      //   this.currentQuestion = this.questionCounter[this.questionCounter];
+      //   setInterval(() => {
+      //     console.log('in timeout')
+      //     this.questionCounter++;
+      //     if(this.currentQuestion.correctAnswer == this.selectedAnswer){
+      //       this.points += 10;
+      //     }
+      //     }, 5000);
+      // }
+
+
 
     
         // let audio = new Audio;
@@ -177,6 +226,11 @@ export class GameComponent implements OnInit, OnDestroy {
     console.log("startGameBtn clicked")
     console.log(this.socketId);
     this.socketService.emit("startGame", {socketId: this.socketId, quizQuestions: this.quizQuestions});
+  }
+
+  getSelectedAnswer(selectedAnswer: string){
+    console.log(selectedAnswer);
+    this.selectedAnswer = selectedAnswer;
   }
 
   ngOnDestroy(){

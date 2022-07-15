@@ -21,9 +21,10 @@ export class CreateQuizQuestionsComponent implements OnInit {
   answerTwo
   answerThree
   answerFour
-  correctAnswer
+  correctAnswerText
   songId
   songTitle
+  correctAnswerNum
 
   constructor(private httpService: HttpService, private authService: AuthService, private router: Router,private activatedRoute: ActivatedRoute ) { }
 
@@ -51,7 +52,7 @@ export class CreateQuizQuestionsComponent implements OnInit {
               this.answerTwo = res['answerTwo'];
               this.answerThree = res['answerThree'];
               this.answerFour = res['answerFour'];
-              this.correctAnswer = res['correctAnswer'];
+              this.correctAnswerText = `Answer ${res['correctAnswer']['correctAnswerNum']}`;
               this.selectedSongData = {title: res['songTitle']}
               this.songId = res['songId'];
               this.songTitle = res['songTitle']
@@ -71,13 +72,40 @@ export class CreateQuizQuestionsComponent implements OnInit {
 
       if(this.editMode == false){
         console.log('creating question')
+
+        console.log(this.createAQuizQuestionForm.value.correctAnswer);
+        this.correctAnswerNum = this.createAQuizQuestionForm.value.correctAnswer
+
+        switch (this.correctAnswerNum){
+          case '1': {
+            this.correctAnswerText = this.createAQuizQuestionForm.value.answerOne
+            console.log('in here')
+            break;
+          }
+          case '2': {
+            this.correctAnswerText = this.createAQuizQuestionForm.value.answerTwo
+            break;
+          }
+          case '3': {
+            this.correctAnswerText = this.createAQuizQuestionForm.value.answerThree
+            break;
+          }
+          case '4': {
+            this.correctAnswerText = this.createAQuizQuestionForm.value.answerFour
+            break;
+          }
+        }
+
+        console.log(this.correctAnswerNum);
+        console.log(this.correctAnswerText);
+
       this.httpService.post('create-a-question', {
         // questionTitle: this.createAQuizQuestionForm.value.questionTitle, 
         answerOne: this.createAQuizQuestionForm.value.answerOne,
         answerTwo: this.createAQuizQuestionForm.value.answerTwo,
         answerThree: this.createAQuizQuestionForm.value.answerThree,
         answerFour: this.createAQuizQuestionForm.value.answerFour,
-        correctAnswer: this.createAQuizQuestionForm.value.correctAnswer,
+        correctAnswer: {correctAnswerNum: this.correctAnswerNum, correctAnswerText: this.correctAnswerText},
         quizId: this.quizId,
         songId: this.selectedSongData['_id'],
         songTitle: this.selectedSongData['title']
@@ -90,13 +118,35 @@ export class CreateQuizQuestionsComponent implements OnInit {
       }
       // updateQuestionByQuizId
       if(this.editMode == true){
+
+        this.correctAnswerNum = this.createAQuizQuestionForm.value.correctAnswer
+
+        switch (this.correctAnswerNum){
+          case '1': {
+            this.correctAnswerText = this.createAQuizQuestionForm.value.answerOne
+            break;
+          }
+          case '2': {
+            this.correctAnswerText = this.createAQuizQuestionForm.value.answerTwo
+            break;
+          }
+          case '3': {
+            this.correctAnswerText = this.createAQuizQuestionForm.value.answerThree
+            break;
+          }
+          case '4': {
+            this.correctAnswerText = this.createAQuizQuestionForm.value.answerFour
+            break;
+          }
+        }
+
         this.httpService.put('updateQuestionByQuestionId', {
           questionId: this.questionId,
           answerOne: this.createAQuizQuestionForm.value.answerOne,
           answerTwo: this.createAQuizQuestionForm.value.answerTwo,
           answerThree: this.createAQuizQuestionForm.value.answerThree,
           answerFour: this.createAQuizQuestionForm.value.answerFour,
-          correctAnswer: this.createAQuizQuestionForm.value.correctAnswer,
+          correctAnswer: {correctAnswerNum: this.correctAnswerNum, correctAnswer: this.correctAnswerText},
           songId: this.selectedSongData['_id'],
           songTitle: this.selectedSongData['title']
         }).subscribe(
