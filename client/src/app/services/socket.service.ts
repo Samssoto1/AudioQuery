@@ -55,8 +55,8 @@ export class SocketService {
       this.socket.on('startGameConfirmed', (socketId) => {
         // console.log(socketId);
         console.log('in socket.service - startGame')
-        this.startGameConfirm.next(socketId)
-        observer.next(socketId)
+        // this.startGameConfirm.next(socketId)
+        observer.next({socketId: socketId})
       });
     });
     return observable;

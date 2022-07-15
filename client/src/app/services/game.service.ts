@@ -21,8 +21,8 @@ export class GameService {
 
   constructor() { }
 
-  handleRoomIdValue(roomId: string, socketId: string){
-    this.processRoomIdValue.next({roomId: roomId, socketId: socketId});
+  handleRoomIdValue(roomId: string, socketId: string, quizQuestions){
+    this.processRoomIdValue.next({roomId: roomId, socketId: socketId, quizQuestions: quizQuestions});
     
   }
 

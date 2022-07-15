@@ -6,6 +6,7 @@ import { GameService } from 'src/app/services/game.service';
 import { HttpService } from 'src/app/services/http.service';
 import { QuizService } from 'src/app/services/quiz.service';
 import { SocketService } from 'src/app/services/socket.service';
+import { forEachChild } from 'typescript';
 
 @Component({
   selector: 'app-game',
@@ -49,6 +50,9 @@ export class GameComponent implements OnInit, OnDestroy {
   loaded: boolean = false;
   roomInfo
   socketId
+  isGameStart
+  quizQuestions;
+  currentQuestion;
 
 
   constructor(private httpService: HttpService, private socketService: SocketService, private authService: AuthService, private gameService: GameService, private quizService: QuizService) {
@@ -65,11 +69,22 @@ export class GameComponent implements OnInit, OnDestroy {
     })
 
     // Handle Game after Host presses start button
-    this.subscriptionStartGame = this.socketService.startGame().subscribe(() => {
+    this.subscriptionStartGame = this.socketService.startGame().subscribe((res) => {
+      this.isLoaded = false;
+      this.isGameStart = true
+      // this.quizQuestions = res;
+      console.log(this.quizQuestions)
       console.log("starting game now :)")
-        let audio = new Audio;
-        audio.src = "https://github.com/Samssoto1/MyAudioAppSongDb/raw/main/Zedd%20feat.%20Foxes%20-%20Clarity%20(Studio%20Acapella).mp3";
-        audio.play();
+
+      this.quizQuestions.forEach(questions => {
+        this.currentQuestion = this.quizQuestions[questions]
+      })
+
+    
+        // let audio = new Audio;
+        // audio.src = "https://github.com/Samssoto1/MyAudioAppSongDb/raw/main/Zedd%20feat.%20Foxes%20-%20Clarity%20(Studio%20Acapella).mp3";
+        // audio.play();
+
     })
 
 
@@ -106,12 +121,14 @@ export class GameComponent implements OnInit, OnDestroy {
         tap(res => this.socketService.emit('createLobby', '')), // emit createLobby event to get ID of host
         concatMap(res => this.socketService.createLobby()), // delivers
         tap(socketId => {this.socketId = socketId; console.log(this.socketId)}),
-        concatMap(res => this.httpService.post('createRoom', {quizId: this.quizId, socketId: this.socketId})), // creates room in db and stores above info
+        concatMap(res => this.httpService.get('quizQuestions', this.quizId)), // get questions for game
+        tap(res => this.quizQuestions = res),
+        concatMap(res => this.httpService.post('createRoom', {quizId: this.quizId, socketId: this.socketId})) // creates room in db and stores above info
         ).subscribe(response => {
           this.roomId = response.toString();
           this.socketId = this.socketId.toString();
         // PUSH roomID TO SUBJECT
-        this.gameService.handleRoomIdValue(this.roomId, this.socketId);
+        this.gameService.handleRoomIdValue(this.roomId, this.socketId, this.quizQuestions);
       });
 
       // Get RoomId from Subject and update DOM
@@ -123,6 +140,7 @@ export class GameComponent implements OnInit, OnDestroy {
       console.log(res['socketId'])
       this.roomId = res['roomId'];
       this.socketId = res['socketId'];
+      this.quizQuestions = res['quizQuestions']
       })
       }
     
@@ -133,10 +151,10 @@ export class GameComponent implements OnInit, OnDestroy {
           tap(res => {
             this.roomInfo = res['pin']; this.nickname = res['nickname'];
           }),
-          // concatMap(res => this.httpService.get('getRoom', this.roomInfo._id)), // get room Info
-          // tap(res => this.roomInfo = res),
           concatMap(res => this.httpService.get('getQuizById', this.roomInfo.quizId)), // get quizInfo using quizId from roomInfo
           tap(quizInfo => {console.log(quizInfo); this.quizInfo = quizInfo; console.log(quizInfo['authorId']);}),
+          concatMap(res => this.httpService.get('quizQuestions', this.quizInfo['_id'])), // get questions for game,
+          tap(res => {this.quizQuestions = res; console.log(res); console.log(this.quizInfo['_id'])}),
           tap(res => this.socketService.connect()), // connect to socket
           tap(res => this.socketService.emit('joinLobby', {socketId: this.roomInfo.socketId, nickname: this.nickname})), // emit createLobby event to get ID of host
           tap(res => this.socketService.emit('getRoomInfo', this.roomInfo.socketId))
@@ -144,6 +162,7 @@ export class GameComponent implements OnInit, OnDestroy {
             this.roomId = this.roomInfo._id;
             this.isLoaded = true;
             console.log('end')
+            this.gameService.handleRoomIdValue(this.roomId, this.socketId, this.quizQuestions);
         });
   
       }
@@ -157,7 +176,7 @@ export class GameComponent implements OnInit, OnDestroy {
     // Check for amount of players. Should be at least 1 before starting
     console.log("startGameBtn clicked")
     console.log(this.socketId);
-    this.socketService.emit("startGame", this.socketId);
+    this.socketService.emit("startGame", {socketId: this.socketId, quizQuestions: this.quizQuestions});
   }
 
   ngOnDestroy(){

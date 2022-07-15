@@ -74,10 +74,12 @@ io.on('connection', socket => {
   // 
   socket.on('startGame', (object) => {
     console.log("startGameConfirmed");
-    console.log(object);
+    console.log(object)
+    console.log(object.socketId);
+    console.log(object.quizQuestions)
     // socket.to(object).emit('startGameConfirmed');
     // socket.emit('startGameConfirmed', object);
-    io.to(object).emit("startGameConfirmed");
+    io.to(object.socketId).emit("startGameConfirmed", object.quizQuestions);
     // io.in(object).emit("startGameConfirmed");
 
   })

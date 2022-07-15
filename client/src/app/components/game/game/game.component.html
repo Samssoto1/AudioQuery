@@ -1,3 +1,4 @@
+<!-- Handle Lobby -->
 <div *ngIf="isLoaded">
     <h2>Invite and play with your friends using:</h2>
     <h1>Game Pin: {{roomId}}</h1>
@@ -5,11 +6,65 @@
     <div *ngIf="isHost">
         <button (click)="startGameBtn()" mat-button>Start</button>
     </div>
-    <ul>
+    <!-- <ul>
         <li *ngFor="let users of list_of_users">
             qwer
         </li>
-    </ul>
+    </ul> -->
+</div>
+
+<!-- Handle Game Play -->
+<div *ngIf="isGameStart">
+    <div class="container">
+        <!-- <h1>Quiz Title</h1> -->
+        
+        <div id="game" class="justify-center flex-column">
+            
+            <div id="hud">
+                <div class="hud-item">
+                    <p class="hud-prefix">
+                        Question
+                    </p>
+                    <h1 class="hud-main-text" id="questionCounter">
+                        
+                    </h1>
+                </div>
+
+                <!-- <div class="hud-item">
+                    <p class="hud-prefix">
+                        Score
+                    </p>
+                    <h1 class="hud-main-text" id="score">
+                        0
+                    </h1>
+                </div> -->
+            </div>
+
+            <h2 id="question"> What's the name of the song playing?</h2>
+
+            <div class="choice-container">
+                <p class="choice-prefix">A</p>
+                <p class="choice-text">Choice 1</p>
+            </div>
+
+            <div class="choice-container">
+                <p class="choice-prefix">B</p>
+                <p class="choice-text">Choice 2</p>
+            </div>
+
+            <div class="choice-container">
+                <p class="choice-prefix">C</p>
+                <p class="choice-text">Choice 3</p>
+            </div>
+
+            <div class="choice-container">
+                <p class="choice-prefix">D</p>
+                <p class="choice-text">Choice 4</p>
+            </div>
+
+        </div>
+
+    </div>
 </div>
 
 
