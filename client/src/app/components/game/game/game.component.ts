@@ -35,8 +35,11 @@ export class GameComponent implements OnInit, OnDestroy {
   subscriptionGetQuizId: Subscription
   subscriptionHost: Subscription
   subscriptionElse: Subscription
+  subscriptionStartGame: Subscription
+  subscriptionSocketStartGame: Subscription
   quizId;
   quizInfo;
+  listOfQuestions;
 
   bob: boolean = false;
 
@@ -45,22 +48,51 @@ export class GameComponent implements OnInit, OnDestroy {
   playGame;
   loaded: boolean = false;
   roomInfo
+  socketId
 
-  constructor(private activatedRoute: ActivatedRoute, private httpService: HttpService, private socketService: SocketService, private authService: AuthService, private gameService: GameService, private quizService: QuizService) {
+
+  constructor(private httpService: HttpService, private socketService: SocketService, private authService: AuthService, private gameService: GameService, private quizService: QuizService) {
 
   }
   
   ngOnInit() {
     // Using params because it's faster than subject subscription. Allows me to segregate the host from another user
     // Host check is kind of unsafe... need to find another way to fix this. Currently it checks if a quizId isn't provided & if user is logged in, and if LS username = to quizId owner. IF JWT token validation is changed upon editing username.. this is safe. Otherwise, not.
-
+    
     // This may be to slow to work
     this.subscriptionGetQuizId = this.quizService.selectedQuizInfo.subscribe((quizId) => {
       this.quizId = quizId;
     })
 
-    console.log(this.quizId);
+    // Handle Game after Host presses start button
+    this.subscriptionStartGame = this.socketService.startGame().subscribe(() => {
+      console.log("starting game now :)")
+        let audio = new Audio;
+        audio.src = "https://github.com/Samssoto1/MyAudioAppSongDb/raw/main/Zedd%20feat.%20Foxes%20-%20Clarity%20(Studio%20Acapella).mp3";
+        audio.play();
+    })
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     // NOTE - DOESN'T WORK THE FIRST TIME FOR SOME REASON... MUST BE RAN TWICE.
     // ALSO NEEDS USER CHECKING IN CASE USER BREAKS THINGS.. LIKE HOST RELOADING PAGE,  ETC...
 
@@ -73,18 +105,24 @@ export class GameComponent implements OnInit, OnDestroy {
         tap(res => this.socketService.connect()), // connect to socket
         tap(res => this.socketService.emit('createLobby', '')), // emit createLobby event to get ID of host
         concatMap(res => this.socketService.createLobby()), // delivers
-        concatMap(socketId => this.httpService.post('createRoom', {quizId: this.quizId, socketId: socketId})), // creates room in db and stores above info
+        tap(socketId => {this.socketId = socketId; console.log(this.socketId)}),
+        concatMap(res => this.httpService.post('createRoom', {quizId: this.quizId, socketId: this.socketId})), // creates room in db and stores above info
         ).subscribe(response => {
           this.roomId = response.toString();
+          this.socketId = this.socketId.toString();
         // PUSH roomID TO SUBJECT
-        this.gameService.handleRoomIdValue(this.roomId);
+        this.gameService.handleRoomIdValue(this.roomId, this.socketId);
       });
 
       // Get RoomId from Subject and update DOM
-      this.subscriptionGetSocketRoom = this.gameService.processRoomIdValue.subscribe((roomId) => {
+      this.subscriptionGetSocketRoom = this.gameService.processRoomIdValue.subscribe((res) => {
       this.isLoaded = true;
       this.isHost = true;
-      this.roomId = roomId;
+      console.log(res);
+      console.log(res['roomId'])
+      console.log(res['socketId'])
+      this.roomId = res['roomId'];
+      this.socketId = res['socketId'];
       })
       }
     
@@ -109,25 +147,24 @@ export class GameComponent implements OnInit, OnDestroy {
         });
   
       }
+      
 
     
     }
 
     
-  startGame(){
-    
+  startGameBtn(){
+    // Check for amount of players. Should be at least 1 before starting
+    console.log("startGameBtn clicked")
+    console.log(this.socketId);
+    this.socketService.emit("startGame", this.socketId);
   }
-
-
-    test(){
-      console.log(this.roomId)
-    }
-
 
   ngOnDestroy(){
     console.log(this.roomId);
     this.socketService.disconnect();
     console.log('in destroy')
+    this.subscriptionStartGame.unsubscribe();
 
     if(!this.isHost){
       this.subscriptionGetQuizId.unsubscribe()
