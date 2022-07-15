@@ -23,20 +23,21 @@ io.on('connection', socket => {
 
   console.log(io.sockets.adapter.rooms);
 
-  // socket.on('connection', () => console.log('new connection'))
-  
+  // Handle disconnect
   socket.on('disconnect', () => {
     clientNo--;
     console.log('disconnected');
     console.log(clientNo)
   })
 
+  // Used when Host starts a lobby
   socket.on('createLobby', (socketId) => {
     console.log('sending id');
     console.log(socketId);
     socket.emit("sendId", socket.id);
   })
   
+  // Used when user joins lobby through pin (not host)
   socket.on('joinLobby', (object) => {
     try{
       socket.nickname = object.nickname;
@@ -51,6 +52,7 @@ io.on('connection', socket => {
     }
   })
 
+  // Used when prompting for nickname info
   socket.on('getRoomInfo', (object) => {
     console.log(object)
     console.log(socket.nickname)
@@ -69,40 +71,23 @@ io.on('connection', socket => {
 
   })
 
+  // 
+  socket.on('startGame', (object) => {
+    console.log("startGameConfirmed");
+    console.log(object);
+    // socket.to(object).emit('startGameConfirmed');
+    // socket.emit('startGameConfirmed', object);
+    io.to(object).emit("startGameConfirmed");
+    // io.in(object).emit("startGameConfirmed");
+
+  })
+
+  // Used when Ending Game
   socket.on('gameOver', (roomId) => {
     emitter.in(roomId).disconnectSockets(true);
   })
 
-  // io.of('/').adapter.on("join-room", (room, id) => {
-  //   console.log(`socket ${id} has joined room ${room}`);
-  // })
-
-  
-
-  // socket.on('sendNicknameGetUserList', (nickname) => {
-  //   socket.
-  // })
-
 })
-
-// io.on("createLobby", socket => {
-//   console.log('in lobby')
-//   // const pin = await fetchUserId(socket);
-//   const pin = fetchUserId(socket);
-//   socket.send(pin);
-//   // socket.to()
-//   console.log("connected");
-// })
-
-// io.on("join_room", room => {
-//   socket.join(room);
-// });
-
-
-
-// //
-
-
 
 
 const checkAuth = require("./middleware/check-auth");

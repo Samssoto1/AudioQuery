@@ -3,7 +3,7 @@
     <h1>Game Pin: {{roomId}}</h1>
     <!-- IF HOST -->
     <div *ngIf="isHost">
-        <button (click)="startGame()">Start</button>
+        <button (click)="startGameBtn()" mat-button>Start</button>
     </div>
     <ul>
         <li *ngFor="let users of list_of_users">

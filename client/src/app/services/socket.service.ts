@@ -1,17 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Subject, BehaviorSubject, Observable } from 'rxjs';
+import { Subject, BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import {io} from "socket.io-client"
 import { environment } from 'src/environments/environment';
-// Socket.io-client is a library... limited??
-// import {Socket, SocketIoConfig} from "ngx-socket-io";
-
-// const config: SocketIoConfig = {
-//   url: environment.socketUrl, //socket server url;
-//   options: {
-//     transports: ['websocket'],
-//     autoConnect: false
-//   }
-// }
 
 @Injectable({
   providedIn: 'root'
@@ -20,25 +10,17 @@ export class SocketService {
   
   private socket = io(environment.socketUrl);
 
+  startGameConfirm = new ReplaySubject;
   roomId = new BehaviorSubject<string>("0");
   triggerGetNickname = new Subject();
   sendNicknameGetUserList = new Subject();
   joinedLobby = new Subject();
-  // clientSocket: any;
-  // private socket: Socket
-  // socket;
   
   constructor(){
   }
 
   connect(){
     this.socket.connect();
-    // this.socket.ioSocket.io.opts.query = { token: 'minuevotoken' } //new options
-    // this.socket.ioSocket.io.uri = "http://localhost:3001" //new uri
-    // console.log('in connect')
-    // this.socket.connect(); //manually connection
-    // console.log('attempting to connect')
-    // this.socket = this.injector.get(Socket)
   }
 
   disconnect(){
@@ -60,18 +42,24 @@ export class SocketService {
         console.log('++++')
         observer.next(data);
       });
-      // return () => {this.socket.disconnect();}
     });
     return observable;
+  }
 
-    // console.log('=========')
-    // this.connect();
-    // console.log('made it out of connect method')
-    // this.socket.emit('createLobby');
-    // this.socket.on('sendId', (data) => {
-    //   console.log('+++++++')
-    //   this.roomId.next(data)
+  startGame(){
+    // this.socket.emit("startGame", "");
+    // this.socket.on('lobbyJoined', () => {
+      // this.confirmStartGame.next("");
     // })
+    let observable = new Observable(observer => {
+      this.socket.on('startGameConfirmed', (socketId) => {
+        // console.log(socketId);
+        console.log('in socket.service - startGame')
+        this.startGameConfirm.next(socketId)
+        observer.next(socketId)
+      });
+    });
+    return observable;
   }
 
   joinLobby(object: any){
@@ -79,15 +67,6 @@ export class SocketService {
     this.socket.on('lobbyJoined', () => {
       this.joinedLobby.next("");
     })
-  }
-
-  sendNickname(nickname: string){
-    // this.socket.emit('sendNickname', nickname);
-    // this.socket.on('sendNicknameGetUserList', (userList) => {
-
-    //   console.log(userList);
-    //   this.sendNicknameGetUserList.next(userList);
-    // })
   }
 
 }
