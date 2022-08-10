@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject, BehaviorSubject, ReplaySubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,8 @@ export class QuizService {
 
   updateQList = new Subject<boolean>();
   // selectedQuizInfo = new Subject<string>();
-  selectedQuizInfo = new BehaviorSubject<string>('');
+  // selectedQuizInfo = new BehaviorSubject<string>('');
+  selectedQuizInfo = new ReplaySubject<string>();
   
   constructor() { }
 

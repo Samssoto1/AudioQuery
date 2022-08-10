@@ -11,11 +11,11 @@ export class GameService {
 
 
   processPin = new ReplaySubject();
-  processQidAndNickname = new Subject();
-  pinToNick = new ReplaySubject();
+  // processQidAndNickname = new Subject();
   // processQidAndNickname = new BehaviorSubject("0");
+  processQidAndNickname = new ReplaySubject(1);
+  pinToNick = new ReplaySubject();
   
-  // processQidAndNickname = new ReplaySubject(1);
   joinLobby = new Subject();
   startGame = new Subject();
 

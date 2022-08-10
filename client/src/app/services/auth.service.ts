@@ -25,11 +25,10 @@ export class AuthService {
   loginUser(object: any){ // Login a user - Login
     this.httpService.post("login", object).pipe(take(1)).subscribe((data) => {
       console.log(data);
-      if (data['success'] == true) {
+      if (data['success'] == true) { // If response says login data was successful
         this.token = data['token']
         this.userId = data['user']['id'];
         this.username = data['user']['username'];
-        console.log(this.userId);
         const expiresInDuration = data['expiresIn'];
         this.setAuthTimer(expiresInDuration);
         this.isAuth = true;
