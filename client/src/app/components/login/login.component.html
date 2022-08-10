@@ -19,7 +19,7 @@
           <div class="form-floating">
             <input ngModel required [type]="showPassword ? 'text' : 'password'" name="password" #password="ngModel"
               type="password" class="form-control" id="floatingPassword" placeholder=" ">
-            <label for="floatingPassword d-flex"> <mat-icon> vpn_key</mat-icon> Password</label>
+            <label for="floatingPassword" class="d-flex"> <mat-icon> vpn_key</mat-icon> Password</label>
             <mat-icon id="eye-icon" matSuffix (click)="toggleShow()">
               {{showPassword?'visibility_off':'visibility'}}
             </mat-icon>
