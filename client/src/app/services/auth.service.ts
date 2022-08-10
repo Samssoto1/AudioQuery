@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
-import { Subject } from 'rxjs';
+import { Subject, take } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -23,10 +23,9 @@ export class AuthService {
   }
 
   loginUser(object: any){ // Login a user - Login
-    this.httpService.post("login", object).subscribe((data) => {
+    this.httpService.post("login", object).pipe(take(1)).subscribe((data) => {
       console.log(data);
       if (data['success'] == true) {
-        console.log('data is successful')
         this.token = data['token']
         this.userId = data['user']['id'];
         this.username = data['user']['username'];

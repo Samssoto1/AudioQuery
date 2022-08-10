@@ -1,7 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
-const { createQuiz, getQuizzesForUser, deleteQuiz, uploadSong, getListOfSongs, getQuizById } = require ('../controllers/quizController');
+const { createQuiz, getQuizzesForUser, deleteQuiz, uploadSong, getListOfSongs, getQuizById, getSongById} = require ('../controllers/quizController');
 const { getQuizQuestions, createQuestion, deleteQuizQuestion, deleteAllQuizQuestions, getQuestionById, updateQuestionByQuestionId} = require('../controllers/questionsController')
 
 router.post('/create-a-quiz', createQuiz)
@@ -16,6 +16,7 @@ router.delete('/delete/:quizId', deleteQuiz)
 
 
 // MOVE THIS LATER (!IMPORTANT) shouldnt be in quiz routes. Api route could be changed for admin route.
+router.get('/getSongById', getSongById)
 router.post('/songUpload', uploadSong)
 router.get('/getListOfSongs', getListOfSongs);
 

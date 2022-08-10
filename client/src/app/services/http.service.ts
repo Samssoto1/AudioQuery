@@ -47,6 +47,9 @@ export class HttpService {
       case 'listOfSongs': {
         return this.http.get(`${this.api}/api/quiz/getListOfSongs`);
       }
+      case 'getSongById': {
+        return this.http.get(`${this.api}/api/quiz/getSongById/${object}`);
+      }
       case 'getRoom': {
         return this.http.get(`${this.api}/api/room/getRoom/${object}`);
       }

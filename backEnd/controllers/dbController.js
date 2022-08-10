@@ -327,6 +327,24 @@ operation.getQuizById = function (schema) {
 	}
 }
 
+operation.getSongById = function (schema) {
+	return async (req, res) => {
+		schema.findById(req.params.songId, function (err, docs) {
+			if (err) {
+				res.status(400).send(err)
+			}
+			else {
+				if (docs === null) {
+					res.status(200).send("No such Item")
+				}
+				else {
+					res.status(200).json(docs)
+				}
+			}
+		});
+	}
+}
+
 operation.getQuestionById = function (schema) {
 	return async (req, res) => {
 		schema.findById(req.params.questionId, function (err, docs) {

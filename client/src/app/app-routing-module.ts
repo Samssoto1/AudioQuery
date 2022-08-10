@@ -1,6 +1,10 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule} from "@angular/router";
+
+// Guards
 import { AuthGuard } from "./auth.guard";
+
+// Components
 import { AdminDashboardComponent } from "./components/admin-dashboard/admin-dashboard.component";
 import { HomeComponent } from "./components/home/home.component";
 import { LoginComponent } from "./components/login/login.component";
@@ -11,8 +15,6 @@ import { CreateAQuizComponent } from "./components/create-a-quiz/create-a-quiz.c
 import { CreateQuizQuestionsComponent } from "./components/create-quiz-questions/create-quiz-questions.component";
 import { QuizDashboardComponent } from "./components/quiz-dashboard/quiz-dashboard.component";
 import { NotFoundPageComponent } from "./components/not-found-page/not-found-page.component";
-
-import { AddSongComponent } from "./components/add-song/add-song.component";
 import { ForgotPasswordComponent } from "./components/forgot-password/forgot-password.component";
 import { ResetPasswordComponent } from "./components/reset-password/reset-password.component";
 import { GameComponent } from "./components/game/game/game.component";

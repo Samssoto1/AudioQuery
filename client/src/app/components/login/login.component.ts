@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-
+import { Subscription, Observable } from 'rxjs';
 
 // Services
 import { AuthService } from 'src/app/services/auth.service';
@@ -12,45 +11,40 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit{
+  public showPassword: boolean = false; // Handles password toggle (Show / not show)
+
   @ViewChild('f') signinForm: NgForm;
-  public showPassword: boolean = false;
   errorMsg: string;
   errorSub: Subscription;
+  error$: Observable<string>;
 
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.errorSub = this.authService.errorMsg.subscribe(errorMsg => {
-      this.errorMsg = errorMsg;
-      console.log(errorMsg);
-    });  
-
-    // give list to quiz (Child) component
-
+    this.error$ = this.authService.errorMsg // Async Pipe setup for response from server if error occurs
   }
 
   onLoginSubmit(){
-    if(this.signinForm.valid){
+    if(this.signinForm.valid){ // If form is valid, send login information to server
       this.authService.loginUser( 
       {
-        email: (this.signinForm.value.email).toLowerCase(),
+        email: (this.signinForm.value.email).toLowerCase(), // lowercase used for unique emails that don't differentiate by capitals.
         password: this.signinForm.value.password
       })
-      // const headers = new HttpHeaders({'Content-Type': 'application/json'})
     }
   }
 
-  public toggleShow(): void {
+  public toggleShow(): void { // Handles toggling to show password
     this.showPassword = !this.showPassword;
   }
 
-  ngOnDestroy(): void {
-    this.errorSub.unsubscribe();
+  forgotPassword(){ // Redirects user to the forgotPasssword page
+    this.router.navigate(['/forgotPassword']);
   }
 
-  forgotPassword(){
-    this.router.navigate(['/forgotPassword']);
+  signUp(){ // Redirects user to the signUp page
+    this.router.navigate(['/register']);
   }
   
 

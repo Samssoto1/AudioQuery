@@ -1,10 +1,9 @@
-<body class="text-center">
-    
-
-    <main class="form-signin">
+<div id="registerContainer">
+<main class="form-signin text-center">
         <form (ngSubmit)="onRegisterSubmit()" #f="ngForm">
-          <!-- <img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
           <h4 class="d-flex justify-content-center">SongSleuth</h4>
+          <div class="card">
+          <div class="card-body">
           <h1 class="h3 mb-3 fw-normal">Register here</h1>
           <div class="form-floating">
             <input ngModel required #username="ngModel" type="text" name="username" class="form-control" id="username" placeholder="First Name">
@@ -31,6 +30,8 @@
           <span class="help-block d-flex justify-content-left m-2" *ngIf="(password.value != passwordConfirmation.value && passwordConfirmation.touched) || (passwordConfirmation.value=='' && passwordConfirmation.touched)">Please enter the same password</span>
           <button class="w-100 btn btn-lg btn-primary" type="submit" [disabled]="!f.valid || ((password.value != passwordConfirmation.value) && passwordConfirmation.touched)">Create Account</button>
           <p class="mt-5 mb-3 text-muted">&copy; 2022–2022</p>
-        </form>
+        </div>
+      </div>
+    </form>
     </main>
-    </body>
+  </div>

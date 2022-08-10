@@ -1,0 +1,13 @@
+img{
+    max-width: 3.5em; height: auto;
+    margin-left: 0.7em;
+}
+
+img:hover{
+    cursor: pointer;
+}
+
+footer{
+    background-color: #333;
+}
+

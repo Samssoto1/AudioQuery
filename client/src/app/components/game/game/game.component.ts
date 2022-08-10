@@ -69,19 +69,28 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
 async quizLoop(length, quizQuestions) {
+
+
   for ( let i=0; i < length;) {
-    
+      await this.httpService.get("getSongById", quizQuestions[i]['songId']).subscribe((res) => {
+        // Creates memory leak rn... fix later
+        console.log('done')
+        console.log(res)
+      });
+
+      
+      console.log(quizQuestions)
       console.log(`Waiting ${i} seconds...`);
       this.currentQuestion = this.quizQuestions[i];
       i++;
       console.log(this.currentQuestion.correctAnswer.correctAnswer)
       console.log(this.selectedAnswer)
-      await this.sleep(i * 10000);
+      await this.sleep(i * 6000);
       if(this.currentQuestion.correctAnswer.correctAnswer == this.selectedAnswer){
         console.log('in here')
               this.points += 10;
-              this.questionCounter = i
-      }
+            }
+            this.questionCounter = i
   }
   console.log('Done');
 }
@@ -111,29 +120,6 @@ async quizLoop(length, quizQuestions) {
       console.log(this.length);
     
       this.quizLoop(this.length, this.quizQuestions)
-    
-
-
-
-      // while(this.questionCounter <= this.length){
-      //   console.log('qqwerwqer')
-      //   this.currentQuestion = this.questionCounter[this.questionCounter];
-      //   setInterval(() => {
-      //     console.log('in timeout')
-      //     this.questionCounter++;
-      //     if(this.currentQuestion.correctAnswer == this.selectedAnswer){
-      //       this.points += 10;
-      //     }
-      //     }, 5000);
-      // }
-
-
-
-    
-        // let audio = new Audio;
-        // audio.src = "https://github.com/Samssoto1/MyAudioAppSongDb/raw/main/Zedd%20feat.%20Foxes%20-%20Clarity%20(Studio%20Acapella).mp3";
-        // audio.play();
-
     })
 
 
