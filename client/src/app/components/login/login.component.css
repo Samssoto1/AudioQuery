@@ -25,6 +25,10 @@ input:focus, input.form-control:focus {
   margin-bottom: 10px;
 }
 
+mat-icon{
+  margin-right: 0.2em;
+}
+
 /* Handles styles for error message */
 .help-block
 {
