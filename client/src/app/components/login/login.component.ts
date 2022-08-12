@@ -15,22 +15,42 @@ export class LoginComponent implements OnInit{
   public showPassword: boolean = false; // Handles password toggle (Show / not show)
 
   @ViewChild('f') signinForm: NgForm;
-  errorMsg: string;
+  error$: Observable<string>; // Uses async pipe to process response from server if necessary and saves error msg in variable (serverErrorMsg)
+
   errorSub: Subscription;
-  error$: Observable<string>;
+
+  hideError: boolean = false;
+
+  error: string;
 
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.error$ = this.authService.errorMsg // Async Pipe setup for response from server if error occurs
+    // this.error$ = this.authService.errorMsg 
+    // Async Pipe setup for response from server if error occurs
   }
 
   onLoginSubmit(){
+    console.log(this.signinForm);
     if(this.signinForm.valid){ // If form is valid, send login information to server
       this.authService.loginUser( 
       {
         email: (this.signinForm.value.email).toLowerCase(), // lowercase used for unique emails that don't differentiate by capitals.
         password: this.signinForm.value.password
+      })
+      this.signinForm.form.markAsPristine()
+      this.signinForm.form.updateValueAndValidity()
+      this.hideError = true;
+      this.errorSub = this.authService.errorMsg.subscribe((res) => {
+        if(res != undefined){
+          this.hideError = false;
+          this.error = res;
+        }
+        else{
+          this.hideError = true;
+        }
+
+        this.errorSub.unsubscribe();
       })
     }
   }

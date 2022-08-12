@@ -132,6 +132,7 @@ operation.loginUser = function (schema) {
 		
 		// return res.header('auth-token', token).send(token);
 		return res.status(200).json({
+			error: null,
 			success: true,
 			token: token,
 			expiresIn: 600, // this is 10m in seconds

@@ -7,6 +7,7 @@ input:focus, input.form-control:focus {
   -webkit-box-shadow: none;
 }
 
+/* Component container */
 #loginContainer{
   display: flex;
   align-items: center;
@@ -14,17 +15,21 @@ input:focus, input.form-control:focus {
   padding-bottom: 10%;
 }
 
+/* Main Styles... */
 .form-signin {
   width: 100%;
-  max-width: 330px;
+  max-width: 30em;
   padding: 15px;
   margin: auto;
 }
 
+/* Adds bottom margin to all inputs */
 .form-signin input[type="password"], .form-signin input[type="text"], .form-signin input[type="email"] {
+  max-height: 55px;
   margin-bottom: 10px;
 }
 
+/* Spaces Icon slightly away from Input label */
 mat-icon{
   margin-right: 0.2em;
 }

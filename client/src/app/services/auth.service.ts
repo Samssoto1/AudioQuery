@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpService } from './http.service';
 import { Subject, take } from 'rxjs';
 import { Router } from '@angular/router';
@@ -14,6 +14,9 @@ export class AuthService {
   private isAuth = false;
   private userId: string;
   private username: string;
+
+  isError = new EventEmitter();
+
   
 
   constructor(private httpService: HttpService, private router: Router) { }
@@ -38,10 +41,11 @@ export class AuthService {
           now.getTime() + expiresInDuration * 1000
         ); // miliseconds again
         this.saveAuthData(this.token, expirationDate, this.userId, this.username);
+        const username = localStorage.getItem('username');
+    
+            this.router.navigate(['/profile', username ]);
+            this.errorMsg.next(data['error']) // pass subject containing error msg to the login component to notify the user
 
-    const username = localStorage.getItem('username');
-
-        this.router.navigate(['/profile', username ]);
       } 
       else{
       this.errorMsg.next(data['error']) // pass subject containing error msg to the login component to notify the user
