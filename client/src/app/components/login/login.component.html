@@ -1,8 +1,8 @@
 <div id="loginContainer">
   <!-- This div has flex on it. Main can't be separated by a div.. -->
-  <main class="form-signin text-center">
+  <main class="formSignin text-center">
     <h4 class="d-flex justify-content-center">SongSleuth</h4>
-    <div class="card">
+    <div class="card bg-light">
       <div class="card-body">
         <h1 class="h3 mb-3 fw-normal">Sign in</h1>
         <form (ngSubmit)="onLoginSubmit()" #f="ngForm">
@@ -17,7 +17,7 @@
             </label>
           </div>
 
-          <!-- Email error message -->
+          <!-- Email Error Message -->
           <span class="help-block d-flex justify-content-left m-2" *ngIf="!email.valid && email.touched">Please enter
             your email!
           </span>
@@ -34,25 +34,25 @@
             </mat-icon>
           </div>
 
-          <!-- Password error message -->
+          <!-- Password Error Message -->
           <span class="help-block d-flex justify-content-left m-2" *ngIf="!password.valid && password.touched">Please
             enter your password!</span>
 
-            <!-- Server error response message-->
+            <!-- Server Error Response Message-->
           <!-- <div class="alert alert-danger" *ngIf="(!email.dirty && !password.dirty) && !this.successfulLogin && (error$ | async); let error"> -->
           <div class="alert alert-danger" *ngIf="(!email.dirty && !password.dirty) && !this.hideError && error">
             {{error}}
           </div>
 
-          <!-- Reset password btn -->
+          <!-- Reset Password Btn -->
           <div id="reset-password-div">
             <span (click)="forgotPassword()" id="reset-password-btn">Forgot Password?</span>
           </div>
 
-          <!-- Sign in btn -->
+          <!-- Sign In Btn -->
           <button class="w-100 btn btn-lg btn-primary" [disabled]="!f.valid" type="submit">Sign in</button>
 
-          <!-- Sign up btn -->
+          <!-- Sign Up Btn -->
           <div id="signUpDiv">
             <span>Don't have an account? <span id="signUpBtn" (click)="signUp()">Sign Up</span></span>
           </div>

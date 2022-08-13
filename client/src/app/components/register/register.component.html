@@ -1,37 +1,80 @@
 <div id="registerContainer">
-<main class="form-signin text-center">
-        <form (ngSubmit)="onRegisterSubmit()" #f="ngForm">
-          <h4 class="d-flex justify-content-center">SongSleuth</h4>
-          <div class="card">
-          <div class="card-body">
+  <!-- This div has flex on it. Main can't be separated by a div.. -->
+  <main class="formRegister text-center">
+    <form (ngSubmit)="onRegisterSubmit()" #f="ngForm">
+      <h4 class="d-flex justify-content-center">SongSleuth</h4>
+      <div class="card bg-light">
+        <div class="card-body">
           <h1 class="h3 mb-3 fw-normal">Register here</h1>
+
+          <!-- Username Input -->
           <div class="form-floating">
-            <input ngModel required #username="ngModel" type="text" name="username" class="form-control" id="username" placeholder="First Name">
-            <label for="username">Username</label>
+            <input ngModel required #username="ngModel" type="text" name="username" class="form-control" id="username"
+              placeholder="First Name">
+            <label class="d-flex" for="username">
+              <mat-icon>account_box</mat-icon>
+              Username</label>
           </div>
-          <span class="help-block d-flex justify-content-left m-2" *ngIf="!username.valid && username.touched">Please enter your username!</span>
+
+          <!-- Username Error Message -->
+          <span class="help-block d-flex justify-content-left m-2" *ngIf="!username.valid && username.touched">Please
+            enter your username!
+          </span>
+
+          <!-- Email Input -->
           <div class="form-floating">
-            <input ngModel required email #email="ngModel" type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-            <label for="floatingInput">Email address</label>
+            <input ngModel required name="email" #email="ngModel" type="email" class="form-control" id="floatingInput"
+              placeholder=" ">
+
+            <label class="d-flex" for="floatingInput">
+              <mat-icon> email </mat-icon>Email address
+            </label>
           </div>
-          <span class="help-block d-flex justify-content-left m-2" *ngIf="!email.valid && email.touched">Please enter a valid email!</span>
+
+          <!-- Email Error Message -->
+          <span class="help-block d-flex justify-content-left m-2" *ngIf="!email.valid && email.touched">Please enter a
+            valid email!
+          </span>
+
+          <!-- Password Input -->
           <div class="form-floating">
-            <input ngModel required #password="ngModel" [type]="showPassword ? 'text' : 'password'" type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
-            <label for="floatingPassword">Password</label>
+            <input ngModel required [type]="showPassword ? 'text' : 'password'" name="password" #password="ngModel"
+              type="password" class="form-control" id="floatingPassword" placeholder=" ">
+            <label for="floatingPassword" class="d-flex">
+              <mat-icon> vpn_key</mat-icon> Password
+            </label>
             <mat-icon id="eye-icon" matSuffix (click)="toggleShow()">
               {{showPassword?'visibility_off':'visibility'}}
             </mat-icon>
           </div>
-          <span class="help-block d-flex justify-content-left m-2" *ngIf="!password.valid && password.touched">Please enter a valid password</span>
+
+          <!-- Password Error Message -->
+          <span class="help-block d-flex justify-content-left m-2" *ngIf="!password.valid && password.touched">Please
+            enter a valid password
+          </span>
+
+          <!-- Password Confirmation Input -->
           <div class="form-floating">
-            <input ngModel required #passwordConfirmation="ngModel" type="password" name="passwordConfirmation" class="form-control" id="floatingPasswordConfirmation" placeholder="Confirm Password">
-            <label for="floatingPassword">Confirm Password</label>
+            <input ngModel required #passwordConfirmation="ngModel" type="password" name="passwordConfirmation"
+              class="form-control" id="floatingPasswordConfirmation" placeholder="Confirm Password">
+            <label class="d-flex" for="floatingPassword">
+              <mat-icon>check_circle</mat-icon>
+              Confirm Password</label>
           </div>
-          <span class="help-block d-flex justify-content-left m-2" *ngIf="(password.value != passwordConfirmation.value && passwordConfirmation.touched) || (passwordConfirmation.value=='' && passwordConfirmation.touched)">Please enter the same password</span>
-          <button class="w-100 btn btn-lg btn-primary" type="submit" [disabled]="!f.valid || ((password.value != passwordConfirmation.value) && passwordConfirmation.touched)">Create Account</button>
+
+          <!-- Password Confirmation Error Message -->
+          <span class="help-block d-flex justify-content-left m-2"
+            *ngIf="(password.value != passwordConfirmation.value && passwordConfirmation.touched) || (passwordConfirmation.value=='' && passwordConfirmation.touched)">Please
+            enter the same password
+          </span>
+
+          <!-- Sign Up Btn -->
+          <button class="w-100 btn btn-lg btn-primary" type="submit"
+            [disabled]="!f.valid || ((password.value != passwordConfirmation.value) && passwordConfirmation.touched)">Create
+            Account</button>
           <p class="mt-5 mb-3 text-muted">&copy; 2022–2022</p>
         </div>
       </div>
     </form>
-    </main>
-  </div>
+  </main>
+</div>

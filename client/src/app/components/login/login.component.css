@@ -16,7 +16,7 @@ input:focus, input.form-control:focus {
 }
 
 /* Main Styles... */
-.form-signin {
+.formSignin {
   width: 100%;
   max-width: 30em;
   padding: 15px;
@@ -24,7 +24,7 @@ input:focus, input.form-control:focus {
 }
 
 /* Adds bottom margin to all inputs */
-.form-signin input[type="password"], .form-signin input[type="text"], .form-signin input[type="email"] {
+.formSignin input[type="password"], .formSignin input[type="text"], .formSignin input[type="email"] {
   max-height: 55px;
   margin-bottom: 10px;
 }
