@@ -1,23 +1,10 @@
 //Initialize object that will have the operation functions.
 
 const auth = require('./auth.js'); // Needed for hashing operations
-const nodemailer = require("nodemailer");
-
+const nodemailer = require("nodemailer"); // Needed for sending an email (Reset Password)
+const validation = require('./validation');
 
 operation = {};
-//Basic getAll
-operation.toGetAll = function (schema) {
-	return (req, res) => {
-		// our null can be used a a security params
-		schema.find(null, (err, data) => {
-			if (err) {
-				res.status(500).send(err)
-			} else {
-				res.status(200).send(data);
-			}
-		});
-	}
-}
 
 operation.getUserByUsername = function (schema) {
 	return async (req, res) => {
@@ -39,8 +26,7 @@ operation.getUserByUsername = function (schema) {
 	}
 }
 
-// Get one specific Item in the database
-operation.toGet = function (schema) {
+operation.toGet = function (schema) { // Get one specific Item in the database
 	return async (req, res) => {
 		schema.findById(req.params.id, function (err, docs) {
 			if (err) {
@@ -58,25 +44,7 @@ operation.toGet = function (schema) {
 	}
 }
 
-// Create an object in the database
-operation.toCreate = function (schema) {
-	return async (req, res) => {
-		const userInfo = req.body;
-		console.log(userInfo);
-		userInfo.password = await auth.hashPassword(userInfo.password);
-
-		schema.create(userInfo, null, (err, data) => {
-			if (err) {
-				res.status(500).send(err)
-			} else {
-				res.status(201).send(data);
-			}
-		})
-	}
-}
-
-//Update one specific item in the database
-operation.toUpdate = function (schema) {
+operation.toUpdate = function (schema) { //Update one specific item in the database
 	return async (req, res) => {
 		const id = req.params.id;
 		schema.findByIdAndUpdate(req.params.id, req.body, function (err, docs) {
@@ -90,8 +58,7 @@ operation.toUpdate = function (schema) {
 	}
 }
 
-// Delete a specifc Item in the database
-operation.toDelete = function (schema) {
+operation.toDelete = function (schema) { // Delete a specific item in the database
 	return async (req, res) => {
 		schema.findByIdAndDelete(req.params.id, function (err, docs) {
 			if (err) {
@@ -110,29 +77,76 @@ operation.toDelete = function (schema) {
 	}
 }
 
-operation.loginUser = function (schema) {
+// User Methods
+
+operation.createUser = function (schema) { // Create an object in the database
 	return async (req, res) => {
-		console.log('in login')
-		const {email, password} = req.body; // store login form input
+		let {username, email, password} = req.body; // store register form input values
 
-		const user = await schema.findOne({ email }).lean() // grab that users(email) data from the database
+		// Handle format validation here
+		let userValidation = validation.createUserValidation({username, email, password});
 
-		// validation to see if username / email exists in db
-		if(!user){
-			return res.json({status: 'error', error: 'Invalid Username or Password'})
+		if(userValidation.status != "ok"){ // If format validation fails respond with errors
+			return res.status(400).json({status: userValidation.status, serverResponseMsg: userValidation.serverResponseMsg})
 		}
 
-		if (await auth.compareHash(password, user.password) == false){
-			// return res.json({status: 'error', error: "Invalid Username or Password"})
-			return res.json({status: 'error', error: "Invalid Username or Password"})
+		// Check if user or email is used in db
 
+		const infoByUser = await schema.findOne({ username }).lean() // checking to see if inputted username pulls any data from db
+		const infoByEmail = await schema.findOne({ email }).lean() // checking to see if inputted email pulls any data from db
+
+		if(infoByUser){ // validation to see if username already exists in db
+			return res.status(200).json({status: "ok", serverResponseMsg: "This username has already been used. Please use a new username and try again."})
+		}
+
+		if(infoByEmail){ // validation to see if email already exists in db
+			return res.status(200).json({status: "ok", serverResponseMsg: "This email has already been used. Please use a new email and try again."})
+		}
+
+		password = await auth.hashPassword(password); // hash password
+
+		schema.create({username, email, password}, (err, data) => {
+			if (err) {
+				return res.status(500).json({status: 'failed', serverResponseMsg: "The server was unable to create an account. Please contact administrators regarding this issue"});
+			} else {
+				res.status(201).json({status:'success'})
+			}
+		})
+	}
+}
+
+// User Auth Methods
+
+operation.loginUser = function (schema) { // Login a user
+	return async (req, res) => {
+		const {email, password} = req.body; // store login from form inputs
+
+		// Handle format validation here
+
+		let userValidation = validation.loginUserValidation({email, password});
+
+		if(userValidation.status != "ok"){ // If format validation fails respond with errors
+			return res.status(200).json({status: userValidation.status, serverResponseMsg: userValidation.serverResponseMsg})
+		}
+
+		const user = await schema.findOne({ email }).lean() // look for matching email in db to pull up user data
+
+		if(!user){ 	// If user doesn't exist in database... return error
+			return res.json({status: 'error', serverResponseMsg: "Couldn't find your Audio Query account."})
+		}
+
+		// Hash user provided password from input and compare with hash from db
+		if (await auth.compareHash(password, user.password) == false){ // Hash password provided in form input against hashed password in database
+			return res.status(200).json({status: 'error', serverResponseMsg: "Invalid Username or Password"})
 		}
 		
-		const token = auth.jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '10m' })
+		// If this code has been reached... user has an account and has correctly provided their information.
+
+		const token = auth.jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '10m' }) //Provides their JWT
 		
-		// return res.header('auth-token', token).send(token);
+		// let headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.token });
+
 		return res.status(200).json({
-			error: null,
 			success: true,
 			token: token,
 			expiresIn: 600, // this is 10m in seconds
@@ -144,258 +158,10 @@ operation.loginUser = function (schema) {
 	}
 }
 
-// QUIZ STUFF
-
-// Create an object in the database
-operation.createQuiz = function (schema) {
+operation.forgotPassword = function (schema) { // Emails user a reset password link
 	return async (req, res) => {
-		const quizInfo = req.body;
-
-		schema.create(quizInfo, null, (err, data) => {
-			if (err) {
-				res.status(500).send(err)
-			} else {
-				res.status(201).send(data);
-			}
-		})
-	}
-}
-
-operation.getQuizzesForUser = function (schema) {
-	return async (req, res) => {
-		schema.find({authorId: req.params.userId}, function (err, docs) {
-			if (err) {
-				res.status(400).send(err)
-			}
-			else {
-				console.log(req.params.userId);
-				console.log('quiz info for user')
-				console.log(docs);
-				if (docs === null) {	
-					res.status(200).send("No such Item")
-				}
-				else {
-					res.status(200).json(docs)
-				}
-			}
-		});
-	}
-}
-
-operation.deleteQuiz = function (schema) {
-	return async (req, res) => {
-		console.log('deleting quiz')
-		schema.findByIdAndDelete(req.params.quizId, function (err, docs) {
-			if (err) {
-				res.status(400).send("You have error")
-			}
-			else {
-				if (docs === null) {
-					res.status(200).send("Already Deleted")
-				}
-				else {
-					res.status(200).send(docs)
-					console.log("Deleted : ", docs);
-				}
-			}
-		});
-	}
-}
-
-operation.getQuizQuestions = function (schema) {
-	return async (req, res) => {
-		console.log('reached');
-		console.log(req.params.quizId);
-		schema.find({quizId: req.params.quizId}, function (err, docs) {
-			console.log(req.params.quizId)
-			if (err) {
-				res.status(400).send(err)
-			}
-			else {
-				if (docs === null) {	
-					res.status(200).send("No such Item")
-				}
-				else {
-					res.status(200).json(docs)
-				}
-			}
-		});
-	}
-}
-
-// createQuestion
-
-operation.createQuestion = function (schema) {
-	return async (req, res) => {
-		const questionInfo = req.body;
-		console.log('in questionInfo')
-		console.log(questionInfo)
-
-		schema.create(questionInfo, null, (err, data) => {
-			if (err) {
-				res.status(500).send(err)
-			} else {
-				res.status(201).send(data);
-			}
-		})
-	}
-}
-
-operation.deleteQuizQuestion = function (schema) {
-	return async (req, res) => {
-		schema.findByIdAndDelete(req.params.questionId, function (err, docs) {
-			if (err) {
-				res.status(400).send("You have error")
-			}
-			else {
-				if (docs === null) {
-					res.status(200).send("Already Deleted")
-				}
-				else {
-					res.status(200).send(docs)
-					console.log("Deleted : ", docs);
-				}
-			}
-		});
-	}
-}
-
-operation.deleteAllQuizQuestions = function (schema) {
-	return async (req, res) => {
-		console.log('deleting quiz QUESTIONS')
-		schema.deleteMany({quizId: req.params.quizId}, function (err, docs) {
-			if (err) {
-				res.status(400).send("You have error")
-			}
-			else {
-				if (docs === null) {
-					res.status(200).send("Already Deleted")
-				}
-				else {
-					res.status(200).send(docs)
-					console.log("Deleted : ", docs);
-				}
-			}
-		});
-	}
-}
-
-// upload song (move this later)
-operation.uploadSong = function (schema) {
-	return async (req, res) => {
-		const songInfo = req.body;
-
-		schema.create(songInfo, null, (err, data) => {
-			if (err) {
-				res.status(500).send(err)
-			} else {
-				res.status(201).send(data);
-			}
-		})
-	}
-}
-
-// get list of songs
-
-operation.getListOfSongs = function (schema) {
-	return (req, res) => {
-		// our null can be used a a security params
-		schema.find(null, (err, data) => {
-			if (err) {
-				res.status(500).send(err)
-			} else {
-				res.status(200).send(data);
-			}
-		});
-	}
-}
-
-operation.getQuizById = function (schema) {
-	return async (req, res) => {
-		schema.findById(req.params.quizId, function (err, docs) {
-			if (err) {
-				res.status(400).send(err)
-			}
-			else {
-				if (docs === null) {
-					res.status(200).send("No such Item")
-				}
-				else {
-					res.status(200).json(docs)
-				}
-			}
-		});
-	}
-}
-
-operation.getSongById = function (schema) {
-	return async (req, res) => {
-		schema.findById(req.params.songId, function (err, docs) {
-			if (err) {
-				res.status(400).send(err)
-			}
-			else {
-				if (docs === null) {
-					res.status(200).send("No such Item")
-				}
-				else {
-					res.status(200).json(docs)
-				}
-			}
-		});
-	}
-}
-
-operation.getQuestionById = function (schema) {
-	return async (req, res) => {
-		schema.findById(req.params.questionId, function (err, docs) {
-			if (err) {
-				res.status(400).send(err)
-			}
-			else {
-				if (docs === null) {
-					res.status(200).send("No such Item")
-				}
-				else {
-					res.status(200).json(docs)
-				}
-			}
-		});
-	}
-}
-
-// Update Question by Id
-
-operation.updateQuestionByQuestionId = function (schema) {
-	return async (req, res) => {
-		let {answerOne, answerTwo, answerThree, answerFour, correctAnswer, songId, songTitle, questionId} = req.body;
-
-		schema.findByIdAndUpdate(questionId, {answerOne: answerOne, answerTwo: answerTwo, answerThree: answerThree, answerFour: answerFour, correctAnswer: correctAnswer, songId: songId, songTitle: songTitle}, function (err, docs) {
-			if (err) {
-				res.status(400).send(err)
-			}
-			else {
-				if (docs === null) {
-					res.status(200).send("No such Item")
-					console.log('here')
-				}
-				else {
-					res.status(201).json(docs)
-				}
-			}
-		});
-	}
-}
-
-
-
-operation.forgotPassword = function (schema) {
-	return async (req, res) => {
-		// const { email } = req.body;
-		const {email} = req.body;
-		console.log(email);
-
-
+		const {email} = req.body; // Store form data
+		
 		const user = await schema.findOne({ email }).lean() // grab that users(email) data from the database
 		console.log(user);
 
@@ -460,7 +226,7 @@ operation.forgotPassword = function (schema) {
 	}
 }
 
-operation.resetPassword = function (schema) {
+operation.resetPassword = function (schema) { // Handles resetting a password
 	return async (req, res) => {
 		let {userId, password, resetPasswordToken} = req.body;
 		console.log(userId);
@@ -489,6 +255,226 @@ operation.resetPassword = function (schema) {
 	}
 }
 
+/// Quiz Methods
+
+operation.createQuiz = function (schema) {
+	return async (req, res) => {
+		const quizInfo = req.body;
+
+		schema.create(quizInfo, (err, data) => {
+			if (err) {
+				res.status(500).send(err)
+			} else {
+				res.status(201).send(data);
+			}
+		})
+	}
+}
+
+operation.getQuizzesForUser = function (schema) {
+	return async (req, res) => {
+		schema.find({authorId: req.params.userId}, function (err, docs) {
+			if (err) {
+				res.status(400).send(err)
+			}
+			else {
+				console.log(req.params.userId);
+				console.log('quiz info for user')
+				console.log(docs);
+				if (docs === null) {	
+					res.status(200).send("No such Item")
+				}
+				else {
+					res.status(200).json(docs)
+				}
+			}
+		});
+	}
+}
+
+operation.deleteQuiz = function (schema) {
+	return async (req, res) => {
+		console.log('deleting quiz')
+		schema.findByIdAndDelete(req.params.quizId, function (err, docs) {
+			if (err) {
+				res.status(400).send("You have error")
+			}
+			else {
+				if (docs === null) {
+					res.status(200).send("Already Deleted")
+				}
+				else {
+					res.status(200).send(docs)
+					console.log("Deleted : ", docs);
+				}
+			}
+		});
+	}
+}
+
+operation.getQuizQuestions = function (schema) {	
+	return async (req, res) => {
+		schema.find({quizId: req.params.quizId}, function (err, docs) {
+			if (err) {
+				res.status(400).send(err)
+			}
+			else {
+				if (docs === null) {	
+					res.status(200).send("No such Item")
+				}
+				else {
+					res.status(200).json(docs)
+				}
+			}
+		});
+	}
+}
+
+operation.createQuestion = function (schema) {
+	return async (req, res) => {
+		const questionInfo = req.body;
+		console.log('in questionInfo')
+		console.log(questionInfo)
+
+		schema.create(questionInfo, (err, data) => {
+			if (err) {
+				res.status(500).send(err)
+			} else {
+				res.status(201).send(data);
+			}
+		})
+	}
+}
+
+operation.deleteQuizQuestion = function (schema) {
+	return async (req, res) => {
+		schema.findByIdAndDelete(req.params.questionId, function (err, docs) {
+			if (err) {
+				res.status(400).send("You have error")
+			}
+			else {
+				if (docs === null) {
+					res.status(200).send("Already Deleted")
+				}
+				else {
+					res.status(200).send(docs)
+					console.log("Deleted : ", docs);
+				}
+			}
+		});
+	}
+}
+
+operation.deleteAllQuizQuestions = function (schema) {
+	return async (req, res) => {
+		console.log('deleting quiz QUESTIONS')
+		schema.deleteMany({quizId: req.params.quizId}, function (err, docs) {
+			if (err) {
+				res.status(400).send("You have error")
+			}
+			else {
+				if (docs === null) {
+					res.status(200).send("Already Deleted")
+				}
+				else {
+					res.status(200).send(docs)
+					console.log("Deleted : ", docs);
+				}
+			}
+		});
+	}
+}
+
+operation.getQuizById = function (schema) {
+	return async (req, res) => {
+		schema.findById(req.params.quizId, function (err, docs) {
+			if (err) {
+				res.status(400).send(err)
+			}
+			else {
+				if (docs === null) {
+					res.status(200).send("No such Item")
+				}
+				else {
+					res.status(200).json(docs)
+				}
+			}
+		});
+	}
+}
+
+operation.getQuestionById = function (schema) {
+	return async (req, res) => {
+		schema.findById(req.params.questionId, function (err, docs) {
+			if (err) {
+				res.status(400).send(err)
+			}
+			else {
+				if (docs === null) {
+					res.status(200).send("No such Item")
+				}
+				else {
+					res.status(200).json(docs)
+				}
+			}
+		});
+	}
+}
+
+operation.updateQuestionByQuestionId = function (schema) {
+	return async (req, res) => {
+		let {answerOne, answerTwo, answerThree, answerFour, correctAnswer, songId, songTitle, questionId} = req.body;
+
+		schema.findByIdAndUpdate(questionId, {answerOne: answerOne, answerTwo: answerTwo, answerThree: answerThree, answerFour: answerFour, correctAnswer: correctAnswer, songId: songId, songTitle: songTitle}, function (err, docs) {
+			if (err) {
+				res.status(400).send(err)
+			}
+			else {
+				if (docs === null) {
+					res.status(200).send("No such Item")
+					console.log('here')
+				}
+				else {
+					res.status(201).json(docs)
+				}
+			}
+		});
+	}
+}
+
+// Song Methods 
+
+operation.getListOfSongs = function (schema) {
+	return (req, res) => {
+		// our null can be used a a security params
+		schema.find(null, (err, data) => {
+			if (err) {
+				res.status(500).send(err)
+			} else {
+				res.status(200).send(data);
+			}
+		});
+	}
+}
+
+operation.getSongById = function (schema) {
+	return async (req, res) => {
+		schema.findById(req.params.songId, function (err, docs) {
+			if (err) {
+				res.status(400).send(err)
+			}
+			else {
+				if (docs === null) {
+					res.status(200).send("No such Item")
+				}
+				else {
+					res.status(200).json(docs)
+				}
+			}
+		});
+	}
+}
+
 // Create an object in the database
 operation.createRoom = function (schema) {
 	return async (req, res) => {
@@ -498,7 +484,6 @@ operation.createRoom = function (schema) {
 			if (err) {
 				res.status(500).send(err)
 			} else {
-				// res.status(201).send(data._id);
 				res.status(201).send(data._id);
 			}
 		})

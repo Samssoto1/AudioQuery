@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription, Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 // Services
 import { AuthService } from 'src/app/services/auth.service';
@@ -17,8 +17,6 @@ export class LoginComponent implements OnInit{
   @ViewChild('f') signinForm: NgForm;
   error$: Observable<string>; // Uses async pipe to process response from server if necessary and saves error msg in variable (serverErrorMsg)
 
-  errorSub: Subscription;
-
   hideError: boolean = false;
 
   error: string;
@@ -31,7 +29,6 @@ export class LoginComponent implements OnInit{
   }
 
   onLoginSubmit(){
-    console.log(this.signinForm);
     if(this.signinForm.valid){ // If form is valid, send login information to server
       this.authService.loginUser( 
       {
@@ -41,7 +38,7 @@ export class LoginComponent implements OnInit{
       this.signinForm.form.markAsPristine()
       this.signinForm.form.updateValueAndValidity()
       this.hideError = true;
-      this.errorSub = this.authService.errorMsg.subscribe((res) => {
+      this.authService.serverResponseMsg.pipe(take(1)).subscribe((res) => {
         if(res != undefined){
           this.hideError = false;
           this.error = res;
@@ -49,8 +46,6 @@ export class LoginComponent implements OnInit{
         else{
           this.hideError = true;
         }
-
-        this.errorSub.unsubscribe();
       })
     }
   }

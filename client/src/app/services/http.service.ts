@@ -28,10 +28,9 @@ export class HttpService {
         });
         break;
       }
-        case 'profile':
-          {
-          return this.http.get(`${this.api}/api/users/singleuserByUsername/${object}`);
-        }
+      case 'profile':{
+        return this.http.get(`${this.api}/api/users/singleuserByUsername/${object}`);
+      }
       case 'quizzesForUser' : {
         return this.http.get(`${this.api}/api/quiz/quizzesForUser/${object}`);
       }

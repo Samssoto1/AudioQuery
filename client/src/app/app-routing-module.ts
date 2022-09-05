@@ -11,7 +11,7 @@ import { LoginComponent } from "./components/login/login.component";
 import { PinComponent } from "./components/game/game/pin/pin.component";
 import { ProfileComponent } from "./components/profile/profile.component";
 import { RegisterComponent } from "./components/register/register.component";
-import { CreateAQuizComponent } from "./components/create-a-quiz/create-a-quiz.component";
+import { CreateQuizComponent } from "./components/createQuiz/createQuiz.component";
 import { CreateQuizQuestionsComponent } from "./components/create-quiz-questions/create-quiz-questions.component";
 import { QuizDashboardComponent } from "./components/quiz-dashboard/quiz-dashboard.component";
 import { NotFoundPageComponent } from "./components/not-found-page/not-found-page.component";
@@ -19,15 +19,17 @@ import { ForgotPasswordComponent } from "./components/forgot-password/forgot-pas
 import { ResetPasswordComponent } from "./components/reset-password/reset-password.component";
 import { GameComponent } from "./components/game/game/game.component";
 import { PromptForNicknameComponent } from "./components/game/prompt-for-nickname/prompt-for-nickname.component";
+import { QuestionSuiteComponent } from "./components/question-suite/question-suite.component";
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
+  {path: 'questionSuite', component: QuestionSuiteComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
   {path: 'forgotPassword', component: ForgotPasswordComponent},
   {path: 'resetPassword/:userId/:tokenId', component: ResetPasswordComponent},
   {path: 'quiz', children: [
-    {path: 'create-a-quiz', component: CreateAQuizComponent, pathMatch: 'full', canActivate: [AuthGuard]},
+    {path: 'createQuiz', component: CreateQuizComponent, pathMatch: 'full', canActivate: [AuthGuard]},
     {path: 'create-a-quiz-question/:quizId', component: CreateQuizQuestionsComponent, canActivate: [AuthGuard]},
     {path: 'edit-a-quiz-question/:questionId', component: CreateQuizQuestionsComponent, canActivate: [AuthGuard]},
     {path: 'dashboard/:quizId', component: QuizDashboardComponent, pathMatch: 'full', canActivate: [AuthGuard]}

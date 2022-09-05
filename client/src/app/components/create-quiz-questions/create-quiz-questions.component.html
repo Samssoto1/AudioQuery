@@ -1,12 +1,11 @@
-<body class="text-center">    
-    <main class="form-signin">
+<main class="form-signin">
       <h1>{{selectedSongData?.title}}</h1>
-        <!-- <form (ngSubmit)="onCreateQuizQuestion()" #f="ngForm"> -->
         <form  #f="ngForm">
           <div class="row">
           
           <!-- Pick a song -->
           <app-show-songs-button (selectedSongDataEvent)="getSelectedSongData($event)"></app-show-songs-button>
+          
           <!-- Validation -->
           <span class="help-block d-flex justify-content-left m-2" *ngIf="selectedSongData == undefined">A song is required!</span>
           
@@ -19,12 +18,12 @@
             <span class="help-block d-flex justify-content-left m-2" *ngIf="!answerOneModel.valid && answerOneModel.touched">This field is required!</span>
           </div>
           
-           <!-- Answer2 -->
-           <div class="col-6">
-             <label for="answerTwo">Answer 2</label>
+          <!-- Answer2 -->
+          <div class="col-6">
+            <label for="answerTwo">Answer 2</label>
             <span class="requiredTag">(required)</span>
-             <input [ngModel]="answerTwo" #answerTwoModel="ngModel" required type="text" name="answerTwo" class="form-control" id="answerTwo">
-             <!-- Validation -->
+            <input [ngModel]="answerTwo" #answerTwoModel="ngModel" required type="text" name="answerTwo" class="form-control" id="answerTwo">
+            <!-- Validation -->
              <span class="help-block d-flex justify-content-left m-2" *ngIf="!answerTwoModel.valid && answerTwoModel.touched">This field is required!</span>
           </div>
 
@@ -63,4 +62,3 @@
         </div>
         </form>
     </main>
-    </body>

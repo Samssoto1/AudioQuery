@@ -48,7 +48,6 @@ export class QuizDashboardComponent implements OnInit, OnDestroy {
     );
   }
 
-
   navigateToQuestion(questionId: string){
     this.router.navigate(["/quiz/edit-a-quiz-question", questionId]);
   }

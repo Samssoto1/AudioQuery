@@ -10,7 +10,6 @@ const getQuizById = operation.getQuizById(quizSchema);
 const songSchema = require("../model/songSchema"); // move this later
 
 const getSongById = operation.getSongById(songSchema);
-const uploadSong = operation.uploadSong(songSchema); // move this later
 const getListOfSongs = operation.getListOfSongs(songSchema);
 
 module.exports = {
@@ -18,7 +17,6 @@ module.exports = {
     getQuizzesForUser,
     deleteQuiz,
     getQuizQuestions,
-    uploadSong,
     getListOfSongs,
     getSongById,
     getQuizById

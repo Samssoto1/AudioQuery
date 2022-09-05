@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header.component';
@@ -25,7 +26,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { QuizComponent } from './components/quiz/quiz.component';
-import { CreateAQuizComponent } from './components/create-a-quiz/create-a-quiz.component';
+import { CreateQuizComponent } from './components/createQuiz/createQuiz.component';
 import { CreateQuizQuestionsComponent } from './components/create-quiz-questions/create-quiz-questions.component';
 import { SongListComponent } from './components/song-list/song-list.component';
 import { SongItemComponent } from './components/song-item/song-item.component';
@@ -48,6 +49,7 @@ import { ReloadQuizDirective } from './directives/reload-quiz.directive';
 import { QuestionListComponent } from './components/question-list/question-list.component';
 import { QuestionComponent } from './components/question/question.component';
 import { GameAnswerComponent } from './components/game/game-answer/game-answer.component';
+import { QuestionSuiteComponent } from './components/question-suite/question-suite.component';
 
 const config: SocketIoConfig = {
   url: environment.socketUrl, //socket server url;
@@ -69,7 +71,7 @@ const config: SocketIoConfig = {
     PinComponent,
     AdminDashboardComponent,
     QuizComponent,
-    CreateAQuizComponent,
+    CreateQuizComponent,
     CreateQuizQuestionsComponent,
     SongListComponent,
     SongItemComponent,
@@ -88,7 +90,8 @@ const config: SocketIoConfig = {
     ReloadQuizDirective,
     QuestionListComponent,
     QuestionComponent,
-    GameAnswerComponent
+    GameAnswerComponent,
+    QuestionSuiteComponent
   ],
   imports: [
     BrowserModule,
@@ -103,6 +106,7 @@ const config: SocketIoConfig = {
     MatDialogModule,
     MatTableModule,
     MatPaginatorModule,
+    ReactiveFormsModule,
     SocketIoModule.forRoot(config)
 
   ],

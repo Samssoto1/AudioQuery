@@ -1,6 +1,7 @@
-import { Component, OnInit, EventEmitter} from '@angular/core';
+import { Component, OnInit, EventEmitter, OnDestroy} from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router} from '@angular/router';
+import { Subscription, concatMap } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -12,20 +13,27 @@ export class ProfileComponent implements OnInit {
   username: string;
   registrationDate;
   isLoading: boolean = false;
-  // list_of_quizzes: Array<any>; // any for now (implement quiz model later)
   list_of_quizzes: any;
   imgUrl: string = "https://www.listchallenges.com/f/lists/57789dce-7a91-4176-9733-cdfdc7d6d350.jpg"
   isGuest: boolean;
 
+  subscription: Subscription;
+
   constructor(private httpService: HttpService, private activatedRoute: ActivatedRoute, private router: Router ) {}
 
+  // ngOnInit(){
+  //   this.subscription = this.activatedRoute.paramMap.pipe(
+  //     concatMap(res => this.httpService.get('profile', this.username))
+
+  //   ).subscribe()
+  // }
+
   ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+    this.subscription = this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
       this.username = params['params']['username'];
 
       this.httpService.get('profile', this.username).subscribe((data) => {
           this.isLoading = false;
-          console.log(data)
           this.userId = data[0]['_id']
           this.username = data[0]['username'];
           this.registrationDate = data[0]['registrationDate'];
@@ -46,24 +54,12 @@ export class ProfileComponent implements OnInit {
           catch{
             this.isGuest = true;
           }
-
         });
-
     });
-    // this.isLoading = true;
-    // const userId = localStorage.getItem('userId');
-    // this.httpService.get('profile', userId).subscribe((data) => {
-    //   this.isLoading = false;
-    //   this.username = data['username'];
-    //   this.registrationDate = data['registrationDate'];
-    //   this.list_of_quizzes = data['quizzes'];
-    //   console.log(this.list_of_quizzes);
-    // });
-    
   }
 
-  createAQuiz(){
-    this.router.navigate(['/quiz/create-a-quiz'])
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
   }
 
 }

@@ -39,7 +39,7 @@ export class QuizListComponent implements OnInit {
   }
 
   createAQuiz(){
-    this.router.navigate(['/quiz/create-a-quiz'])
+    this.router.navigate(['/quiz/createQuiz'])
   }
 
   ngOnDestroy(){

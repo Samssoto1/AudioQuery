@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild, Input} from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpService } from 'src/app/services/http.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { Question } from 'src/app/model/question.model';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 @Component({
@@ -99,12 +98,14 @@ export class CreateQuizQuestionsComponent implements OnInit {
         console.log(this.correctAnswerNum);
         console.log(this.correctAnswerText);
 
+      // Create
       this.httpService.post('create-a-question', {
         // questionTitle: this.createAQuizQuestionForm.value.questionTitle, 
-        answerOne: this.createAQuizQuestionForm.value.answerOne,
-        answerTwo: this.createAQuizQuestionForm.value.answerTwo,
-        answerThree: this.createAQuizQuestionForm.value.answerThree,
-        answerFour: this.createAQuizQuestionForm.value.answerFour,
+        answers: [this.createAQuizQuestionForm.value.answerOne, this.createAQuizQuestionForm.value.answerTwo, this.createAQuizQuestionForm.value.answerThree, this.createAQuizQuestionForm.value.answerFour],
+        // answerOne: this.createAQuizQuestionForm.value.answerOne,
+        // answerTwo: this.createAQuizQuestionForm.value.answerTwo,
+        // answerThree: this.createAQuizQuestionForm.value.answerThree,
+        // answerFour: this.createAQuizQuestionForm.value.answerFour,
         correctAnswer: {correctAnswerNum: this.correctAnswerNum, correctAnswerText: this.correctAnswerText},
         quizId: this.quizId,
         songId: this.selectedSongData['_id'],
@@ -140,12 +141,14 @@ export class CreateQuizQuestionsComponent implements OnInit {
           }
         }
 
+        // Update
         this.httpService.put('updateQuestionByQuestionId', {
           questionId: this.questionId,
-          answerOne: this.createAQuizQuestionForm.value.answerOne,
-          answerTwo: this.createAQuizQuestionForm.value.answerTwo,
-          answerThree: this.createAQuizQuestionForm.value.answerThree,
-          answerFour: this.createAQuizQuestionForm.value.answerFour,
+          answers: [this.createAQuizQuestionForm.value.answerOne, this.createAQuizQuestionForm.value.answerTwo, this.createAQuizQuestionForm.value.answerThree, this.createAQuizQuestionForm.value.answerFour],
+          // answerOne: this.createAQuizQuestionForm.value.answerOne,
+          // answerTwo: this.createAQuizQuestionForm.value.answerTwo,
+          // answerThree: this.createAQuizQuestionForm.value.answerThree,
+          // answerFour: this.createAQuizQuestionForm.value.answerFour,
           correctAnswer: {correctAnswerNum: this.correctAnswerNum, correctAnswer: this.correctAnswerText},
           songId: this.selectedSongData['_id'],
           songTitle: this.selectedSongData['title']

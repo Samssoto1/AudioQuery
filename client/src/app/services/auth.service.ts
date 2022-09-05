@@ -10,7 +10,7 @@ export class AuthService {
   private tokenTimer: NodeJS.Timer;
   private token: string;
   private authStatusListener = new Subject<boolean>();
-  errorMsg = new Subject<string>();
+  serverResponseMsg = new Subject<string>();
   private isAuth = false;
   private userId: string;
   private username: string;
@@ -22,7 +22,9 @@ export class AuthService {
   constructor(private httpService: HttpService, private router: Router) { }
 
   createUser(object: any){ // Create a user - Register
-    this.httpService.post("registration", object).subscribe();
+    this.httpService.post("registration", object).pipe(take(1)).subscribe((res) => {
+      this.serverResponseMsg.next(res['serverResponseMsg']) // pass subject containing error msg to the login component to notify the user
+    });
   }
 
   loginUser(object: any){ // Login a user - Login
@@ -44,11 +46,11 @@ export class AuthService {
         const username = localStorage.getItem('username');
     
             this.router.navigate(['/profile', username ]);
-            this.errorMsg.next(data['error']) // pass subject containing error msg to the login component to notify the user
+            this.serverResponseMsg.next(data['serverResponseMsg']) // pass subject containing error msg to the login component to notify the user
 
       } 
       else{
-      this.errorMsg.next(data['error']) // pass subject containing error msg to the login component to notify the user
+      this.serverResponseMsg.next(data['serverResponseMsg']) // pass subject containing error msg to the login component to notify the user
       }
     }); 
   }
