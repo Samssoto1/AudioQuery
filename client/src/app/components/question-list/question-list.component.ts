@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-question-list',
@@ -11,16 +10,9 @@ export class QuestionListComponent implements OnInit{
   @Input() questionInfo;
   @Input() quizId;
 
-  constructor(private router: Router) { }
+  constructor() { }
 
   ngOnInit(): void {
     
   }
-
-  newQuestion(quizId: string){
-    console.log(quizId);
-    this.router.navigate(["/quiz/create-a-quiz-question", quizId])
-    
-  }
-
 }

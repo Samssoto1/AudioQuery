@@ -14,8 +14,6 @@
     background-size: cover;
 }
 
-#pageContent {}
-
 .layer {
     z-index: -1;
     background-image: url(../assets/svgs/wavesOpacity.svg);

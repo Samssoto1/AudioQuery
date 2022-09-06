@@ -37,7 +37,8 @@ export class CreateQuizComponent{
       ).pipe(take(1)).subscribe(
         (data) => {
           console.log(data);
-          this.router.navigate(["/quiz/create-a-quiz-question", data['_id']], { relativeTo: this.activatedRoute })
+          // this.router.navigate(["/quiz/create-a-quiz-question", data['_id']], { relativeTo: this.activatedRoute })
+          this.router.navigate(["/quiz/questionSuite", data['_id']], { relativeTo: this.activatedRoute })
         }
       );
     }

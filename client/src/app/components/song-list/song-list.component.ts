@@ -1,5 +1,4 @@
-import { Component, OnInit, Inject, Optional} from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-song-list',
@@ -11,13 +10,13 @@ export class SongListComponent implements OnInit {
   songData;
   term: string;
   selectedSong;
-//@Optional() is used to prevent error if no data is passed
-  constructor( @Optional() @Inject(MAT_DIALOG_DATA) public list_of_songs, private matDialogRef: MatDialogRef<SongListComponent>) {
+
+  
+  constructor() {
   }
 
   search(value: string){
     this.term = value;
-
   }
 
   getSelectedSong(song){
@@ -26,13 +25,6 @@ export class SongListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
-    this.songData = this.list_of_songs.list_of_songs;
-    console.log(this.list_of_songs);
-  }
 
-  ngOnDestroy(){
-    this.matDialogRef.close(this.selectedSong);
   }
-
 }

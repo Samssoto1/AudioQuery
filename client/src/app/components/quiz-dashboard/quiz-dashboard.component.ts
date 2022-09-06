@@ -52,6 +52,11 @@ export class QuizDashboardComponent implements OnInit, OnDestroy {
     this.router.navigate(["/quiz/edit-a-quiz-question", questionId]);
   }
 
+  newQuestion(quizId: string){
+    console.log(quizId);
+    this.router.navigate(["/quiz/create-a-quiz-question", quizId])
+  }
+
   ngOnDestroy(): void {
     this.questionServiceSubscription.unsubscribe()
   }
