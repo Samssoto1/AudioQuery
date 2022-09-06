@@ -11,3 +11,7 @@ ul{
 .mat-dialog-actions{ /* Used to override styling by Material */
     display: block;
 }
+
+.selected{
+    color: purple;
+}

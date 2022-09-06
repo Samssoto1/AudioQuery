@@ -10,14 +10,12 @@ const getQuizById = operation.getQuizById(quizSchema);
 const songSchema = require("../model/songSchema"); // move this later
 
 const getSongById = operation.getSongById(songSchema);
-const getListOfSongs = operation.getListOfSongs(songSchema);
 
 module.exports = {
     createQuiz,
     getQuizzesForUser,
     deleteQuiz,
     getQuizQuestions,
-    getListOfSongs,
     getSongById,
     getQuizById
 }

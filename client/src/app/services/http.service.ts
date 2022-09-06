@@ -3,13 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 
-// SHOULD I SPLIT THIS SERVICE INTO MULTIPLE?
-// AUTH, HTTP, ??
-// IS THERE AN EASY WAY TO DO THIS / FIX ROUTE DEPENDENCIES?
-
 @Injectable({
   providedIn: 'root',
 })
+
 export class HttpService {
   api: string = 'http://localhost:8000';
   private tokenTimer: NodeJS.Timer;
@@ -43,8 +40,8 @@ export class HttpService {
       case 'getQuizById': {
         return this.http.get(`${this.api}/api/quiz/getQuizById/${object}`);
       }
-      case 'listOfSongs': {
-        return this.http.get(`${this.api}/api/quiz/getListOfSongs`);
+      case 'getAllSongs': {
+        return this.http.get(`${this.api}/api/songs/getAll`);
       }
       case 'getSongById': {
         return this.http.get(`${this.api}/api/quiz/getSongById/${object}`);

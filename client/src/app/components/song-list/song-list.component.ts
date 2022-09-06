@@ -1,4 +1,7 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, Input, OnInit} from '@angular/core';
+import { HttpService } from 'src/app/services/http.service';
+import { take } from 'rxjs';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-song-list',
@@ -10,9 +13,15 @@ export class SongListComponent implements OnInit {
   songData;
   term: string;
   selectedSong;
+  // @Input() selectedSong;
+  activeSong;
+
+  songList = new FormControl('', Validators.required);
+  formSelect;
+
 
   
-  constructor() {
+  constructor(private httpService: HttpService) {
   }
 
   search(value: string){
@@ -24,7 +33,21 @@ export class SongListComponent implements OnInit {
     this.selectedSong = song
   }
 
-  ngOnInit(): void {
+  onSelectedSong(){
+    // {{shoes.selectedOptions.selected[0]?.value}}
+    console.log();
+    
+  }
 
+  ngOnInit(): void {
+    this.httpService.get('getAllSongs', '').pipe(take(1)).subscribe((data) =>{
+      this.songData = data
+
+      // sort the list
+      this.songData.sort((a, b) =>
+          a.title > b.title ? 1 : a.title < b.title ? -1 : 0
+      );
+      console.log(data);
+    })
   }
 }

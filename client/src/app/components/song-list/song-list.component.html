@@ -13,17 +13,24 @@
   <button (click)="canSelect = true" mat-button mat-dialog-close cdkFocusInitial>Okay</button>
 </div> -->
 
-<h1>Select a song</h1>
-<div>
+<h2>Select a song</h2>
+<span>
     Search for a song or choose a song from the list below to base your question on.
-</div>
+</span>
 <div>
-  <input class="form-control" type="text" placeholder="Enter a search value" (keyup)="search(searchBox.value)" #searchBox>
-  <div class="glyphicon glyphicon-search input-group-addon" (click)="search(searchBox.value)"></div> 
-  <!-- Glyph Icon not working, replace with Material UI search icon later -->
+  <!-- <input class="form-control" type="text" placeholder="Enter a search value" (keyup)="search(searchBox.value)" #searchBox>
   <ul>
-    <app-song-item (selectedSong)="getSelectedSong($event)" *ngFor="let songs of songData | songFilter: term;" [songData]="songs"></app-song-item>
-  </ul>
-  <button (click)="canSelect = false" mat-button mat-dialog-close>Cancel</button>
-  <button (click)="canSelect = true" mat-button mat-dialog-close cdkFocusInitial>Okay</button>
+    <app-song-item [class.selected]="selectedSong" (selectedSong)="getSelectedSong($event)" *ngFor="let songs of songData | songFilter: term;" [songData]="songs"></app-song-item>
+  </ul> -->
+
+  <!-- If I can get this to work.. delete song Item component -->
+  <mat-selection-list #songList [multiple]="false">
+    <mat-list-option *ngFor="let songs of songData">
+      {{songs.title}}
+    </mat-list-option>
+  </mat-selection-list>
+
+  <button (click)="onSelectedSong()">Go</button>
+  <!-- <button (click)="canSelect = false" mat-button mat-dialog-close>Cancel</button> -->
+  <!-- <button (click)="canSelect = true" mat-button mat-dialog-close cdkFocusInitial>Okay</button> -->
 </div>

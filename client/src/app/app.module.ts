@@ -20,6 +20,7 @@ import { AuthInterceptor } from './interceptor/auth-interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 
+import {MatListModule} from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -106,6 +107,7 @@ const config: SocketIoConfig = {
     MatDialogModule,
     MatTableModule,
     MatPaginatorModule,
+    MatListModule,
     ReactiveFormsModule,
     SocketIoModule.forRoot(config)
 

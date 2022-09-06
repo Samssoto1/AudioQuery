@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { HttpService } from 'src/app/services/http.service';
 import {MatDialog} from '@angular/material/dialog';
 import { QuestionService } from 'src/app/services/question.service';
-import { Subscription } from 'rxjs';
+import { Subscription, take, concatMap } from 'rxjs';
 
 @Component({
   selector: 'app-quiz-dashboard',
@@ -15,10 +15,18 @@ export class QuizDashboardComponent implements OnInit, OnDestroy {
   quizTitle: string;
   questionInfo
   questionServiceSubscription: Subscription
+  songList;
 
   constructor(private questionService: QuestionService, public dialog: MatDialog, private httpService: HttpService, private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
+
+
+    // Check if user is the author. If so, allow, else, errormsg.
+
+
+
+
     // get quiz title
 
     // get quiz info

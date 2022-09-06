@@ -6,6 +6,19 @@ const validation = require('./validation');
 
 operation = {};
 
+// Get All data from a Schema
+operation.getAll = function (schema) {
+	return (req, res) => {
+		schema.find((err, data) => {
+			if (err) {
+				res.status(500).send(err)
+			} else {
+				res.status(200).send(data);
+			}
+		});
+	}
+}
+
 operation.getUserByUsername = function (schema) {
 	return async (req, res) => {
 		schema.find({username: req.params.username}, function (err, docs) {
@@ -443,19 +456,6 @@ operation.updateQuestionByQuestionId = function (schema) {
 }
 
 // Song Methods 
-
-operation.getListOfSongs = function (schema) {
-	return (req, res) => {
-		// our null can be used a a security params
-		schema.find(null, (err, data) => {
-			if (err) {
-				res.status(500).send(err)
-			} else {
-				res.status(200).send(data);
-			}
-		});
-	}
-}
 
 operation.getSongById = function (schema) {
 	return async (req, res) => {

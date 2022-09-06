@@ -17,7 +17,6 @@ router.delete('/delete/:quizId', deleteQuiz)
 
 // MOVE THIS LATER (!IMPORTANT) shouldnt be in quiz routes. Api route could be changed for admin route.
 router.get('/getSongById', getSongById)
-router.get('/getListOfSongs', getListOfSongs);
 
 router.delete('/deleteQuestion/:questionId', deleteQuizQuestion)
 router.delete('/deleteAllQuizQuestions/:quizId', deleteAllQuizQuestions)
