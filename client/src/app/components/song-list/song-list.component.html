@@ -18,19 +18,18 @@
     Search for a song or choose a song from the list below to base your question on.
 </span>
 <div>
-  <!-- <input class="form-control" type="text" placeholder="Enter a search value" (keyup)="search(searchBox.value)" #searchBox>
-  <ul>
+  <input class="form-control" type="text" placeholder="Enter a search value" (keyup)="search(searchBox.value)" #searchBox>
+  <!-- <ul>
     <app-song-item [class.selected]="selectedSong" (selectedSong)="getSelectedSong($event)" *ngFor="let songs of songData | songFilter: term;" [songData]="songs"></app-song-item>
   </ul> -->
 
   <!-- If I can get this to work.. delete song Item component -->
   <mat-selection-list #songList [multiple]="false">
-    <mat-list-option *ngFor="let songs of songData">
+    <mat-list-option *ngFor="let songs of songData | songFilter: term;">
       {{songs.title}}
     </mat-list-option>
   </mat-selection-list>
 
-  <button (click)="onSelectedSong()">Go</button>
-  <!-- <button (click)="canSelect = false" mat-button mat-dialog-close>Cancel</button> -->
-  <!-- <button (click)="canSelect = true" mat-button mat-dialog-close cdkFocusInitial>Okay</button> -->
+  <button (click)="canSelect = false" mat-button mat-dialog-close>Cancel</button>
+  <button (click)="canSelect = true" mat-button mat-dialog-close cdkFocusInitial>Okay</button>
 </div>
