@@ -5,11 +5,11 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-create-a-quiz',
-  templateUrl: './create-quiz-questions.component.html',
-  styleUrls: ['./create-quiz-questions.component.css']
+  selector: 'app-question-creator',
+  templateUrl: './question-creator.component.html',
+  styleUrls: ['./question-creator.css']
 })
-export class CreateQuizQuestionsComponent implements OnInit {
+export class QuestionCreator implements OnInit {
   @ViewChild('f') createAQuizQuestionForm: NgForm;
   quizId: string;
   questionId: string;

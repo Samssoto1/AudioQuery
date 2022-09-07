@@ -7,7 +7,3 @@ li{
 li:hover{
     background-color: antiquewhite;
 }
-
-.selected{
-    color: rgb(86, 70, 176);
-}

@@ -15,11 +15,8 @@ export class SongListComponent implements OnInit {
   selectedSong;
   // @Input() selectedSong;
   activeSong;
-
   songList = new FormControl('', Validators.required);
   formSelect;
-
-
   
   constructor(private httpService: HttpService) {
   }
@@ -31,12 +28,6 @@ export class SongListComponent implements OnInit {
   getSelectedSong(song){
     console.log(song);
     this.selectedSong = song
-  }
-
-  onSelectedSong(){
-    // {{shoes.selectedOptions.selected[0]?.value}}
-    console.log();
-    
   }
 
   ngOnInit(): void {

@@ -28,7 +28,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { QuizComponent } from './components/quiz/quiz.component';
 import { CreateQuizComponent } from './components/createQuiz/createQuiz.component';
-import { CreateQuizQuestionsComponent } from './components/create-quiz-questions/create-quiz-questions.component';
+import { QuestionCreator } from './components/question-creator/question-creator.component';
 import { SongListComponent } from './components/song-list/song-list.component';
 import { SongItemComponent } from './components/song-item/song-item.component';
 import { DeleteComponent } from './components/dialog/delete/delete.component';
@@ -50,7 +50,6 @@ import { ReloadQuizDirective } from './directives/reload-quiz.directive';
 import { QuestionListComponent } from './components/question-list/question-list.component';
 import { QuestionComponent } from './components/question/question.component';
 import { GameAnswerComponent } from './components/game/game-answer/game-answer.component';
-import { QuestionSuiteComponent } from './components/question-suite/question-suite.component';
 
 const config: SocketIoConfig = {
   url: environment.socketUrl, //socket server url;
@@ -73,7 +72,7 @@ const config: SocketIoConfig = {
     AdminDashboardComponent,
     QuizComponent,
     CreateQuizComponent,
-    CreateQuizQuestionsComponent,
+    QuestionCreator,
     SongListComponent,
     SongItemComponent,
     DeleteComponent,
@@ -91,8 +90,7 @@ const config: SocketIoConfig = {
     ReloadQuizDirective,
     QuestionListComponent,
     QuestionComponent,
-    GameAnswerComponent,
-    QuestionSuiteComponent
+    GameAnswerComponent
   ],
   imports: [
     BrowserModule,

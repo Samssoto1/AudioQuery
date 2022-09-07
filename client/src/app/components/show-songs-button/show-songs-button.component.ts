@@ -19,24 +19,36 @@ export class ShowSongsButtonComponent implements OnInit {
   }
 
   getSongList(){
-    this.httpService.get("listOfSongs", "").subscribe(
-      res => {
-        console.log(res);
-        this.list_of_songs = res;
+    let dialogRef = this.dialog.open(SongListComponent, {data:{list_of_songs: this.list_of_songs}});
+    dialogRef.afterClosed().subscribe(
+      result => {
+        this.selectedSongData = result;
+        console.log(this.selectedSongData)
+        this.selectedSongDataEvent.emit(this.selectedSongData)
+      }
+      )
+    }
 
-        this.list_of_songs.sort((a, b) =>
-          a.title > b.title ? 1 : a.title < b.title ? -1 : 0
-        );
 
-        let dialogRef = this.dialog.open(SongListComponent, {data:{list_of_songs: this.list_of_songs}});
-        dialogRef.afterClosed().subscribe(
-          result => {
-            this.selectedSongData = result;
-            console.log(this.selectedSongData)
-            this.selectedSongDataEvent.emit(this.selectedSongData)
-          }
-          )
-        }
-    );
-  }
+
+  //   this.httpService.get("listOfSongs", "").subscribe(
+  //     res => {
+  //       console.log(res);
+  //       this.list_of_songs = res;
+
+  //       this.list_of_songs.sort((a, b) =>
+  //         a.title > b.title ? 1 : a.title < b.title ? -1 : 0
+  //       );
+
+  //       let dialogRef = this.dialog.open(SongListComponent, {data:{list_of_songs: this.list_of_songs}});
+  //       dialogRef.afterClosed().subscribe(
+  //         result => {
+  //           this.selectedSongData = result;
+  //           console.log(this.selectedSongData)
+  //           this.selectedSongDataEvent.emit(this.selectedSongData)
+  //         }
+  //         )
+  //       }
+  //   );
+  // }
 }
