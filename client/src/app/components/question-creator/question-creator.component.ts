@@ -25,6 +25,8 @@ export class QuestionCreator implements OnInit {
   songTitle
   correctAnswerNum
 
+  
+
   constructor(private httpService: HttpService, private authService: AuthService, private router: Router,private activatedRoute: ActivatedRoute ) { }
 
   getSelectedSongData(selectedSongData){
@@ -67,18 +69,19 @@ export class QuestionCreator implements OnInit {
   }
 
   onCreateQuizQuestion(){
-    if(this.createAQuizQuestionForm.valid && this.selectedSongData != undefined){
 
+    if(this.createAQuizQuestionForm.valid && this.selectedSongData != undefined){
+      
+      // If creating a question
       if(this.editMode == false){
         console.log('creating question')
-
         console.log(this.createAQuizQuestionForm.value.correctAnswer);
+
         this.correctAnswerNum = this.createAQuizQuestionForm.value.correctAnswer
 
         switch (this.correctAnswerNum){
           case '1': {
             this.correctAnswerText = this.createAQuizQuestionForm.value.answerOne
-            console.log('in here')
             break;
           }
           case '2': {
@@ -95,24 +98,15 @@ export class QuestionCreator implements OnInit {
           }
         }
 
-        console.log(this.correctAnswerNum);
-        console.log(this.correctAnswerText);
-
       // Create
-      this.httpService.post('create-a-question', {
-        // questionTitle: this.createAQuizQuestionForm.value.questionTitle, 
+      this.httpService.post('createQuestion', {
+        questionTitle: this.createAQuizQuestionForm.value.questionTitle, 
         answers: [this.createAQuizQuestionForm.value.answerOne, this.createAQuizQuestionForm.value.answerTwo, this.createAQuizQuestionForm.value.answerThree, this.createAQuizQuestionForm.value.answerFour],
-        // answerOne: this.createAQuizQuestionForm.value.answerOne,
-        // answerTwo: this.createAQuizQuestionForm.value.answerTwo,
-        // answerThree: this.createAQuizQuestionForm.value.answerThree,
-        // answerFour: this.createAQuizQuestionForm.value.answerFour,
         correctAnswer: {correctAnswerNum: this.correctAnswerNum, correctAnswerText: this.correctAnswerText},
         quizId: this.quizId,
-        songId: this.selectedSongData['_id'],
-        songTitle: this.selectedSongData['title']
+        songId: this.selectedSongData['_id']
       }).subscribe(
         (data) => {
-
           this.router.navigate(['/quiz/dashboard', this.quizId]);
         }
       )
@@ -145,10 +139,6 @@ export class QuestionCreator implements OnInit {
         this.httpService.put('updateQuestionByQuestionId', {
           questionId: this.questionId,
           answers: [this.createAQuizQuestionForm.value.answerOne, this.createAQuizQuestionForm.value.answerTwo, this.createAQuizQuestionForm.value.answerThree, this.createAQuizQuestionForm.value.answerFour],
-          // answerOne: this.createAQuizQuestionForm.value.answerOne,
-          // answerTwo: this.createAQuizQuestionForm.value.answerTwo,
-          // answerThree: this.createAQuizQuestionForm.value.answerThree,
-          // answerFour: this.createAQuizQuestionForm.value.answerFour,
           correctAnswer: {correctAnswerNum: this.correctAnswerNum, correctAnswer: this.correctAnswerText},
           songId: this.selectedSongData['_id'],
           songTitle: this.selectedSongData['title']

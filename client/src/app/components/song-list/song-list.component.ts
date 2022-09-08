@@ -31,14 +31,6 @@ export class SongListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.httpService.get('getAllSongs', '').pipe(take(1)).subscribe((data) =>{
-      this.songData = data
-
-      // sort the list
-      this.songData.sort((a, b) =>
-          a.title > b.title ? 1 : a.title < b.title ? -1 : 0
-      );
-      console.log(data);
-    })
+    
   }
 }

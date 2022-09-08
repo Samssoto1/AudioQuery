@@ -6,8 +6,7 @@ const validation = require('./validation');
 
 operation = {};
 
-// Get All data from a Schema
-operation.getAll = function (schema) {
+operation.getAll = function (schema) { // Get All data from a Schema
 	return (req, res) => {
 		schema.find((err, data) => {
 			if (err) {
@@ -16,6 +15,20 @@ operation.getAll = function (schema) {
 				res.status(200).send(data);
 			}
 		});
+	}
+}
+
+operation.createOne = function (schema) { // Create a basic (no additional processing required) item in db
+	return async (req, res) => {
+		const inputInfo = req.body;
+
+		schema.create(inputInfo, (err, data) => {
+			if (err) {
+				res.status(500).send(err)
+			} else {
+				res.status(201).send(data);
+			}
+		})
 	}
 }
 
@@ -340,22 +353,6 @@ operation.getQuizQuestions = function (schema) {
 				}
 			}
 		});
-	}
-}
-
-operation.createQuestion = function (schema) {
-	return async (req, res) => {
-		const questionInfo = req.body;
-		console.log('in questionInfo')
-		console.log(questionInfo)
-
-		schema.create(questionInfo, (err, data) => {
-			if (err) {
-				res.status(500).send(err)
-			} else {
-				res.status(201).send(data);
-			}
-		})
 	}
 }
 

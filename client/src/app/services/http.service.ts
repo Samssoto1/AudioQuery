@@ -82,8 +82,8 @@ export class HttpService {
       case 'create-a-quiz': {
         return this.http.post(`${this.api}/api/quiz/create-a-quiz`, object)
       }
-      case 'create-a-question': {
-        return this.http.post(`${this.api}/api/quiz/create-a-question`, object)
+      case 'createQuestion': {
+        return this.http.post(`${this.api}/api/questions/createQuestion`, object)
       }
       case 'adminSongUpload': {
         return this.http.post(`${this.api}/api/quiz/songUpload`, object)
