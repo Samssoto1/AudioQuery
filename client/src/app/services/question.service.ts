@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,4 @@ export class QuestionService {
     // Not using sent questionId.. just refreshing list
     this.updateQList.next(questionId);
   }
-
-
 }

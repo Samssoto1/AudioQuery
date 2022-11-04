@@ -1,11 +1,13 @@
 <div id="registerContainer">
   <!-- This div has flex on it. Main can't be separated by a div.. -->
   <main id="formRegister" class="text-center">
-    <form (ngSubmit)="onRegisterSubmit()" #f="ngForm">
+    <!-- <form (ngSubmit)="onRegisterSubmit()" #f="ngForm"> -->
       <h4 class="d-flex justify-content-center">AudioQuery</h4>
       <div class="card bg-light">
         <div class="card-body">
-          <h1 class="h3 mb-3 fw-normal">Register here</h1>
+          <h1 class="h3 mb-3 fw-normal">Register Here</h1>
+          <img id="mascot" class="text-center" src="../../../assets/images/audioQueryMascot" alt="">
+    <form (ngSubmit)="onRegisterSubmit()" #f="ngForm">
 
           <!-- Username Input -->
           <div class="form-floating">
@@ -83,8 +85,8 @@
             [disabled]="!f.valid || ((password.value != passwordConfirmation.value) && passwordConfirmation.touched)">Create
             Account</button>
           <p class="mt-5 mb-3 text-muted">&copy; 2022–2022</p>
+        </form>
         </div>
       </div>
-    </form>
   </main>
 </div>

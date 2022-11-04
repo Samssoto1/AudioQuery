@@ -22,15 +22,12 @@ export class QuizComponent implements OnInit {
 
   onPlay(quizId: string){
     let dialogRef = this.dialog.open(PlayQuizComponent);
-    dialogRef.afterClosed().subscribe( (result) => {
+    dialogRef.afterClosed().subscribe((result) => {
       if(result == true){
-        // this.router.navigate(['game', quizId]);
         console.log(quizId);
         this.router.navigate(['nickname'])
-        this.quizService.getSelectedQuiz(quizId);
+        this.quizService.getSelectedQuizId(quizId);
         console.log(quizId);
-        // this.router.navigate(['game']);
-        // this.quizService.getSelectedQuiz(quizId);
       }
     })
   }

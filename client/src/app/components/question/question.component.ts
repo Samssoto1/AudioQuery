@@ -1,9 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
 import {MatDialog} from '@angular/material/dialog';
 import { DeleteComponent } from '../dialog/delete/delete.component';
 import { Router } from '@angular/router';
 import { QuestionService } from 'src/app/services/question.service';
+import { QuizService } from 'src/app/services/quiz.service';
 
 @Component({
   selector: 'app-question',
@@ -12,10 +13,11 @@ import { QuestionService } from 'src/app/services/question.service';
 })
 export class QuestionComponent implements OnInit {
 
-  constructor(private httpService: HttpService, public dialog: MatDialog, private router: Router, private questionService: QuestionService) { }
+  constructor(private httpService: HttpService, public dialog: MatDialog, private router: Router, private questionService: QuestionService, private quizService: QuizService) { }
   @Input() question;
 
   ngOnInit(): void {
+    
   }
 
   onDelete(questionId: string){
@@ -25,29 +27,22 @@ export class QuestionComponent implements OnInit {
       result => {
         // result tells us whether the user selected yes or no
         // if result = true, delete quiz from db
-        if(result==true){
+        if(result){
           // delete quiz
-          this.httpService.delete("quizQuestion", questionId).subscribe( res => {
+          console.log(this.question);
+          // this.httpService.delete("quizQuestion", questionId).subscribe( res => {
 
-          })
+          // })
 
-        // Use a Subject to reload 
-        this.questionService.updateQuestionList(questionId);
+        this.quizService.passQuestionToDelete(this.question);
         }
       }
       )
   }
 
-  onEdit(questionId: string){
-
-  }
-
-  onDuplicate(questionId: string){
-
-  }
-
-  navigateToQuestion(questionId: string){
-    this.router.navigate(["/quiz/edit-a-quiz-question", questionId]);
+  onEdit(){
+    console.log(this.question);
+    this.quizService.onQuestionClicked(this.question);
   }
 
 }

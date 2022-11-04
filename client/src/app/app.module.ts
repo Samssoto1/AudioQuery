@@ -1,31 +1,38 @@
 import { environment } from 'src/environments/environment'
 
+// Modules
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { ReactiveFormsModule } from '@angular/forms';
-
-import { AppComponent } from './app.component';
-import { HeaderComponent } from './header.component';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
 import { AppRoutingModule } from './app-routing-module';
-
-import { ProfileComponent } from './components/profile/profile.component';
-import { FooterComponent } from './footer.component';
-import { HomeComponent } from './components/home/home.component';
-import { PinComponent } from './components/game/game/pin/pin.component';
-import { AuthInterceptor } from './interceptor/auth-interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 
+// Interceptor
+import { AuthInterceptor } from './interceptor/auth-interceptor';
+
+// Angular Material
 import {MatListModule} from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table'  
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTooltipModule } from '@angular/material/tooltip'
+import {MatSidenavModule} from '@angular/material/sidenav';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatExpansionModule } from '@angular/material/expansion';
+
+// Components
+import { AppComponent } from './components/app.component';
+import { HeaderComponent } from './components/header.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 import { QuizComponent } from './components/quiz/quiz.component';
 import { CreateQuizComponent } from './components/createQuiz/createQuiz.component';
 import { QuestionCreator } from './components/question-creator/question-creator.component';
@@ -35,21 +42,33 @@ import { DeleteComponent } from './components/dialog/delete/delete.component';
 import { QuizDashboardComponent } from './components/quiz-dashboard/quiz-dashboard.component';
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 import { AddSongComponent } from './components/add-song/add-song.component';
-import { MatTableModule } from '@angular/material/table'  
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { ProfileComponent } from './components/profile/profile.component';
+import { FooterComponent } from './components/footer.component';
+import { HomeComponent } from './components/home/home.component';
+import { GamePinComponent } from './components/game/game-pin/game-pin.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { QuestionListComponent } from './components/question-list/question-list.component';
+import { QuestionComponent } from './components/question/question.component';
+import { GameQuestionAnswerComponent } from './components/game/game-questionAnswer/game-questionAnswer.component';
 import { ShowSongsButtonComponent } from './components/show-songs-button/show-songs-button.component';
-import { SongFilterPipe } from './pipes/song-filter.pipe';
 import { QuizListComponent } from './components/quiz-list/quiz-list.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { PlayQuizComponent } from './components/play-quiz-component/play-quiz-component.component';
-import { GameComponent } from './components/game/game/game.component';
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-import { PromptForNicknameComponent } from './components/game/prompt-for-nickname/prompt-for-nickname.component';
+import { GameLobbyComponent } from './components/game/game-lobby/game-lobby.component';
+import { GameNicknameComponent } from './components/game/game-nickname/game-nickname.component';
+
+// Pipe
+import { SongFilterPipe } from './pipes/song-filter.pipe';
+
+// Directives
 import { ReloadQuizDirective } from './directives/reload-quiz.directive';
-import { QuestionListComponent } from './components/question-list/question-list.component';
-import { QuestionComponent } from './components/question/question.component';
-import { GameAnswerComponent } from './components/game/game-answer/game-answer.component';
+
+// Etc
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { SocketService } from './services/socket.service';
+import { GameGameComponent } from './components/game/game-game/game-game.component';
+import { GameNicknameScoreComponent } from './components/game/game-nickname-score/game-nickname-score.component';
 
 const config: SocketIoConfig = {
   url: environment.socketUrl, //socket server url;
@@ -68,7 +87,7 @@ const config: SocketIoConfig = {
     ProfileComponent,
     FooterComponent,
     HomeComponent,
-    PinComponent,
+    GamePinComponent,
     AdminDashboardComponent,
     QuizComponent,
     CreateQuizComponent,
@@ -85,12 +104,14 @@ const config: SocketIoConfig = {
     ForgotPasswordComponent,
     ResetPasswordComponent,
     PlayQuizComponent,
-    GameComponent,
-    PromptForNicknameComponent,
+    GameLobbyComponent,
+    GameNicknameComponent,
     ReloadQuizDirective,
     QuestionListComponent,
     QuestionComponent,
-    GameAnswerComponent
+    GameQuestionAnswerComponent,
+    GameGameComponent,
+    GameNicknameScoreComponent,
   ],
   imports: [
     BrowserModule,
@@ -106,7 +127,13 @@ const config: SocketIoConfig = {
     MatTableModule,
     MatPaginatorModule,
     MatListModule,
+    MatTooltipModule,
+    MatSidenavModule,
+    MatRadioModule,
+    DragDropModule,
     ReactiveFormsModule,
+    MatProgressBarModule,
+    MatExpansionModule,
     SocketIoModule.forRoot(config)
 
   ],

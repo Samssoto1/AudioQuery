@@ -1,26 +1,25 @@
-<main class="container-fluid">
-  <div class="row">
-    <!-- Sidebar header -->
-    <div class="col">
-      <h2 id="quiz-header">Questions</h2>
-      <div id="new" (click)="newQuestion(quizId)">
+<mat-sidenav-container id="content">
+    <div class="border-bottom">
+      <h1 style="text-align: center;">{{quizTitle}}</h1>
+    </div>
+    
+    <button id="sidebarToggle" mat-icon-button (click)="snav.toggle()">
+      <!-- <mat-icon>menu</mat-icon> -->
+      <mat-icon>arrow_forward_ios</mat-icon>
+    </button>
+    <mat-sidenav #snav mode="side" opened id="sideNav">
+      <h2 class="noSelect" id="quiz-header">Questions</h2>
+      <button id="new" (click)="newQuestion(quizId)">
         + Add Question
-      </div>
+      </button>
       <div id="questionSideMenu">
-        <app-question-list [quizId]="quizId" [questionInfo]="questionInfo"></app-question-list>
-        <!-- <app-question-list (updatesToQuestionList | async) [quizId]="quizId" [questionInfo]="questionInfo"></app-question-list> -->
+        <app-question-list id="questionList" [quizId]="quizId" [questionInfo]="questionInfo" (saveAvailable)="updateSave()"></app-question-list>
       </div>
+    </mat-sidenav>
+    
+    <div id="questionCreator">
+      <button (click)="save()" [disabled]="!saveAvaliable" id="saveBtn" class="btn btn-warning">Save</button>
+      <app-question-creator *ngIf="selectedQuestion" [selectedQuestion]="selectedQuestion"></app-question-creator>
     </div>
-    <!-- Edit Suite -->
-    <div class="col-9">
-        <div class="border-bottom">
-          <h1 style="text-align: center;">{{quizTitle}}</h1>
-        </div>
-        <div>
-          <app-question-creator></app-question-creator>
-          <!-- <app-create-a-quiz></app-create-a-quiz> -->
-          <!-- <app-song-list></app-song-list> -->
-        </div>
-    </div>
-  </div>
-</main>
+  
+  </mat-sidenav-container>

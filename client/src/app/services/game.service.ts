@@ -8,19 +8,21 @@ export class GameService {
   
   processRoomIdValue = new Subject();
 
+  pinToNick = new BehaviorSubject("");
+  processPin = new BehaviorSubject({});
+  processQidAndNickname = new BehaviorSubject("");
 
 
-  processPin = new ReplaySubject();
-  // processQidAndNickname = new Subject();
-  // processQidAndNickname = new BehaviorSubject("0");
-  processQidAndNickname = new ReplaySubject(1);
-  pinToNick = new ReplaySubject();
   
   joinLobby = new Subject();
   startGame = new Subject();
 
-  constructor() { }
+  // Game
+  gameQuestions = new Subject();
+  answerChosen = new Subject();
 
+  constructor() { }
+  
   handleRoomIdValue(roomId: string, socketId: string, quizQuestions){
     this.processRoomIdValue.next({roomId: roomId, socketId: socketId, quizQuestions: quizQuestions});
     
@@ -41,4 +43,15 @@ export class GameService {
     console.log(object);
     this.processQidAndNickname.next(object);
   }
+
+  // Game
+
+  handleGameQuestions(){
+    this.gameQuestions.next("")
+  }
+
+  deliverAnswerChosen(){
+    this.answerChosen.next("")
+  }
+
 }

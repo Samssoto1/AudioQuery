@@ -1,5 +1,12 @@
-<ul class="question" *ngFor="let question of questionInfo">
-    <li>
-        <app-question [question]=question></app-question>
-    </li>
-</ul>
+<div>
+    <div class="example-list" cdkDropList [cdkDropListData]="questionInfo" (cdkDropListDropped)="drop($event)">
+        <div *ngFor="let question of questionInfo; index as i">
+            <span class="noSelect">{{i + 1}}.)</span>
+            <div [ngClass]="{'highlight': selectedIndex === i}">
+                <app-question class="example-box" cdkDrag [question]=question (click)="setRow(i)">
+                    <app-question [question]=question *cdkDragPreview></app-question>
+                </app-question>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,8 +3,64 @@
 const auth = require('./auth.js'); // Needed for hashing operations
 const nodemailer = require("nodemailer"); // Needed for sending an email (Reset Password)
 const validation = require('./validation');
+const { default: mongoose } = require('mongoose');
 
 operation = {};
+
+// operation.saveQuizQuestions = function (schema) {
+// 	return (req, res) => {
+// 		console.log("data");
+		
+// 	}
+// }
+
+operation.saveQuizQuestions = function (schema) {
+
+	return async (req, res) => {
+		console.log(req.body);
+		const session = await schema.startSession()
+		session.startTransaction()
+		try {
+			// Handles multiple deletes upon save if necessary
+			if (req.body.delete.length > 0) {
+				await schema.deleteMany({ _id: req.body.delete }, { session: session })
+			}
+			// Handles multiple creates / inserts upon save if necessary
+			if (req.body.create.length > 0) {
+				await schema.insertMany(req.body.create, { session: session })
+			}
+			// Handles multiple edits / updates upon save if necessary
+			if (req.body.edit.length > 0) {
+				const updateQueries = [];
+
+				req.body.edit.forEach((edit) => {
+					updateQueries.push({
+						updateOne: {
+							filter: {_id: edit._id},
+							update: { $set: {answers: edit.body.answers,
+								correctAnswer: edit.body.correctAnswer,
+								questionTitle: edit.body.questionTitle,
+								location: edit.body.location,
+								songId: edit.body.songId, isValid: edit.body.isValid}}
+						}})
+				})
+				await schema.bulkWrite(updateQueries, {session: session})
+			}
+
+			await session.commitTransaction();
+			session.endSession();
+			res.status(200).send();
+		}
+		catch (err) {
+			console.log("aborting")
+			console.log(err);
+			await session.abortTransaction();
+			session.endSession();
+			res.status(500).send()
+		}
+
+	}
+}
 
 operation.getAll = function (schema) { // Get All data from a Schema
 	return (req, res) => {
@@ -23,6 +79,20 @@ operation.createOne = function (schema) { // Create a basic (no additional proce
 		const inputInfo = req.body;
 
 		schema.create(inputInfo, (err, data) => {
+			if (err) {
+				res.status(500).send(err)
+			} else {
+				res.status(201).send(data);
+			}
+		})
+	}
+}
+
+operation.createMany = function (schema) {
+	return async (req, res) => {
+		const inputInfo = req.body;
+
+		schema.insertMany(inputInfo, (err, data) => {
 			if (err) {
 				res.status(500).send(err)
 			} else {
@@ -356,6 +426,44 @@ operation.getQuizQuestions = function (schema) {
 	}
 }
 
+// MyModel.find({name: "john" }, 'name age address', function(err, docs) {
+//     console.log(docs);
+// });
+
+operation.getQuizQuestionsWithoutAnswer = function (schema) {	
+	return async (req, res) => {
+		schema.find({quizId: req.params.quizId}, 'answers quizId songId location').populate("songId", 'audioFile').sort({"location": 1}).then(p => res.status(200).send(p));
+		/*
+		schema.find({quizId: req.params.quizId}, 'questionTitle answers quizId songId location', function (err, docs) {
+			if (err) {
+				console.log(err)
+				res.status(400).send(err)
+			}
+			else {
+				if (docs === null) {	
+					res.status(200).send("No such Item")
+				}
+				else {
+					console.log(docs);
+					res.status(200).json(docs)
+				}
+			}
+		})
+		*/
+	}
+}
+
+operation.getQuestionAnswer = async function (schema, questionId) {	
+	console.log('qwer')
+	let res = await schema.findOne({_id: questionId}, 'correctAnswer answers');
+	console.log(res.correctAnswer);
+	let correctAnswer = res.correctAnswer - 1
+	let answers = res.answers;
+	console.log(correctAnswer);
+	console.log(answers)
+	return (res.answers[correctAnswer])
+}
+
 operation.deleteQuizQuestion = function (schema) {
 	return async (req, res) => {
 		schema.findByIdAndDelete(req.params.questionId, function (err, docs) {
@@ -477,7 +585,7 @@ operation.createRoom = function (schema) {
 	return async (req, res) => {
 		const roomInfo = req.body;
 
-		schema.create(roomInfo, null, (err, data) => {
+		schema.create(roomInfo, (err, data) => {
 			if (err) {
 				res.status(500).send(err)
 			} else {
@@ -499,6 +607,41 @@ operation.getRoom = function (schema) {
 				res.status(201).send(data);
 			}
 		})
+	}
+}
+
+// Create an object in the database
+operation.editRoomUserList = function (schema) {
+	return async (req, res) => {
+		let {roomId, user, operation} = req.body;
+
+		console.log(req.body);
+
+		if(operation == "add"){
+			schema.findByIdAndUpdate(roomId, {$push: {users: user}}, function (err) {
+				if (err) {
+					res.status(400).json({serverResponseMsg: "failed to update user list"})
+				}
+				else {
+					res.status(200).json({serverResponseMsg: "success"})
+				}
+			});
+		}
+		else{
+			// Delete
+			if(operation == "delete"){
+				console.log("deleting user from room")
+				schema.findByIdAndUpdate(roomId, {$pull: {users: user}}, function (err, docs) {
+					if (err) {
+						res.status(400).json({serverResponseMsg: "failed to update user list"})
+					}
+					else {
+						res.status(200).json({serverResponseMsg: "success"})
+					}
+				});
+				return
+			}
+		}
 	}
 }
 

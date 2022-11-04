@@ -38,7 +38,7 @@ mat-icon{
 .help-block
 {
   text-align: left !important;
-  color: red;
+  color: white;
 }
 
 /* Creates Border when form input is invalid and touched */
@@ -61,12 +61,12 @@ input.ng-invalid.ng-touched{
 
 #reset-password-btn{
   cursor: pointer;
-  color: #1a73e8;
+  color: #ffc6be;
 }
 
 #reset-password-btn:hover{
   text-decoration: underline;
-  color: #155cb8;
+  /* color: #155cb8; */
 }
 
 /* Handle SignUp Button CSS */
@@ -77,9 +77,59 @@ input.ng-invalid.ng-touched{
 
 #signUpBtn{
   cursor: pointer;
-  color: #1a73e8;
+  color: #ffc6be;
 }
 
 #signUpBtn:hover{
   text-decoration: underline;
+}
+
+/* Removes ugly bootstrap button glow on click */
+.btn:focus,.btn:active {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.btn:hover{
+  background-color: #bd867c;
+}
+
+.card{
+  /* background-image: url("../../../assets/images/SignInBackground"); */
+  background:linear-gradient(0deg, rgba(183, 149, 237, 0.3), rgba(245, 238, 242, 0.3)), url('../../../assets/images/SignInBackground');
+  background-repeat: no-repeat, repeat;
+  background-size: cover; /* Resize the background image to cover the entire container */
+  background-position: center;
+  border: 0px;
+}
+
+div .card-body{
+  height: 34em;
+}
+
+
+.card{
+  border-radius: 25px;
+  box-shadow: 0 12px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+h1{
+  font-size: 2.6em;
+}
+
+#mascot{
+  max-height: 7.5em;
+  margin-left: 1.2em;
+  margin-bottom: 1em;
+}
+
+form{
+  margin-left: 3em;
+  margin-right: 3em;
+}
+
+button{
+  max-width: 50%;
+  background-color: #af7265;
+  color: white;
 }

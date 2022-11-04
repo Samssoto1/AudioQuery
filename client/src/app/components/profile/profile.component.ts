@@ -14,10 +14,12 @@ export class ProfileComponent implements OnInit {
   registrationDate;
   isLoading: boolean = false;
   list_of_quizzes: any;
-  imgUrl: string = "https://www.listchallenges.com/f/lists/57789dce-7a91-4176-9733-cdfdc7d6d350.jpg"
+  // imgUrl: string = "https://www.listchallenges.com/f/lists/57789dce-7a91-4176-9733-cdfdc7d6d350.jpg"
+  imgUrl: string = "https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
   isGuest: boolean;
-
+  level: Number;
   subscription: Subscription;
+  panelOpenState = false;
 
   constructor(private httpService: HttpService, private activatedRoute: ActivatedRoute, private router: Router ) {}
 
@@ -37,6 +39,7 @@ export class ProfileComponent implements OnInit {
           this.userId = data[0]['_id']
           this.username = data[0]['username'];
           this.registrationDate = data[0]['registrationDate'];
+          this.level = data[0]['level']
 
           // if username in token matches username in url then show quizzes... is this secure??? (Doesn't feel like it) 
           try{

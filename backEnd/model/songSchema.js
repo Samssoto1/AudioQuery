@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const songSchema = mongoose.Schema({
+
   title: {type: String},
   artist: {type: String},
   // audioImg,

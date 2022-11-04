@@ -1,6 +1,7 @@
-#profile-picture{
-    max-width: 20em;
-    max-height: 14em;
+#profilePicture{
+    width: 12em;
+    height: 12em;
+    border-radius: 50%;
 }
 
 #quiz-header{
@@ -12,4 +13,36 @@
     cursor: pointer;
 }
 
+.container-fluid{
+    background-color: white;
+}
 
+#profileContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+#profileContainer span{
+    display: block;
+}
+
+#profileAdditional{
+    float: right;
+}
+
+#favoritedAchievement{
+    max-width: 15%;
+}
+
+#imgBox{
+    display: flex;
+    justify-content: space-between;
+}
+
+#achievements{
+    
+}
+
+.achievement{
+    max-width: 2em;
+}

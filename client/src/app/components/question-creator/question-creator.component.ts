@@ -1,21 +1,24 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnDestroy, EventEmitter, Output} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpService } from 'src/app/services/http.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SongService } from 'src/app/services/song.service';
+import { Observable, Subscription} from 'rxjs';
+import { QuizService } from 'src/app/services/quiz.service';
+import { QuizDashboardService } from 'src/app/services/quiz-dashboard.service';
 
 @Component({
   selector: 'app-question-creator',
   templateUrl: './question-creator.component.html',
   styleUrls: ['./question-creator.css']
 })
-export class QuestionCreator implements OnInit {
-  @ViewChild('f') createAQuizQuestionForm: NgForm;
+export class QuestionCreator implements OnInit, OnDestroy {
+  @ViewChild('f', { static: true }) createAQuizQuestionForm: NgForm;
   quizId: string;
   questionId: string;
   list_of_songs;
-  selectedSongData;
-  editMode: boolean = false;
+  selectedSongData
   answerOne
   answerTwo
   answerThree
@@ -23,134 +26,79 @@ export class QuestionCreator implements OnInit {
   correctAnswerText
   songId
   songTitle
-  correctAnswerNum
+  correctAnswer
 
-  
+  isValid: boolean
 
-  constructor(private httpService: HttpService, private authService: AuthService, private router: Router,private activatedRoute: ActivatedRoute ) { }
+  @Input() selectedQuestion
 
-  getSelectedSongData(selectedSongData){
-    this.selectedSongData = selectedSongData;
-    console.log(this.selectedSongData);
+  @Output() previousQuestion = new EventEmitter();
+
+  updateSelectedQuestionTitle$: Observable<any>;
+
+  private subs = new Subscription();
+
+  constructor(private quizDashboardService: QuizDashboardService, private songService: SongService, private quizService: QuizService, private httpService: HttpService, private authService: AuthService, private router: Router,private activatedRoute: ActivatedRoute )
+  {
+
   }
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
-      // if we're making a new quiz... get the quiz id
-      this.quizId = params['params']['quizId'];
-      // if we're editing a quiz question... we expect the question id to be sent
-      this.questionId = params['params']['questionId'];
 
-      // should try block be here?
-      if(this.questionId != undefined){
-        this.editMode = true;
+    this.subs.add(this.songService.selectedSong.subscribe((res) =>{
+      console.log(res)
+      this.selectedQuestion['songId'] = res['_id'];
+      this.selectedQuestion['questionTitle'] = res['title']
+      this.selectedQuestion['artist'] = res['artist']
+      
+      // tell dashboard that save is avail
+      this.quizDashboardService.onSave();
+    }))
 
-        try{ // supply data back into inputs for editing
-          this.httpService.get('getQuestionById', this.questionId).subscribe(
-            (res) => {
-              console.log(res);
-              this.answerOne = res['answerOne'];
-              this.answerTwo = res['answerTwo'];
-              this.answerThree = res['answerThree'];
-              this.answerFour = res['answerFour'];
-              this.correctAnswerText = `Answer ${res['correctAnswer']['correctAnswerNum']}`;
-              this.selectedSongData = {title: res['songTitle']}
-              this.songId = res['songId'];
-              this.songTitle = res['songTitle']
-              this.quizId = res['quizId']
-            }
-          );
-        }
-        catch{
-          // give error (pulling data failed.. etc)
-        }
-      }
-    });
+
   }
 
-  onCreateQuizQuestion(){
 
-    if(this.createAQuizQuestionForm.valid && this.selectedSongData != undefined){
-      
-      // If creating a question
-      if(this.editMode == false){
-        console.log('creating question')
-        console.log(this.createAQuizQuestionForm.value.correctAnswer);
-
-        this.correctAnswerNum = this.createAQuizQuestionForm.value.correctAnswer
-
-        switch (this.correctAnswerNum){
-          case '1': {
-            this.correctAnswerText = this.createAQuizQuestionForm.value.answerOne
-            break;
-          }
-          case '2': {
-            this.correctAnswerText = this.createAQuizQuestionForm.value.answerTwo
-            break;
-          }
-          case '3': {
-            this.correctAnswerText = this.createAQuizQuestionForm.value.answerThree
-            break;
-          }
-          case '4': {
-            this.correctAnswerText = this.createAQuizQuestionForm.value.answerFour
-            break;
-          }
-        }
-
-      // Create
-      this.httpService.post('createQuestion', {
-        questionTitle: this.createAQuizQuestionForm.value.questionTitle, 
-        answers: [this.createAQuizQuestionForm.value.answerOne, this.createAQuizQuestionForm.value.answerTwo, this.createAQuizQuestionForm.value.answerThree, this.createAQuizQuestionForm.value.answerFour],
-        correctAnswer: {correctAnswerNum: this.correctAnswerNum, correctAnswerText: this.correctAnswerText},
-        quizId: this.quizId,
-        songId: this.selectedSongData['_id']
-      }).subscribe(
-        (data) => {
-          this.router.navigate(['/quiz/dashboard', this.quizId]);
-        }
-      )
-      }
-      // updateQuestionByQuizId
-      if(this.editMode == true){
-
-        this.correctAnswerNum = this.createAQuizQuestionForm.value.correctAnswer
-
-        switch (this.correctAnswerNum){
-          case '1': {
-            this.correctAnswerText = this.createAQuizQuestionForm.value.answerOne
-            break;
-          }
-          case '2': {
-            this.correctAnswerText = this.createAQuizQuestionForm.value.answerTwo
-            break;
-          }
-          case '3': {
-            this.correctAnswerText = this.createAQuizQuestionForm.value.answerThree
-            break;
-          }
-          case '4': {
-            this.correctAnswerText = this.createAQuizQuestionForm.value.answerFour
-            break;
-          }
-        }
-
-        // Update
-        this.httpService.put('updateQuestionByQuestionId', {
-          questionId: this.questionId,
-          answers: [this.createAQuizQuestionForm.value.answerOne, this.createAQuizQuestionForm.value.answerTwo, this.createAQuizQuestionForm.value.answerThree, this.createAQuizQuestionForm.value.answerFour],
-          correctAnswer: {correctAnswerNum: this.correctAnswerNum, correctAnswer: this.correctAnswerText},
-          songId: this.selectedSongData['_id'],
-          songTitle: this.selectedSongData['title']
-        }).subscribe(
-          (data) => {
-  
-            this.router.navigate(['/quiz/dashboard', this.quizId]);
-          }
-        )
-      }
-
+  onChange(data){
+    console.log(this.createAQuizQuestionForm.valid)
+    // If meets validation.. change isValid to true
+    if(this.createAQuizQuestionForm.valid && this.selectedQuestion?.songId != ""){
+      this.isValid = true;
     }
+    else{
+      this.isValid = false;
+    }
+
+    // If has _id... then it's a question already saved in our database
+    if(this.selectedQuestion._id != undefined){
+      this.quizService.changes.next({_id: this.selectedQuestion._id, 
+        body: 
+          {answers: [this.createAQuizQuestionForm.value.answerOne, this.createAQuizQuestionForm.value.answerTwo, this.createAQuizQuestionForm.value.answerThree, this.createAQuizQuestionForm.value.answerFour],
+          correctAnswer: this.createAQuizQuestionForm.value.correctAnswer,
+          location: this.selectedQuestion.location,
+          questionTitle: this.selectedQuestion.questionTitle,
+          quizId: this.selectedQuestion.quizId,
+          songId: this.selectedQuestion['songId'],
+          isValid: this.isValid}});
+    }
+
+    // else... has clientId instead of _id
+    else{
+      this.quizService.changes.next({clientId: this.selectedQuestion.clientId, 
+        body: 
+          {answers: [this.createAQuizQuestionForm.value.answerOne, this.createAQuizQuestionForm.value.answerTwo, this.createAQuizQuestionForm.value.answerThree, this.createAQuizQuestionForm.value.answerFour],
+          correctAnswer: this.createAQuizQuestionForm.value.correctAnswer,
+          location: this.selectedQuestion.location,
+          questionTitle: this.selectedQuestion.questionTitle,
+          quizId: this.selectedQuestion.quizId,
+          songId: this.selectedQuestion['songId'],
+          isValid: this.isValid}});
+    }
+  }
+
+  ngOnDestroy(){
+    this.subs.unsubscribe();
+
   }
 
 }

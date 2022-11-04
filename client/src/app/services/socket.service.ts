@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import {io} from "socket.io-client"
 import { environment } from 'src/environments/environment';
+import { HttpService } from './http.service';
+import { take, fromEvent } from 'rxjs'
 
 @Injectable({
   providedIn: 'root'
 })
 export class SocketService {
+
   
   private socket = io(environment.socketUrl);
 
@@ -15,8 +18,45 @@ export class SocketService {
   triggerGetNickname = new Subject();
   sendNicknameGetUserList = new Subject();
   joinedLobby = new Subject();
-  
-  constructor(){
+
+  users = new Subject();
+
+  updateUlist = new Subject();
+
+  usersList = new Subject();
+
+  lobbyId = new Subject();
+
+  constructor(private httpService: HttpService){
+    
+  }
+
+  getNicknameListFromServer(){
+    console.log("In GetNicknameListFromServer")
+    let observable = new Observable(observer => {
+      this.socket.on('deliverNicknameListToClient', (data) => {
+        console.log("deliverNicknameListToClient")
+        console.log(data);
+        let list = [];
+        data.forEach(nick => {
+          console.log(nick);
+          console.log(list);
+          list.push(nick.nickname)
+        });
+        observer.next(list)
+      });
+    });
+    return observable;
+  }
+
+  getRoomList(room, socketId){
+    console.log("in getRoomList")
+    this.httpService.get("getRoom", room).pipe(take(1)).subscribe((data) => {
+      console.log("got data..")
+      console.log(socketId)
+      console.log(data)
+      this.socket.emit("updateUserListServer", {socketId: socketId, data: data});
+    })
   }
 
   connect(){
@@ -24,31 +64,72 @@ export class SocketService {
   }
 
   disconnect(){
+    this.socket.removeAllListeners();
     this.socket.disconnect();
-    this.socket.removeListener('joinLobby');
+    // this.socket.removeListener('joinLobby');
   }
 
-  emit(event: string, data){
-    console.log('emitting')
-    console.log(event);
-    console.log(data);
+  emit(event: string, data){ // Wrapper for emitting
     this.socket.emit(event, data)
   }
 
-  createLobby(){
-    console.log('in createLobby')
+  getLobbyId(){
     let observable = new Observable(observer => {
-      this.socket.on('sendId', (data) => {
-        console.log('++++')
+      this.socket.once('sendId', (data) => {
+        console.log('Received ID')
         observer.next(data);
       });
     });
     return observable;
   }
 
+
+  /* Game */
+  receiveCurrentQuestion(){
+    {
+      let observable = new Observable(observer => {
+        this.socket.on('receiveCurrentQuestion', (data) => {
+          console.log("receiveCurrentQuestion")
+          observer.next(data);
+        });
+      });
+      return observable;
+    }
+  }
+
+  // socket.emit('receiveCurrentQuestion', hostListOfQuestions);
+
+  allAnswersReceived(){
+    {
+      let observable = new Observable(observer => {
+        this.socket.on('allAnswersReceived', (data) => {
+          console.log("allAnswersReceived")
+          observer.next(data);
+        });
+      });
+      return observable;
+    }
+  }
+
+  onQuizEnd(){
+    {
+      let observable = new Observable(observer => {
+        this.socket.on('onQuizEnd', (data) => {
+          console.log('onQuizEnd')
+          observer.next(data);
+        });
+      });
+      return observable;
+    }
+  }
+
+
+
+/* Not working - Verify this*/
+
   startGame(){
     let observable = new Observable(observer => {
-      this.socket.on('startGameConfirmed', (socketId) => {
+      this.socket.once('startGameConfirmed', (socketId) => {
         // console.log(socketId);
         console.log('in socket.service - startGame')
         // this.startGameConfirm.next(socketId)
@@ -56,13 +137,6 @@ export class SocketService {
       });
     });
     return observable;
-  }
-
-  joinLobby(object: any){
-    this.socket.emit('joinLobby', object);
-    this.socket.on('lobbyJoined', () => {
-      this.joinedLobby.next("");
-    })
   }
 
 }

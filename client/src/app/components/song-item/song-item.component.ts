@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { SongService } from 'src/app/services/song.service';
 
 @Component({
   selector: 'app-song-item',
@@ -7,8 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class SongItemComponent implements OnInit {
   @Input() songData;
-  @Output() selectedSong = new EventEmitter<string>();
-  constructor() { }
+  constructor(private songService: SongService) { }
 
 
 
@@ -17,8 +17,7 @@ export class SongItemComponent implements OnInit {
 
   getValue(songData){
     console.log(songData);
-    this.selectedSong.emit(songData);
-    console.log('emitted')
+    this.songService.passSelectedSong(songData)
   }
 
 }

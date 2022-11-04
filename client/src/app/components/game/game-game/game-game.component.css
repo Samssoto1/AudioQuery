@@ -12,3 +12,17 @@
     background-color: #56a5eb;
     color: white;
 }
+
+.selectedAnswer{
+    background: greenyellow;
+}
+
+#scoreboardScreen{
+    display: flex;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 1em;
+}
+
+#timerAsync{
+    display: none;
+}

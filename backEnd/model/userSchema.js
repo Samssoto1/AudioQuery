@@ -7,6 +7,11 @@ const userSchema = mongoose.Schema({
   email: {type: String, unique: true, lowercase: true, required: true, trim: true},
   password: {type: String, required: true},
   registrationDate: {type: Date, default: Date.now },
+  AQP: {type: Number},
+  level: {type: Number, default: 0},
+  experience: {type:Number},
+  selectedTitle: {type: String}, // later change this as ref to titles??
+  unlockedTitles: {type: Array}, // array of title Ids?
   admin: {type: Boolean, default: false}
 })
 

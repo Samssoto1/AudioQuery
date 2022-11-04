@@ -1,8 +1,3 @@
-#profile-picture{
-    max-width: 20em;
-    max-height: 14em;
-}
-
 #quiz-header{
     text-align: center;
 }
@@ -14,27 +9,11 @@
 
 #create-a-quiz-btn{
     cursor: pointer;
-    /* color: #1a73e8; */
 }
 
 #create-a-quiz-btn:hover{
     text-decoration: underline;
     color: #155cb8;
-}
-
-.question{
-    width: 100%;
-    height: 60px;
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    -webkit-box-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    align-items: center;
-    opacity: 0.8;
-    margin-top: 12px;
 }
 
 .question-title{
@@ -56,17 +35,21 @@
     list-style: none;
     display: flex;
     flex-direction: column;
-    max-height: 45em;
-    /* max-height: 90%; */
     height: auto;
-    overflow-y: scroll;
+    overflow-y: hidden;
     overflow-x: hidden;
+    margin: 0px;
     padding: 0px;
+    width: 97%;
+}
+
+#saveBtn{
+    margin-left: 59em;
 }
 
 #new{
-    margin: 0.4em;
-    width: 100%;
+    margin: 0 auto;
+    width: 95%;
     height: 60px;
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -80,4 +63,37 @@
     margin-top: 12px;
     border-radius: 8px;
     border: 2px dashed rgba(9, 8, 8, 0.4);
+}
+
+.mat-drawer-container{
+    background-color: rgba(255, 0, 0, 0.0);
+}
+
+/* #sideNav{
+    width: calc(100% - 98rem);
+    height: calc(100% - 0rem);
+} */
+
+#sideNav{
+    width: 15%;
+}
+
+#questionCreator{
+    text-align: center;
+}
+mat-sidenav{
+    box-shadow: rgb(0 0 0 / 15%) 0px 22px 24px 0px;
+    /* width: calc(100% - 95rem);
+    height: calc(100% - 0rem); */
+}
+
+#content{
+    height: 50rem !important;
+}
+
+#sidebarToggle{
+    position: absolute;
+    /* margin-top: 20%; */
+    /* margin-bottom: 100%; */
+    height: 80%;
 }

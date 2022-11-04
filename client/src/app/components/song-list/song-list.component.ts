@@ -1,7 +1,5 @@
-import { Component, Input, OnInit} from '@angular/core';
-import { HttpService } from 'src/app/services/http.service';
-import { take } from 'rxjs';
-import { FormControl, Validators } from '@angular/forms';
+import { Component,  OnInit} from '@angular/core';
+import { SongService } from 'src/app/services/song.service';
 
 @Component({
   selector: 'app-song-list',
@@ -10,27 +8,26 @@ import { FormControl, Validators } from '@angular/forms';
 })
 export class SongListComponent implements OnInit {
   canSelect: boolean;
-  songData;
+  songData$;
   term: string;
-  selectedSong;
-  // @Input() selectedSong;
   activeSong;
-  songList = new FormControl('', Validators.required);
+  songList
   formSelect;
+
   
-  constructor(private httpService: HttpService) {
+  constructor(private songService: SongService) {
   }
 
   search(value: string){
     this.term = value;
   }
 
-  getSelectedSong(song){
-    console.log(song);
-    this.selectedSong = song
+  getSelectedSong(selectedSong){
+    console.log(selectedSong);
+    this.songService.passSelectedSong(selectedSong);
   }
 
   ngOnInit(): void {
-    
-  }
+    this.songData$ = this.songService.songList
+}
 }

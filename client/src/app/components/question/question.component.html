@@ -1,6 +1,9 @@
-<div class="question">
-    <span class="question-title">{{question?.questionTitle}}</span><div>
-        <button class="question-btns delete-btn" mat-raised-button (click)="onDelete(question?._id)">Delete</button>
-        <!-- <button class="question-btns" mat-raised-button (click)="navigateToQuestion(question._id)">Edit</button> -->
+<div>
+    <div class="noSelect" id="question" (click)="onEdit()" [ngClass]="{ errorBox: !question.isValid }">
+        <span id="question-title">{{question?.questionTitle}}</span>
+        <div>
+            <button id="delete-btn" mat-raised-button (click)="onDelete(question?._id)"><mat-icon>delete_forever</mat-icon></button>
+            <mat-icon [ngStyle]="{'visibility': (question.isValid) ? 'hidden' : 'visible'}" id="warningSymbol" class="warning" matTooltip="Must meet question requirements before playing this quiz" matTooltipClass="toolTipWarning" aria-label="Button that shows a red tooltip">error_outline</mat-icon>
+        </div>
     </div>
 </div>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -16,6 +16,15 @@ export class HttpService {
   
   constructor(private http: HttpClient, private router: Router) {}
   
+  // Handle Batch Routes
+  batch(route: string, object: any){
+    switch (route){
+      case 'saveQuizQuestions':{
+        return this.http.post(`${this.api}/api/questions/saveQuizQuestions`, object);
+      }
+    }
+  }
+
   // Handle Get Routes
   get(route: string, object: any) {
     switch (route) {
@@ -47,8 +56,15 @@ export class HttpService {
         return this.http.get(`${this.api}/api/quiz/getSongById/${object}`);
       }
       case 'getRoom': {
-        return this.http.get(`${this.api}/api/room/getRoom/${object}`);
+        return this.http.get(`${this.api}/api/rooms/getRoom/${object}`);
       }
+      case 'getQuizQuestionsWithoutAnswer': {
+        return this.http.get(`${this.api}/api/questions/getQuizQuestionsWithoutAnswer/${object}`);
+      }
+      case 'getNicknamesInRoom': {
+        return this.http.get(`${this.api}/getNicknamesInRoom`, {params: new HttpParams().set('socketId', object.socketId).set('nickname', object.nickname)});
+      }
+
       default:
         {
           break;
@@ -61,6 +77,9 @@ export class HttpService {
     switch (route) {
       case 'updateQuestionByQuestionId': {
         return this.http.put(`${this.api}/api/quiz/updateQuestionByQuestionId`, object);
+      }
+      case 'editRoomUserList': {
+        return this.http.put(`${this.api}/api/rooms/editRoomUserList`, object);
       }
       default:
       {
@@ -95,7 +114,10 @@ export class HttpService {
         return this.http.post(`${this.api}/api/users/resetPassword`, object);
       }
       case 'createRoom': {
-        return this.http.post(`${this.api}/api/room/createRoom`, object);
+        return this.http.post(`${this.api}/api/rooms/createRoom`, object);
+      }
+      case 'createManyQuestions': {
+        return this.http.post(`${this.api}/api/questions/createManyQuestions`, object);
       }
       default:
         {
@@ -117,7 +139,7 @@ export class HttpService {
         return this.http.delete(`${this.api}/api/quiz/deleteAllQuizQuestions/${object}`);
       }
       case 'deleteRoom': {
-        return this.http.delete(`${this.api}/api/room/deleteRoom/${object}`);
+        return this.http.delete(`${this.api}/api/rooms/deleteRoom/${object}`);
       }
       default:
         {

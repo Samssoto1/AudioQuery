@@ -1,35 +1,17 @@
-<!-- <h1 mat-dialog-title>Select a song</h1>
-<h2></h2>
-<div mat-dialog-content>
-    Search for a song or choose a song from the list below to base your question on.
-</div>
-<div mat-dialog-actions>
-  <input class="form-control" type="text" name="" id="" placeholder="Enter a search value" (keyup)="search(searchBox.value)" #searchBox>
-  <div class="glyphicon glyphicon-search input-group-addon" (click)="search(searchBox.value)"></div> 
-  <ul>
-    <app-song-item (selectedSong)="getSelectedSong($event)" *ngFor="let songs of songData | songFilter: term;" [songData]="songs"></app-song-item>
-  </ul>
-  <button (click)="canSelect = false" mat-button mat-dialog-close>Cancel</button>
-  <button (click)="canSelect = true" mat-button mat-dialog-close cdkFocusInitial>Okay</button>
-</div> -->
-
 <h2>Select a song</h2>
 <span>
     Search for a song or choose a song from the list below to base your question on.
 </span>
 <div>
   <input class="form-control" type="text" placeholder="Enter a search value" (keyup)="search(searchBox.value)" #searchBox>
-  <!-- <ul>
-    <app-song-item [class.selected]="selectedSong" (selectedSong)="getSelectedSong($event)" *ngFor="let songs of songData | songFilter: term;" [songData]="songs"></app-song-item>
-  </ul> -->
 
-  <!-- If I can get this to work.. delete song Item component -->
   <mat-selection-list #songList [multiple]="false">
-    <mat-list-option *ngFor="let songs of songData | songFilter: term;">
-      {{songs.title}}
+    <!-- <mat-list-option [selected]="selectedSong" *ngFor="let songs of songData$ | async | songFilter: term;" [value]="songs"> -->
+    <mat-list-option *ngFor="let songs of songData$ | async | songFilter: term;" [value]="songs">
+      {{songs.artist}} - {{songs.title}}
     </mat-list-option>
   </mat-selection-list>
 
-  <button (click)="canSelect = false" mat-button mat-dialog-close>Cancel</button>
-  <button (click)="canSelect = true" mat-button mat-dialog-close cdkFocusInitial>Okay</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button (click)="getSelectedSong(songList.selectedOptions.selected[0]?.value)" mat-button mat-dialog-close cdkFocusInitial>Okay</button>
 </div>

@@ -1,29 +1,33 @@
-.form-signin {
+/* Gets rid of bootstrap box shadow on input */
+input:focus, input.form-control:focus {
+  outline:none !important;
+  outline-width: 0 !important;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+#formQuestionCreator{
   width: 100%;
-  max-width: 830px;
+  max-width: 65em;
   padding: 15px;
   margin: auto;
 }
 
-.form-signin .checkbox {
+#formQuestionCreator .checkbox {
   font-weight: 400;
 }
 
-.form-signin .form-floating:focus-within {
+#formQuestionCreator .form-floating:focus-within {
   z-index: 2;
 }
 
-/* .form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-} */
-
-.form-signin input[type="password"], .form-signin input[type="text"], input[type="email"] {
+#formQuestionCreator input[type="password"], #formQuestionCreator input[type="text"], input[type="email"]{
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
 
 /* Form error msg */
 .help-block
@@ -38,12 +42,6 @@ input.ng-invalid.ng-touched{
   border: 1px solid red;
 }
 
-.answer-container{ /* Answer container */
-  /* display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr; */
-}
-
 label{
   float: left;
 }
@@ -52,4 +50,15 @@ label{
   float: left;
   margin-left: 0.3em;
   color: rgb(72, 72, 72);
+}
+
+/* Submit Button */
+button{
+  max-width: 12em;
+  margin: 0 auto;
+}
+
+#showSongsButton{
+  display:flex;
+  justify-content: center;
 }
