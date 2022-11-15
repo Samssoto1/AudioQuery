@@ -32,22 +32,16 @@
 }
 
 #questionSideMenu{
-    list-style: none;
-    display: flex;
-    flex-direction: column;
     height: auto;
     overflow-y: hidden;
     overflow-x: hidden;
-    margin: 0px;
-    padding: 0px;
-    width: 97%;
 }
 
 #saveBtn{
     margin-left: 59em;
 }
 
-#new{
+#newBtn{
     margin: 0 auto;
     width: 95%;
     height: 60px;
@@ -63,19 +57,16 @@
     margin-top: 12px;
     border-radius: 8px;
     border: 2px dashed rgba(9, 8, 8, 0.4);
+    margin-bottom: 1.5em;
 }
 
 .mat-drawer-container{
     background-color: rgba(255, 0, 0, 0.0);
 }
 
-/* #sideNav{
-    width: calc(100% - 98rem);
-    height: calc(100% - 0rem);
-} */
-
 #sideNav{
-    width: 15%;
+    min-width: 20%;
+    /* max-width: 10%; */
 }
 
 #questionCreator{
@@ -83,9 +74,8 @@
 }
 mat-sidenav{
     box-shadow: rgb(0 0 0 / 15%) 0px 22px 24px 0px;
-    /* width: calc(100% - 95rem);
-    height: calc(100% - 0rem); */
 }
+
 
 #content{
     height: 50rem !important;
@@ -93,7 +83,5 @@ mat-sidenav{
 
 #sidebarToggle{
     position: absolute;
-    /* margin-top: 20%; */
-    /* margin-bottom: 100%; */
-    height: 80%;
+    margin-top: 22em;
 }

@@ -97,7 +97,18 @@ export class SocketService {
     }
   }
 
-  // socket.emit('receiveCurrentQuestion', hostListOfQuestions);
+  onHostLeaving(){
+    {
+      let observable = new Observable(observer => {
+        this.socket.on('relayHostLeavingToListeners', (data) => {
+          console.log("hostLeft")
+          observer.next(data);
+        });
+      });
+      return observable;
+    }
+  }
+
 
   allAnswersReceived(){
     {

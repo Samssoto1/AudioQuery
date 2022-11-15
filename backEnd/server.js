@@ -48,11 +48,11 @@ io.on('connection', socket => {
 
     if(rooms.has(data.socketId)){ // If the room exists then add the new user (nickname / score) to the lobby list
       let temp = rooms.get(data.socketId)
-      let newUser = {nickname: data.nickname, username: data.username, answerChosen: "", answerCorrect: "", score: 0}
+      let newUser = {nickname: data.nickname, username: data.username, answerChosen: "", answerCorrect: "", timeRemaining: undefined, score: 0}
       temp.nicknameList.push(newUser)
     }
     else{ // If the room doesn't exist (user is the host - makes a room to append others to in the map
-      rooms.set(data.socketId, {scoreUpdateCount: 0, nicknameList: [{nickname: data.nickname, username: data.username, answerChosen: "", answerCorrect: "", score: 0}]})
+      rooms.set(data.socketId, {scoreUpdateCount: 0, nicknameList: [{nickname: data.nickname, username: data.username, answerChosen: "", answerCorrect: "", timeRemaining: undefined, score: 0}]})
     }
   })
 
@@ -136,6 +136,7 @@ io.on('connection', socket => {
       if(user.nickname == data.nickname){
         // Set answer
         user.answerChosen = data.answerChosen
+        user.timeRemaining = data.timeRemaining
         return
       }
     })
@@ -162,8 +163,7 @@ io.on('connection', socket => {
           user.answerCorrect = true;
           // user.score += 10;
           console.log("time remaining")
-          console.log(data.timeRemaining)
-          user.score =  Math.trunc(user.score + (100 * data.timeRemaining));
+          user.score =  Math.trunc(user.score + (100 * user.timeRemaining));
         }
         else{
           user.answerCorrect = false;
@@ -197,6 +197,21 @@ io.on('connection', socket => {
 
 
     io.to(socketId).emit('onQuizEnd', data);
+  })
+
+  ///////////////////////////////////////////////////////* BOTH GAME & LOBBY METHODS *///////////////////////////////////////////
+  socket.on('hostLeaving', (data) => {
+    console.log("hostLeaving")
+    console.log("hostLeaving")
+    console.log("hostLeaving")
+    console.log("hostLeaving")
+  
+    // Delete Pin from Rooms DB
+    rooms.delete(data.socketId);
+  
+    // Emit to all sockets in room that host has left - game is ending
+    io.to(data.socketId).emit("relayHostLeavingToListeners")
+    console.log(rooms);
   })
 
 })

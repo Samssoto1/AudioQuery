@@ -54,8 +54,6 @@ export class QuestionCreator implements OnInit, OnDestroy {
       // tell dashboard that save is avail
       this.quizDashboardService.onSave();
     }))
-
-
   }
 
 
@@ -97,8 +95,7 @@ export class QuestionCreator implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    this.subs.unsubscribe();
-
+    this.subs.unsubscribe(); // unsubscribe from all subscriptions
   }
 
 }

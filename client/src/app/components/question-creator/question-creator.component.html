@@ -9,7 +9,7 @@
             <app-show-songs-button id="showSongsButton"></app-show-songs-button>
           
           <!-- Validation -->
-          <span class="help-block d-flex justify-content-left m-2" *ngIf="selectedQuestion?.songId == undefined || selectedQuestion?.songId == null || selectedQuestion?.songId == ''">A song is required!</span>
+          <!-- <span class="help-block d-flex justify-content-left m-2" *ngIf="selectedQuestion?.songId == undefined || selectedQuestion?.songId == null || selectedQuestion?.songId == ''">A song is required!</span> -->
 
           
           <!-- Answer1 -->
@@ -20,7 +20,7 @@
             <input required name="answerOne" #answerOneModel="ngModel" type="text" class="form-control" id="answerOne" [ngModel]="selectedQuestion?.answers[0]">
 
             <!-- Validation -->
-            <span class="help-block d-flex justify-content-left m-2" *ngIf="!answerOneModel.valid && answerOneModel.touched">This field is required!</span>
+            <!-- <span class="help-block d-flex justify-content-left m-2" *ngIf="!answerOneModel.valid && answerOneModel.touched">This field is required!</span> -->
           </div>
           
           <!-- Answer2 -->
@@ -29,7 +29,7 @@
             <span class="requiredTag">(required)</span>
             <input [ngModel]="answerTwo" #answerTwoModel="ngModel" required type="text" name="answerTwo" class="form-control" id="answerTwo" [ngModel]="selectedQuestion?.answers[1]">
             <!-- Validation -->
-             <span class="help-block d-flex justify-content-left m-2" *ngIf="!answerTwoModel.valid && answerTwoModel.touched">This field is required!</span>
+             <!-- <span class="help-block d-flex justify-content-left m-2" *ngIf="!answerTwoModel.valid && answerTwoModel.touched">This field is required!</span> -->
           </div>
 
           <!-- Answer3 -->
@@ -38,7 +38,7 @@
             <span class="requiredTag">(required)</span>
             <input [ngModel]="answerThree" #answerThreeModel="ngModel" required type="text" name="answerThree" class="form-control" id="answerThree" [ngModel]="selectedQuestion?.answers[2]">
             <!-- Validation -->
-            <span class="help-block d-flex justify-content-left m-2" *ngIf="!answerThreeModel.valid && answerThreeModel.touched">This field is required!</span>
+            <!-- <span class="help-block d-flex justify-content-left m-2" *ngIf="!answerThreeModel.valid && answerThreeModel.touched">This field is required!</span> -->
           </div>
 
           <!-- Answer4 -->
@@ -47,7 +47,7 @@
             <span class="requiredTag">(required)</span>
             <input [ngModel]="answerFour" #answerFourModel="ngModel" required type="text" name="answerFour" class="form-control" id="answerFour" [ngModel]="selectedQuestion?.answers[3]">
             <!-- Validation -->
-            <span class="help-block d-flex justify-content-left m-2" *ngIf="!answerFourModel.valid && answerFourModel.touched">This field is required!</span>
+            <!-- <span class="help-block d-flex justify-content-left m-2" *ngIf="!answerFourModel.valid && answerFourModel.touched">This field is required!</span> -->
           </div>
           
           <!-- Correct Answer -->
@@ -63,7 +63,7 @@
             </select>
           </div>
           <!-- Validation -->
-          <span class="help-block d-flex justify-content-left m-2" *ngIf="!correctAnswerModel.valid && correctAnswerModel.touched">Please select the correct answer!</span>
+          <!-- <span class="help-block d-flex justify-content-left m-2" *ngIf="!correctAnswerModel.valid && correctAnswerModel.touched">Please select the correct answer!</span> -->
 
         </div>
         </form>

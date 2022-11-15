@@ -1,20 +1,21 @@
 <mat-sidenav-container id="content">
     <div class="border-bottom">
-      <h1 style="text-align: center;">{{quizTitle}}</h1>
+      <h1 class="text-center">{{quizTitle}}</h1>
     </div>
     
-    <button id="sidebarToggle" mat-icon-button (click)="snav.toggle()">
-      <!-- <mat-icon>menu</mat-icon> -->
-      <mat-icon>arrow_forward_ios</mat-icon>
-    </button>
-    <mat-sidenav #snav mode="side" opened id="sideNav">
-      <h2 class="noSelect" id="quiz-header">Questions</h2>
-      <button id="new" (click)="newQuestion(quizId)">
-        + Add Question
+      <button id="sidebarToggle" mat-icon-button (click)="snav.toggle()">
+          <mat-icon class="text-center">arrow_forward_ios</mat-icon>
       </button>
-      <div id="questionSideMenu">
-        <app-question-list id="questionList" [quizId]="quizId" [questionInfo]="questionInfo" (saveAvailable)="updateSave()"></app-question-list>
-      </div>
+    
+    <!-- <mat-sidenav opened #snav mode="side" id="sideNav">   -->
+    <mat-sidenav closed #snav mode="side" id="sideNav">
+        <h2 class="noSelect" id="quiz-header">Questions</h2>
+        <button id="newBtn" (click)="newQuestion(quizId)">
+          + Add Question
+        </button>
+        <div id="questionSideMenu">
+          <app-question-list [quizId]="quizId" [questionInfo]="questionInfo" (saveAvailable)="updateSave()"></app-question-list>
+        </div>
     </mat-sidenav>
     
     <div id="questionCreator">

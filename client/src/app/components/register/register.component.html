@@ -5,7 +5,7 @@
       <h4 class="d-flex justify-content-center">AudioQuery</h4>
       <div class="card bg-light">
         <div class="card-body">
-          <h1 class="h3 mb-3 fw-normal">Register Here</h1>
+          <h1 class="h3 mb-3 fw-normal text-white">Register Here</h1>
           <img id="mascot" class="text-center" src="../../../assets/images/audioQueryMascot" alt="">
     <form (ngSubmit)="onRegisterSubmit()" #f="ngForm">
 
@@ -81,10 +81,10 @@
             </div>
 
           <!-- Sign Up Btn -->
-          <button class="w-100 btn btn-lg btn-primary mt-4" type="submit"
+          <button class="w-100 btn btn-lg mt-4" type="submit"
             [disabled]="!f.valid || ((password.value != passwordConfirmation.value) && passwordConfirmation.touched)">Create
             Account</button>
-          <p class="mt-5 mb-3 text-muted">&copy; 2022–2022</p>
+          <!-- <p class="mt-5 mb-3 text-muted">&copy; 2022–2022</p> -->
         </form>
         </div>
       </div>

@@ -57,6 +57,9 @@ export class GameGameComponent implements OnInit, OnDestroy{
   startDate
   timeNow
   timeRemaining: any;
+  timeAnsweredIn;
+
+  showTimeAnswered: boolean = false;
 
   constructor(private socketService: SocketService, private router: Router, private httpService: HttpService, private gameService: GameService) {
     try{
@@ -75,13 +78,16 @@ export class GameGameComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     // Set up volume
     if(!localStorage.getItem("volume")){
+      console.log("no localStorage volume found")
       localStorage.setItem("volume", "0.5");
       this.volume = 0.5;
     }
     else{
-      this.volume = localStorage.getItem("volume");
+      this.volume = Number(localStorage.getItem("volume"));
       localStorage.setItem("volume", String(this.volume));
+      console.log("volume read as " + this.volume)
     }
+
 
     /* INIT Subscriptions for game */
 
@@ -118,7 +124,13 @@ export class GameGameComponent implements OnInit, OnDestroy{
 
     // When SINGULAR user has finished choosing a question
     this.subs.add(this.gameService.answerChosen.subscribe(() =>{
-      console.log(this.timeRemaining);
+      // this.timeAnsweredIn = Math.trunc(10 - this.timeRemaining);
+      // Not extremely (precise) rounding but gets the job done
+      // Math.trunc(num * Math.pow(10, places)) / Math.pow(10, places);
+      this.timeAnsweredIn = Math.trunc((10 - this.timeRemaining) * Math.pow(10, 2)) / Math.pow(10, 2);
+
+      
+      this.showTimeAnswered = true;
       this.socketService.emit("answerChosen", {answerChosen: this.selectedAnswer, socketId: this.socketId, questionId: this.selectedQuestion._id, nickname: this.nickname, timeRemaining: this.timeRemaining})
       
       // 
@@ -132,6 +144,9 @@ export class GameGameComponent implements OnInit, OnDestroy{
 
     //  When all answers have been chosen by the users in the game room (res provides score data)
     this.subs.add(this.socketService.allAnswersReceived().subscribe(async (res)=>{
+      console.log("time remaining: ")
+      console.log(this.timeRemaining);
+      this.showTimeAnswered = false;
       console.log(res)
       this.showGame = false;
       this.showVolume = false;
@@ -164,6 +179,7 @@ export class GameGameComponent implements OnInit, OnDestroy{
       }
     }))
 
+    // On end of quiz (no more questions left )
     this.subs.add(this.socketService.onQuizEnd().subscribe((res) =>{
       console.log("in onquizend")
       console.log(res);
@@ -175,10 +191,28 @@ export class GameGameComponent implements OnInit, OnDestroy{
       this.showWinnerScreen = true;
       this.showVolume = false;
 
-
       // If user is host allow option to restart quiz 
 
     }))
+
+    if(!this.isHost){
+      // On Host Leaving or disconnecting
+      this.subs.add(this.socketService.onHostLeaving().subscribe((res) =>{
+        alert("host has left the game");
+        // sorry host has left the game thingy + redirect.. otherwise, must do destructuring and pop up
+        
+      }))
+
+    }
+
+
+    // // On play again??
+    // this.subs.add(() =>{
+
+    // })
+
+
+
 
     if(this.isHost){ /* If user is the host, get the required quiz data */
       this.subs.add(this.httpService.get("getQuizQuestionsWithoutAnswer", this.quizId)
@@ -204,8 +238,9 @@ export class GameGameComponent implements OnInit, OnDestroy{
     // Handle audio functionality
     this.audio = new Audio(hostListOfQuestions.songId.audioFile)
     this.audioCreated = true;
-    this.audio.volume = this.volume; 
+    this.audio.volume = Number(this.volume); 
     this.audio.play();
+    console.log(this.audio.volume);
 
     // Set the game question
     this.selectedQuestion = hostListOfQuestions;
@@ -228,6 +263,7 @@ export class GameGameComponent implements OnInit, OnDestroy{
   let volume = $event
   if(this.audioCreated){
     localStorage.setItem("volume", String(volume));
+    this.volume = volume;
     this.audio.volume = volume;
   }
   }
@@ -239,14 +275,25 @@ export class GameGameComponent implements OnInit, OnDestroy{
     }
 
     // All actions necessary if user is leaving the game
-    if(this.userInStartGame)
-    this.socketService.disconnect(); // disconnect from all socket listeners
-    this.subs.unsubscribe() // unsubscribe from all rxjs listeners
-    
-    if(this.isHost){ // If user is the host, delete the room from DB
-      this.httpService.delete('deleteRoom', this.roomId).pipe(take(1)).subscribe(() => {
-      })
+    if(this.userInStartGame){
+      if(this.isHost){ // If user is Host
+  
+        // Emit to backend socket that host is leaving (alerts all listening sockets and deletes room from backend Map)
+          this.socketService.emit("hostLeaving", {socketId: this.socketId})
+  
+        // delete the room from DB
+        this.httpService.delete('deleteRoom', this.roomId).pipe(take(1)).subscribe(() => {
+        })
+
+        this.socketService.disconnect(); // disconnect from all socket listeners
+        this.subs.unsubscribe() // unsubscribe from all rxjs listeners
+      }
+      else{
+        this.socketService.disconnect(); // disconnect from all socket listeners
+        this.subs.unsubscribe() // unsubscribe from all rxjs listeners
+      }
     }
+    
   }
 
 }

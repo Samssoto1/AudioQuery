@@ -10,9 +10,10 @@
 }
 
 .cdk-drag-preview{
-    width: calc(100% * 1 / 7);
-}
 
+    width: calc(100% * 1 / 5);
+    /* width: calc(100% * 1 / 7); */
+}
 
 .cdk-drag-placeholder {
     opacity: 0;
@@ -31,6 +32,10 @@
 }
 
 .highlight{ 
-    /* background-color:beige; */
     border:1px solid black;
+}
+
+#question{
+    margin-left: 0.5em;
+    margin-right: 0.8em;
 }
