@@ -27,6 +27,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatExpansionModule } from '@angular/material/expansion';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 // Components
 import { AppComponent } from './components/app.component';
@@ -134,6 +135,7 @@ const config: SocketIoConfig = {
     ReactiveFormsModule,
     MatProgressBarModule,
     MatExpansionModule,
+    MatAutocompleteModule,
     SocketIoModule.forRoot(config)
 
   ],

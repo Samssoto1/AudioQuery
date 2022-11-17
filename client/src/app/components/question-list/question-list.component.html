@@ -2,7 +2,8 @@
     <div class="example-list" cdkDropList [cdkDropListData]="questionInfo" (cdkDropListDropped)="drop($event)">
         <div id="question" *ngFor="let question of questionInfo; index as i">
             <span class="noSelect">{{i + 1}}.)</span>
-            <div [ngClass]="{'highlight': selectedIndex === i}">
+            <!-- <div [ngClass]="{'highlight': selectedIndex === i}"> -->
+            <div>
                 <app-question class="example-box" cdkDrag [question]=question (click)="setRow(i)">
                     <app-question [question]=question *cdkDragPreview></app-question>
                 </app-question>

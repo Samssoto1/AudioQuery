@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const songId = require("./songSchema")
 
 const questionSchema = mongoose.Schema({
+  question: {type: String},
   questionTitle: {type: String},
   answers: {type: Array},
   correctAnswer: {type: Number},

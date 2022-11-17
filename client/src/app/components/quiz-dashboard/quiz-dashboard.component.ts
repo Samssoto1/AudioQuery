@@ -66,14 +66,8 @@ export class QuizDashboardComponent implements OnInit, OnDestroy {
       tap(res => {this.quizTitle = res['title']; this.isValidQuiz = res['isValid']}),
       concatMap(res => this.httpService.get('quizQuestions', this.quizId)),
       tap(res => {
+        console.log(res);
         this.questionInfo = res;
-        // If array returned has at least 1 result then
-        // if (this.questionInfo.length < 1) {
-        //   // By default selectedQuestion is the first in the list
-        //   this.questionInfo = [{ answers: [], correctAnswer: "", questionTitle: "", quizId: this.quizId, songId: "", location: 0 }]
-        // }
-        // else {
-        // }
         this.questionInfo = this.questionInfo.sort((a, b) => a.location > b.location ? 1 : a.location < b.location ? -1 : 0)
         this.previousQuestionInfo = JSON.parse(JSON.stringify(this.questionInfo)) // set previousQuestionInfo to this.questionInfo by VALUE not ref
         this.selectedQuestion = this.questionInfo[0]
@@ -99,6 +93,7 @@ export class QuizDashboardComponent implements OnInit, OnDestroy {
         console.log(res['body']['correctAnswer'])
         if(this.questionInfo[i]['_id'] == res['_id'] && res['_id'] != undefined){
           console.log('update _id')
+          this.questionInfo[i]['question'] = res['body']['question']
           this.questionInfo[i]['answers'] = res['body']['answers'];
           this.questionInfo[i]['correctAnswer'] = res['body']['correctAnswer'];
           this.questionInfo[i]['isValid'] = res['body']['isValid']
@@ -110,6 +105,7 @@ export class QuizDashboardComponent implements OnInit, OnDestroy {
 
         if(this.questionInfo[i]['clientId'] == res['clientId'] && res['clientId'] != undefined){
           console.log('update clientId')
+          this.questionInfo[i]['question'] = res['body']['question']
           this.questionInfo[i]['answers'] = res['body']['answers'];
           this.questionInfo[i]['correctAnswer'] = res['body']['correctAnswer'];
           this.questionInfo[i]['isValid'] = res['body']['isValid']
@@ -283,6 +279,19 @@ export class QuizDashboardComponent implements OnInit, OnDestroy {
             if(this.questionInfoMapDb.has(previousQuestion['_id']))
             {
               // convert this to normal comparison between two arrays later (comparing json strings prob not the best way..)
+              if(previousQuestion['question'] != this.questionInfoMapDb.get(previousQuestion['_id']).question){ // check correctAnswer
+                console.log('question IS DIFF')
+                this.questionsEdited.push({_id: this.questionInfoMapDb.get(previousQuestion['_id'])._id, body: {
+                question: this.questionInfoMapDb.get(previousQuestion['_id']).question,
+                answers: this.questionInfoMapDb.get(previousQuestion['_id']).answers,
+                correctAnswer: this.questionInfoMapDb.get(previousQuestion['_id']).correctAnswer,
+                isValid: this.questionInfoMapDb.get(previousQuestion['_id']).isValid,
+                location: this.questionInfoMapDb.get(previousQuestion['_id']).location,
+                questionTitle: this.questionInfoMapDb.get(previousQuestion['_id']).questionTitle,
+                songId: this.questionInfoMapDb.get(previousQuestion['_id']).songId}})
+                return
+              }
+
               if(JSON.stringify(previousQuestion['answers']) != JSON.stringify(this.questionInfoMapDb.get(previousQuestion['_id']).answers)){ // check answers
                 console.log('ANSWERS IS DIFF')
                 this.questionsEdited.push({_id: this.questionInfoMapDb.get(previousQuestion['_id'])._id, body: {answers: this.questionInfoMapDb.get(previousQuestion['_id']).answers,

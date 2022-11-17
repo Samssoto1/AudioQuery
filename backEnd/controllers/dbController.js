@@ -17,6 +17,7 @@ operation = {};
 operation.saveQuizQuestions = function (schema) {
 
 	return async (req, res) => {
+		console.log("saveQuizQuestions")
 		console.log(req.body);
 		const session = await schema.startSession()
 		session.startTransaction()
@@ -31,13 +32,17 @@ operation.saveQuizQuestions = function (schema) {
 			}
 			// Handles multiple edits / updates upon save if necessary
 			if (req.body.edit.length > 0) {
+				console.log("edit");
+				console.log(req.body.edit)
 				const updateQueries = [];
 
 				req.body.edit.forEach((edit) => {
 					updateQueries.push({
 						updateOne: {
 							filter: {_id: edit._id},
-							update: { $set: {answers: edit.body.answers,
+							update: { $set: {
+								question: edit.body.question,
+								answers: edit.body.answers,
 								correctAnswer: edit.body.correctAnswer,
 								questionTitle: edit.body.questionTitle,
 								location: edit.body.location,
@@ -245,7 +250,8 @@ operation.loginUser = function (schema) { // Login a user
 		return res.status(200).json({
 			success: true,
 			token: token,
-			expiresIn: 600, // this is 10m in seconds
+			// expiresIn: 600, // this is 10m in seconds
+			expiresIn: 3600,
 			user:{
 				id: user._id,
 				username: user.username
@@ -432,7 +438,7 @@ operation.getQuizQuestions = function (schema) {
 
 operation.getQuizQuestionsWithoutAnswer = function (schema) {	
 	return async (req, res) => {
-		schema.find({quizId: req.params.quizId}, 'answers quizId songId location').populate("songId", 'audioFile').sort({"location": 1}).then(p => res.status(200).send(p));
+		schema.find({quizId: req.params.quizId}, 'question answers quizId songId location').populate("songId", 'audioFile').sort({"location": 1}).then(p => res.status(200).send(p));
 		/*
 		schema.find({quizId: req.params.quizId}, 'questionTitle answers quizId songId location', function (err, docs) {
 			if (err) {

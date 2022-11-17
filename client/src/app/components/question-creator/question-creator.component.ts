@@ -43,10 +43,16 @@ export class QuestionCreator implements OnInit, OnDestroy {
 
   }
 
+  getQuestion(question){
+    console.log(question);
+    this.selectedQuestion['question'] = question;
+  }
+
   ngOnInit(): void {
 
     this.subs.add(this.songService.selectedSong.subscribe((res) =>{
       console.log(res)
+      this.selectedQuestion['question'] = res['question'];
       this.selectedQuestion['songId'] = res['_id'];
       this.selectedQuestion['questionTitle'] = res['title']
       this.selectedQuestion['artist'] = res['artist']
@@ -71,7 +77,9 @@ export class QuestionCreator implements OnInit, OnDestroy {
     if(this.selectedQuestion._id != undefined){
       this.quizService.changes.next({_id: this.selectedQuestion._id, 
         body: 
-          {answers: [this.createAQuizQuestionForm.value.answerOne, this.createAQuizQuestionForm.value.answerTwo, this.createAQuizQuestionForm.value.answerThree, this.createAQuizQuestionForm.value.answerFour],
+          {
+          question: this.selectedQuestion.question,
+          answers: [this.createAQuizQuestionForm.value.answerOne, this.createAQuizQuestionForm.value.answerTwo, this.createAQuizQuestionForm.value.answerThree, this.createAQuizQuestionForm.value.answerFour],
           correctAnswer: this.createAQuizQuestionForm.value.correctAnswer,
           location: this.selectedQuestion.location,
           questionTitle: this.selectedQuestion.questionTitle,
@@ -84,7 +92,9 @@ export class QuestionCreator implements OnInit, OnDestroy {
     else{
       this.quizService.changes.next({clientId: this.selectedQuestion.clientId, 
         body: 
-          {answers: [this.createAQuizQuestionForm.value.answerOne, this.createAQuizQuestionForm.value.answerTwo, this.createAQuizQuestionForm.value.answerThree, this.createAQuizQuestionForm.value.answerFour],
+          {
+          question: this.selectedQuestion.question,
+          answers: [this.createAQuizQuestionForm.value.answerOne, this.createAQuizQuestionForm.value.answerTwo, this.createAQuizQuestionForm.value.answerThree, this.createAQuizQuestionForm.value.answerFour],
           correctAnswer: this.createAQuizQuestionForm.value.correctAnswer,
           location: this.selectedQuestion.location,
           questionTitle: this.selectedQuestion.questionTitle,

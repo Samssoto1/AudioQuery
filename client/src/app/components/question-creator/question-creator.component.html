@@ -10,8 +10,41 @@
           
           <!-- Validation -->
           <!-- <span class="help-block d-flex justify-content-left m-2" *ngIf="selectedQuestion?.songId == undefined || selectedQuestion?.songId == null || selectedQuestion?.songId == ''">A song is required!</span> -->
-
           
+          <label for="question">Question</label>
+            <input id="question" name="question" [(ngModel)]="selectedQuestion.question" placeholder="Question" [matAutocomplete]="auto" required class="form-control">
+            <!-- <input matInput name="question" [(ngModel)]="question" placeholder="Question" [matAutocomplete]="auto" required> -->
+              <mat-autocomplete #auto="matAutocomplete">
+                <!-- Name of Song -->
+                <mat-option (click)='getQuestion("What" + "&#39;" + "s the name of the song playing?")'>
+                  What's the name of the song playing?
+                </mat-option>
+
+                <!--  Name of Artist -->
+                <mat-option (click)='getQuestion("What" + "&#39;" + "s the name of the artist playing?")'>
+                  What's the name of the artist playing?
+                </mat-option>
+
+
+                  <!-- <mat-option *ngFor="let item of filteredData" [value]="item.id">
+                      {{item.text}}
+                  </mat-option> -->
+              </mat-autocomplete>
+
+
+
+
+
+
+            <!-- Additional preset questions based on tags / genre of song -->
+            <!-- <mat-option *ngFor="let option of options" [value]="option">
+              {{option}}
+            </mat-option> -->
+
+
+
+
+
           <!-- Answer1 -->
           <div class="col-6">
             <label for="answerOne">Answer 1</label>

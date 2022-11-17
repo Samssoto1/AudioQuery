@@ -10,7 +10,8 @@
         <!-- Game questions / answer selection -->
         <div id="game" class="justify-center flex-column" *ngIf="showGame">
 
-            <h2 id="question"> What's the name of the song playing?</h2>
+            <!-- <h2 id="question"> What's the name of the song playing?</h2> -->
+            <h2 id="question">{{selectedQuestion?.question}}</h2>
 
             <!-- Answer Choices -->
             <div class="choice-container" [ngClass]="{selectedAnswer : selectedAnswer == selectedQuestion?.answers[0]}" (click)="getSelectedAnswer(selectedQuestion?.answers[0])">
