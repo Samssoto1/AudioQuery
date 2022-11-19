@@ -15,3 +15,8 @@ ul{
 .selected{
     color: purple;
 }
+
+#selectionList{
+    max-height: 30em;
+    overflow: auto;
+}

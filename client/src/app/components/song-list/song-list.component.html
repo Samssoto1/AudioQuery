@@ -1,11 +1,11 @@
 <h2>Select a song</h2>
 <span>
-    Search for a song or choose a song from the list below to base your question on.
+    Search and select a song by it's name in order to add it your quiz.
 </span>
 <div>
   <input class="form-control" type="text" placeholder="Enter a search value" (keyup)="search(searchBox.value)" #searchBox>
 
-  <mat-selection-list #songList [multiple]="false">
+  <mat-selection-list #songList [multiple]="false" id="selectionList">
     <!-- <mat-list-option [selected]="selectedSong" *ngFor="let songs of songData$ | async | songFilter: term;" [value]="songs"> -->
     <mat-list-option *ngFor="let songs of songData$ | async | songFilter: term;" [value]="songs">
       {{songs.artist}} - {{songs.title}}
