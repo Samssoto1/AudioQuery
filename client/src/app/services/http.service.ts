@@ -2,13 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 
 export class HttpService {
-  api: string = 'http://localhost:8000';
+  // Dev
+  // api: string = 'http://localhost:8000';
+  // Deploy
+  api = environment.api;
+  
   private tokenTimer: NodeJS.Timer;
   private token: string;
   private authStatusListener = new Subject<boolean>();

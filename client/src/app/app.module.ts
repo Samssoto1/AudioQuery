@@ -71,6 +71,8 @@ import { SocketService } from './services/socket.service';
 import { GameGameComponent } from './components/game/game-game/game-game.component';
 import { GameNicknameScoreComponent } from './components/game/game-nickname-score/game-nickname-score.component';
 
+// Taken out for build
+/*
 const config: SocketIoConfig = {
   url: environment.socketUrl, //socket server url;
   options: {
@@ -78,6 +80,7 @@ const config: SocketIoConfig = {
     transports: ['websocket']
   }
 }
+*/
 
 @NgModule({
   declarations: [
@@ -136,7 +139,8 @@ const config: SocketIoConfig = {
     MatProgressBarModule,
     MatExpansionModule,
     MatAutocompleteModule,
-    SocketIoModule.forRoot(config)
+    SocketIoModule
+    // SocketIoModule.forRoot(config) (taken out for build) and replaced by above
 
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],

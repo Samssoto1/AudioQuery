@@ -4,6 +4,7 @@
   "description": "myAudioApp",
   "main": "server.js",
   "scripts": {
+    "deploy": "node server.js",
     "start": "nodemon server.js",
     "test": "mocha"
   },

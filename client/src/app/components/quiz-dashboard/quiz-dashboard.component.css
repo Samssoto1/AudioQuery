@@ -38,7 +38,11 @@
 }
 
 #saveBtn{
-    margin-left: 59em;
+    float: right;
+    margin-top: 2em;
+    margin-right: 2em;
+    /* margin-right: 2em; */
+    /* margin-left: 59em; */
 }
 
 #newBtn{
@@ -71,6 +75,13 @@
 
 #questionCreator{
     text-align: center;
+    box-shadow: 0 12px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+    
+    background: rgb(235,183,163);
+    border-radius: 25px;
+    border: 5px;
+    margin-left: 6em;
+    margin-right: 6em;
 }
 mat-sidenav{
     box-shadow: rgb(0 0 0 / 15%) 0px 22px 24px 0px;

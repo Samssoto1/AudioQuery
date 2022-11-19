@@ -18,9 +18,11 @@
         </div>
     </mat-sidenav>
     
-    <div id="questionCreator">
+    <div class="container">
+      <div id="questionCreator">
       <button (click)="save()" [disabled]="!saveAvaliable" id="saveBtn" class="btn btn-warning">Save</button>
-      <app-question-creator *ngIf="selectedQuestion" [selectedQuestion]="selectedQuestion"></app-question-creator>
+        <app-question-creator *ngIf="selectedQuestion" [selectedQuestion]="selectedQuestion"></app-question-creator>
+      </div>
     </div>
-  
+      
   </mat-sidenav-container>
