@@ -13,7 +13,7 @@ import { SocketService } from '../services/socket.service';
   providers: [SocketService]
 })
 export class AppComponent implements OnInit, OnDestroy{
-  title = 'client';
+  title = 'AudioQuery';
   bgColor: any = "";
   subscription: Subscription;
 
