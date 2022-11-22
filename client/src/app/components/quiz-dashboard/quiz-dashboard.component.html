@@ -8,7 +8,7 @@
       </button>
     
     <!-- <mat-sidenav opened #snav mode="side" id="sideNav">   -->
-    <mat-sidenav closed #snav mode="side" id="sideNav">
+    <mat-sidenav opened #snav mode="side" id="sideNav">
         <h2 class="noSelect" id="quiz-header">Questions</h2>
         <button id="newBtn" (click)="newQuestion(quizId)">
           + Add Question
@@ -18,11 +18,11 @@
         </div>
     </mat-sidenav>
     
-    <div class="container">
+    <div class="container text-center">
       <div id="questionCreator">
-      <button (click)="save()" [disabled]="!saveAvaliable" id="saveBtn" class="btn btn-warning">Save</button>
         <app-question-creator *ngIf="selectedQuestion" [selectedQuestion]="selectedQuestion"></app-question-creator>
       </div>
+      <button (click)="save()" [disabled]="!saveAvaliable" id="saveBtn" class="btn btn-warning mt-4">Save Quiz</button>
     </div>
-      
+    
   </mat-sidenav-container>

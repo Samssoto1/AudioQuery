@@ -1,11 +1,12 @@
 <main class="px-3">
   <div class="container">
+    <div class="row">
       <section id="hero" class="container-fluid">
       <div>
         <img class="d-flex align-center justify-content-center" id="logo" src="../../../assets/images/audioQueryLogo.jpg" alt="">
         <p class="lead text-white">Create audio based quizzes for you and your friends to enjoy.</p>
         <p id="btn-container" class="lead">
-          <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Learn more</a>
+          <a class="btn btn-lg btn-secondary fw-bold" (click)="directToPin()">Join a Game Lobby</a>
         </p>
       </div>
       <div>
@@ -18,10 +19,39 @@
       </div>
     </section>
     </div>
-    <section id="pin" class="container-fluid d-flex align-center justify-content-center">
-      <div>
-        <h2 class="text-black">Already have a game set up?</h2>
-        <button (click)="directToPin()">Pin</button>
+    </div>
+    <section id="pin" class="container-fluid">
+        <h2 class="text-black text-center">How To Play</h2>
+        <div id="hostGuestBox">
+          <div>
+            <span id="hostHeader" class="h3">Host</span>
+            <ol>
+              <li>Create an account or sign in</li>
+              <li>Create a Quiz</li>
+              <li>Create, Edit, Delete questions on your AudioQuery quiz by selecting a song, selecting the question, filling out the inputs, and clicking the 'save quiz' button when your done.</li>
+              <li>Finally, redirect to your profile page and click on the 'play' button on the quiz you created to a host a game lobby.</li>
+              <li>Next, send your friends the game pin and click the 'start' button when your ready to start the game!</li>
+            </ol>
+          </div>
+          <div>
+            <span class="h3">Guest</span>
+            <ol>
+              <li>Copy and paste the code the PIN from the game host's lobby.</li>
+              <li>Click here or redirect to <a (click)="directToPin()">https://www.AudioQuery.com</a> to enter the pin.</li>
+              <li>After entering the correct game pin, choose a nickname for everyone else in the room to see you as</li>
+              <li>Your in! Wait for the host to start the game to begin AudioQuerying!</li>
+            </ol>
+          </div>
+        </div>
+    </section>
+    <section id="playGame">
+      <div id="playGameDiv">
+        <span class="h2 text-white">What're you waiting for?</span>
+        <p class="lead text-white">Sign up to create and host your own quizzes</p>
+        <p id="btn-container" class="lead">
+          <a class="btn btn-lg btn-secondary fw-bold m-3" (click)="directToPin()">Join a Game Lobby</a>
+          <button class="btn btn-lg btn-secondary fw-bold" (click)="directToRegister()">Create an account</button>
+        </p>
       </div>
     </section>
 </main>

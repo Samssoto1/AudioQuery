@@ -33,4 +33,8 @@ export class HomeComponent implements OnInit, OnDestroy{
     this.router.navigate(["/pin"])
   }
 
+  directToRegister(){
+    this.router.navigate(["/register"]);
+  }
+
 }
