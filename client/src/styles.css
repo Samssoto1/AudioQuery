@@ -11,4 +11,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     user-select: none; /* Standard */
 }
 
-    
+/* Disables Bootstrap CSS default "Smooth" scrolling behavior when switching between views */
+html {
+    scroll-behavior: auto !important
+    }

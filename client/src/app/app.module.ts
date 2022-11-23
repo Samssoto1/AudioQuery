@@ -139,7 +139,7 @@ const config: SocketIoConfig = {
     MatProgressBarModule,
     MatExpansionModule,
     MatAutocompleteModule,
-    SocketIoModule
+    SocketIoModule,
     // SocketIoModule.forRoot(config) (taken out for build) and replaced by above
 
   ],
