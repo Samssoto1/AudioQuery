@@ -10,7 +10,7 @@ export class AppService {
 
   constructor() { }
 
-  updateBackgroundColor(color){
-    this.backgroundColor.next(color);
+  updateBackgroundColor(color, backgroundAnimation){
+    this.backgroundColor.next({color: color, backgroundAnimation});
   }
 }

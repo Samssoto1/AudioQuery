@@ -5,7 +5,7 @@
 
 
     <span *ngIf="showTimer">{{seconds}}</span>
-    <mat-progress-bar mode="buffer" [value]="seconds * 10"></mat-progress-bar>
+    <mat-progress-bar  *ngIf="showTimer" mode="buffer" [value]="seconds * 10"></mat-progress-bar>
 
         <!-- Game questions / answer selection -->
         <div id="game" class="justify-center flex-column" *ngIf="showGame">
@@ -13,8 +13,16 @@
             <!-- <h2 id="question"> What's the name of the song playing?</h2> -->
             <h2 id="question">{{selectedQuestion?.question}}</h2>
 
+
+            <!-- *ngFor="item in list | randomOrder"> -->
+            <div class="choice-container" *ngFor="let choice of selectedQuestion | randomOrder" [ngClass]="{selectedAnswer : selectedAnswer == choice}" (click)="getSelectedAnswer(choice)">
+                <p class="choice-prefix">A</p>
+                <app-game-questionAnswer [answer]="choice"></app-game-questionAnswer>
+                <!-- <app-game-questionAnswer [answer]="choice?.answers[0]"></app-game-questionAnswer> -->
+            </div>
+
             <!-- Answer Choices -->
-            <div class="choice-container" [ngClass]="{selectedAnswer : selectedAnswer == selectedQuestion?.answers[0]}" (click)="getSelectedAnswer(selectedQuestion?.answers[0])">
+            <!-- <div class="choice-container" [ngClass]="{selectedAnswer : selectedAnswer == selectedQuestion?.answers[0]}" (click)="getSelectedAnswer(selectedQuestion?.answers[0])">
                 <p class="choice-prefix">A</p>
                 <app-game-questionAnswer [answer]="selectedQuestion?.answers[0]"></app-game-questionAnswer>
             </div>
@@ -29,7 +37,7 @@
             <div class="choice-container" [ngClass]="{selectedAnswer : selectedAnswer == selectedQuestion?.answers[3]}" (click)="getSelectedAnswer(selectedQuestion?.answers[3])">
                 <p class="choice-prefix">D</p>
                 <app-game-questionAnswer [answer]="selectedQuestion?.answers[3]"></app-game-questionAnswer>
-            </div>
+            </div> -->
 
         </div>
 

@@ -17,14 +17,23 @@ export class AppComponent implements OnInit, OnDestroy{
   bgColor: any = "";
   subscription: Subscription;
 
+  // Toggle on and off on different views
+  backgroundAnimation: boolean;
+
+
 
   constructor(private authService: AuthService, private appService: AppService, private cdr: ChangeDetectorRef){
   }
 
   ngOnInit(): void {
     this.authService.autoAuthUser();
-    this.subscription = this.appService.backgroundColor.subscribe((color) =>{
-      this.bgColor = color;
+    this.subscription = this.appService.backgroundColor.subscribe((data) =>{ // data.color, data.backgroundAnimation
+      console.log(data);
+      this.backgroundAnimation = data['backgroundAnimation'];
+      // if(data['color'] != ""){
+        this.bgColor = data['color'];
+        console.log(this.bgColor)
+      // }
       this.cdr.detectChanges();
     })
   }

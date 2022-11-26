@@ -70,6 +70,7 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { SocketService } from './services/socket.service';
 import { GameGameComponent } from './components/game/game-game/game-game.component';
 import { GameNicknameScoreComponent } from './components/game/game-nickname-score/game-nickname-score.component';
+import { RandomOrderPipe } from './pipes/random-order.pipe';
 
 // Taken out for build
 /*
@@ -116,6 +117,7 @@ const config: SocketIoConfig = {
     GameQuestionAnswerComponent,
     GameGameComponent,
     GameNicknameScoreComponent,
+    RandomOrderPipe,
   ],
   imports: [
     BrowserModule,

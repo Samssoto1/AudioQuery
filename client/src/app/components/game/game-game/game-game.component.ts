@@ -50,7 +50,8 @@ export class GameGameComponent implements OnInit, OnDestroy{
 
   showTimer = true;
   timer; 
-  seconds = 11; 
+  // seconds = 11; 
+  seconds = 16;
 
   timerRunning = true;
 
@@ -100,7 +101,8 @@ export class GameGameComponent implements OnInit, OnDestroy{
     this.subs.add(this.socketService.receiveCurrentQuestion().subscribe(async (res) =>{
       this.handleQuestionDelivery(res); // process all requirements for the question to function
       this.selectedAnswer = ""
-      this.seconds = 10;
+      // this.seconds = 10;
+      this.seconds = 15;
       this.showTimer = true;
       this.timerRunning = true;
 
@@ -127,7 +129,7 @@ export class GameGameComponent implements OnInit, OnDestroy{
       // this.timeAnsweredIn = Math.trunc(10 - this.timeRemaining);
       // Not extremely (precise) rounding but gets the job done
       // Math.trunc(num * Math.pow(10, places)) / Math.pow(10, places);
-      this.timeAnsweredIn = Math.trunc((10 - this.timeRemaining) * Math.pow(10, 2)) / Math.pow(10, 2);
+      this.timeAnsweredIn = Math.trunc((15 - this.timeRemaining) * Math.pow(10, 2)) / Math.pow(10, 2);
 
       
       this.showTimeAnswered = true;
@@ -135,22 +137,30 @@ export class GameGameComponent implements OnInit, OnDestroy{
       
       // 
       this.showGame = false;
-      this.showVolume = false;
-      this.showScoreboardScreen = false;``
+      // this.showVolume = false;
+      this.showScoreboardScreen = false;
       this.timeRemaining = "";
-      this.audio.pause();
+      // this.audio.pause();
 
     }))
 
     //  When all answers have been chosen by the users in the game room (res provides score data)
     this.subs.add(this.socketService.allAnswersReceived().subscribe(async (res)=>{
+      // this.audio.pause();
       console.log("time remaining: ")
       console.log(this.timeRemaining);
       this.showTimeAnswered = false;
       console.log(res)
       this.showGame = false;
-      this.showVolume = false;
-      this.audio.pause();
+      this.showTimer = false;
+      
+    this.timerRunning = false;
+      // this.showVolume = false;
+
+
+      // UNCOMMENT THIS IN ORDER TO PAUSE AFTER EVERYONE HAS CHOSEN
+      // this.audio.pause();  
+      
       this.correctAnswer = res['correctAnswer']
       this.roomData = res['roomData']
       this.showAnswerScreen = true;
@@ -158,6 +168,11 @@ export class GameGameComponent implements OnInit, OnDestroy{
       // Hide game but show correct answer
       this.showScoreboardScreen = true;
       await this.sleep(4000)
+
+      // UNCOMMENT / COMMENT THIS IF YOU WANT AUDIO TO PAUSE BEFORE NEXT QUESTION
+      this.audio.pause();
+      
+      
       // queue next question
       if(this.isHost){
         console.log(this.questionNum);
@@ -189,7 +204,7 @@ export class GameGameComponent implements OnInit, OnDestroy{
       this.showGame = false;
       this.showAnswerScreen = false;
       this.showWinnerScreen = true;
-      this.showVolume = false;
+      // this.showVolume = false;
 
       // If user is host allow option to restart quiz 
 
@@ -250,11 +265,10 @@ export class GameGameComponent implements OnInit, OnDestroy{
   getSelectedAnswer(getSelectedAnswer){
     console.log(getSelectedAnswer);
     this.selectedAnswer = getSelectedAnswer;
-    // clearInterval(this.timer);
-    this.showTimer = false;
-    this.timerRunning = false;
+    // this.showTimer = false;
+    // this.timerRunning = false;
     this.timeNow = new Date();
-    this.timeRemaining = (10 - (Math.abs(this.startDate - this.timeNow) / 1000));
+    this.timeRemaining = (15 - (Math.abs(this.startDate - this.timeNow) / 1000));
     console.log(this.timeRemaining);
     this.gameService.deliverAnswerChosen();
   }

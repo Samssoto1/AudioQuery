@@ -1,7 +1,6 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy, ViewChild} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
 import { AppService } from 'src/app/services/app.service';
-import { Application } from '@splinetool/runtime';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +10,6 @@ import { Application } from '@splinetool/runtime';
 export class HomeComponent implements OnInit, OnDestroy{
 
   @Output() setBgColor = new EventEmitter();
-  @ViewChild('asdf') test; 
 
   constructor(private appService: AppService, private router: Router) { 
   }
@@ -22,11 +20,11 @@ export class HomeComponent implements OnInit, OnDestroy{
     // spline.load('https://prod.spline.design/MJULiB7Y2cdgKvzL/scene.splinecode');
 
 
-    this.appService.updateBackgroundColor("#292b2c");
+    this.appService.updateBackgroundColor("dark", false);
     }
 
   ngOnDestroy(){
-    this.appService.updateBackgroundColor("");
+    this.appService.updateBackgroundColor("", false);
   }
 
   directToPin(){

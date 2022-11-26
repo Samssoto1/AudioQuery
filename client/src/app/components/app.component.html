@@ -1,10 +1,11 @@
-<!-- <div class="container-fluid" [ngStyle]="{'background': bgColor}"> -->
-<div class="container-fluid" [ngClass]="{ 'bg-dark': bgColor ? 'dark': '', 'boxShadow': bgColor ? 'dark': '' }">
+<!-- [ngClass]="{'class-b': !person.something, 'other-condition': isOther }" -->
+<!-- <div class="container-fluid" [ngClass]="{ 'blackTest': bgColor ? 'dark': '', 'whiteTest': bgColor ? 'white': ''}"> -->
+<div class="container-fluid" [ngClass]="{ 'bg-dark': bgColor == 'dark', 'whiteTest': bgColor == 'white'}">
    <div class="min-vh-100 min-vw-100">
       <app-header></app-header>
       <div class="layer spacer"></div>
       <router-outlet id="outlet">
-         <div class="bubCont">
+         <div class="bubCont" *ngIf="backgroundAnimation">
             <div class="bubbles">
                <span style="--i:11;"></span>
                <span style="--i:21;"></span>

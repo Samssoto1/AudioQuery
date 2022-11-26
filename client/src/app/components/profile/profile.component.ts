@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, OnDestroy} from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
 import { ActivatedRoute, ParamMap, Router} from '@angular/router';
 import { Subscription, concatMap } from 'rxjs';
+import { AppService } from 'src/app/services/app.service';
 
 @Component({
   selector: 'app-profile',
@@ -21,7 +22,7 @@ export class ProfileComponent implements OnInit {
   subscription: Subscription;
   panelOpenState = false;
 
-  constructor(private httpService: HttpService, private activatedRoute: ActivatedRoute, private router: Router ) {}
+  constructor(private httpService: HttpService, private activatedRoute: ActivatedRoute, private router: Router, private appService: AppService) {}
 
   // ngOnInit(){
   //   this.subscription = this.activatedRoute.paramMap.pipe(
@@ -31,6 +32,8 @@ export class ProfileComponent implements OnInit {
   // }
 
   ngOnInit(): void {
+    this.appService.updateBackgroundColor("white", false);
+
     this.subscription = this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
       this.username = params['params']['username'];
 
