@@ -5,56 +5,50 @@
 
 
     <span *ngIf="showTimer">{{seconds}}</span>
-    <mat-progress-bar  *ngIf="showTimer" mode="buffer" [value]="seconds * 10"></mat-progress-bar>
+    <mat-progress-bar  *ngIf="showTimer" mode="buffer" [value]="seconds * 6.25"></mat-progress-bar>
+
+    <div id="gameFrame">
 
         <!-- Game questions / answer selection -->
         <div id="game" class="justify-center flex-column" *ngIf="showGame">
 
-            <!-- <h2 id="question"> What's the name of the song playing?</h2> -->
             <h2 id="question">{{selectedQuestion?.question}}</h2>
-
-
-            <!-- *ngFor="item in list | randomOrder"> -->
-            <div class="choice-container" *ngFor="let choice of selectedQuestion | randomOrder" [ngClass]="{selectedAnswer : selectedAnswer == choice}" (click)="getSelectedAnswer(choice)">
-                <p class="choice-prefix">A</p>
-                <app-game-questionAnswer [answer]="choice"></app-game-questionAnswer>
-                <!-- <app-game-questionAnswer [answer]="choice?.answers[0]"></app-game-questionAnswer> -->
+        
+            <!-- Should I make the locations of the different colors change randomly? -->
+            <div id="questionAnswer" *ngFor="let choice of selectedQuestion | randomOrder; let indexOfelement=index;" (click)="getSelectedAnswer(choice)">
+                <app-game-questionAnswer [answer]="choice" [colorNum]="indexOfelement"></app-game-questionAnswer>
             </div>
 
-            <!-- Answer Choices -->
-            <!-- <div class="choice-container" [ngClass]="{selectedAnswer : selectedAnswer == selectedQuestion?.answers[0]}" (click)="getSelectedAnswer(selectedQuestion?.answers[0])">
-                <p class="choice-prefix">A</p>
-                <app-game-questionAnswer [answer]="selectedQuestion?.answers[0]"></app-game-questionAnswer>
-            </div>
-            <div class="choice-container" [ngClass]="{selectedAnswer : selectedAnswer == selectedQuestion?.answers[1]}" (click)="getSelectedAnswer(selectedQuestion?.answers[1])">
-                <p class="choice-prefix">B</p>
-                <app-game-questionAnswer [answer]="selectedQuestion?.answers[1]"></app-game-questionAnswer>
-            </div>
-            <div class="choice-container" [ngClass]="{selectedAnswer : selectedAnswer == selectedQuestion?.answers[2]}" (click)="getSelectedAnswer(selectedQuestion?.answers[2])">
-                <p class="choice-prefix">C</p>
-                <app-game-questionAnswer [answer]="selectedQuestion?.answers[2]"></app-game-questionAnswer>
-            </div>
-            <div class="choice-container" [ngClass]="{selectedAnswer : selectedAnswer == selectedQuestion?.answers[3]}" (click)="getSelectedAnswer(selectedQuestion?.answers[3])">
-                <p class="choice-prefix">D</p>
-                <app-game-questionAnswer [answer]="selectedQuestion?.answers[3]"></app-game-questionAnswer>
-            </div> -->
-
+        <!-- Volume -->
+        <div id="player">
+            <mat-icon class="fa fa-volume-down i">volume_off</mat-icon>	
+            <input id="volume" class="slider" *ngIf="showVolume" type="range" name="" id="volume" step=0.01 min=0 max=1 #ref [value]="volume" (input)="updateVolume(ref.value)">
+            <mat-icon class="fa fa-volume-up i">volume_up</mat-icon>
         </div>
+
+    </div>
 
         <!-- Time Remaining -->
         <div *ngIf="showTimeAnswered" id="timeAnsweredCont">
             <span>Answered in {{timeAnsweredIn}} seconds!</span>
         </div>
 
-        <!-- Answer Screen -->
-        <div id="answerScreen" *ngIf="showAnswerScreen">
-            <h1>Correct Answer is: {{correctAnswer}}</h1>
+
+        <div class="d-flex flex-column">
+            <!-- Answer Screen -->
+            <div id="answerScreen" *ngIf="showAnswerScreen">
+                <h1 class="title">Correct Answer is: </h1>
+                <!-- <h1 class="title">Correct Answer is: {{correctAnswer}}</h1> -->
+                <h1 class="title" style="margin-left: 0.3em"> {{correctAnswer}}</h1>
+            </div>
+    
+            <!-- Scoreboard screen -->
+            <div id="scoreboardScreen" *ngIf="showScoreboardScreen">
+                <app-game-nickname-score style="margin-left: 0.1em;" [userData]="user" *ngFor="let user of roomData"></app-game-nickname-score>
+            </div>
+
         </div>
 
-        <!-- Scoreboard screen -->
-        <div id="scoreboardScreen" *ngIf="showScoreboardScreen">
-            <app-game-nickname-score [userData]="user" *ngFor="let user of roomData"></app-game-nickname-score>
-        </div>
 
         <!-- Winner screen -->
         <div id="winnerScreen" *ngIf="showWinnerScreen">
@@ -62,9 +56,6 @@
             <!-- Play again? -->
             <!-- Host options should allow user to choose random or in order -->
         </div>
-        <!-- Volume -->
-        <!-- <mat-icon>volume_off</mat-icon>	
-        <mat-icon>volume_up</mat-icon> -->
-        <input *ngIf="showVolume" type="range" name="" id="volume" step=0.01 min=0 max=1 #ref [value]="volume" (input)="updateVolume(ref.value)">
+    </div>
 
 </div>

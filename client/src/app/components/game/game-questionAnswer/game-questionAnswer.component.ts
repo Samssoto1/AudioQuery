@@ -7,6 +7,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class GameQuestionAnswerComponent implements OnInit {
 
+@Input() colorNum;
 @Input() answer: string;
 
   constructor() { }

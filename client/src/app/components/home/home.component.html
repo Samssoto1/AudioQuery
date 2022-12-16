@@ -1,55 +1,27 @@
-<div class="container">
-  <div class="row">
-      <section id="hero" class="container-fluid">
-      <div id="heroLogoDiv" class="col-lg-6">
-        <img class="d-flex align-center justify-content-center" id="logo" src="../../../assets/images/audioQueryLogo.jpg" alt="">
-        <p class="lead text-white">Create audio based quizzes for you and your friends to enjoy.</p>
-        <p id="btn-container" class="lead">
-          <a class="btn btn-lg btn-secondary fw-bold" (click)="directToPin()">Join a Game Lobby</a>
-        </p>
-      </div>
-      <div id="heroMascotDiv" class="col-lg-6">
-        <div class="d-flex flex-column">
-          <div>
-            <img id="audioQueryQuestionMark3D" class="object" src="../../../assets/images/audioQueryQuestionMark3D.jpg" alt="">
+<div class="container-fluid" id="cloudBackground">
+  <div class="container">
+    <!-- <div class="row"> -->
+      <section class="row" id="hero" class="container-fluid">
+        <div id="heroLogoDiv" class="col-lg-6">
+          
+          <img class="d-flex justify-content-center" id="logo" src="../../../assets/images/audioQueryAltLogo.jpg" alt="AudioQuery Logo">
+          <p class="lead text-white">Create audio based quizzes for you and your friends to enjoy.</p>
+          <div id="btn-container" class="lead">
+            <a class="btn btn-lg btn-secondary fw-bold" (click)="directToPin()">Join a Game Lobby</a>
           </div>
-          <img id="audioQueryMascot3D" src="../../../assets/images/audioQueryMascot3D.jpg" alt="">
         </div>
-      </div>
-    </section>
+        <div id="heroMascotDiv" class="col-lg-6">
+          <div class="d-flex flex-column">
+            <div>
+              <img id="audioQueryQuestionMark2D" class="object"
+                src="../../../assets/images/audioQueryQuestionMark2D.jpg" alt="" style="z-index: 99">
+              <!-- <img id="audioQueryQuestionMark3D" class="object" src="../../../assets/images/audioQueryQuestionMark3D.jpg" alt=""> -->
+            </div>
+            <!-- <img id="audioQueryMascot3D" src="../../../assets/images/audioQueryMascot3D.jpg" alt=""> -->
+            <img id="audioQueryMascot2D" src="../../../assets/images/audioQueryMascot2D.jpg" alt="">
+          </div>
+        </div>
+      </section>
+    <!-- </div> -->
   </div>
 </div>
-<section id="pin" class="container-fluid">
-  <h2 class="text-black text-center">How To Play</h2>
-  <div id="hostGuestBox">
-    <div>
-      <span id="hostHeader" class="h3">Host</span>
-      <ol>
-        <li>Create an account or sign in</li>
-        <li>Create a Quiz</li>
-        <li>Create, Edit, Delete questions on your AudioQuery quiz by selecting a song, selecting the question, filling out the inputs, and clicking the 'save quiz' button when your done.</li>
-        <li>Finally, redirect to your profile page and click on the 'play' button on the quiz you created to a host a game lobby.</li>
-        <li>Next, send your friends the game pin and click the 'start' button when your ready to start the game!</li>
-      </ol>
-    </div>
-    <div>
-      <span class="h3">Guest</span>
-      <ol>
-        <li>Copy and paste the code the PIN from the game host's lobby.</li>
-        <li><a class="link" (click)="directToPin()">Click here</a> or redirect to <a class="link" (click)="directToPin()">https://www.AudioQuery.com</a> to enter the pin.</li>
-        <li>After entering the correct game pin, choose a nickname for everyone else in the room to see you as</li>
-        <li>Your in! Wait for the host to start the game to begin AudioQuerying!</li>
-      </ol>
-    </div>
-  </div>
-</section>
-    <!-- <section id="playGame">
-      <div id="playGameDiv">
-        <span class="h2 text-white">What're you waiting for?</span>
-        <span class="lead text-white">Sign up to create and host your own quizzes</span>
-        <div id="btn-container">
-          <button class="btn btn-lg btn-secondary fw-bold col-sm-12 col-lg-6" (click)="directToPin()">Join a Game Lobby</button>
-          <button class="btn btn-lg btn-secondary fw-bold col-sm-12 col-lg-6" (click)="directToRegister()">Create an account</button>
-        </div>
-      </div>
-  </section> -->

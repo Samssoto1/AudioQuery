@@ -11,6 +11,8 @@ export class HomeComponent implements OnInit, OnDestroy{
 
   @Output() setBgColor = new EventEmitter();
 
+  showHost: boolean = false;
+
   constructor(private appService: AppService, private router: Router) { 
   }
 
@@ -33,6 +35,15 @@ export class HomeComponent implements OnInit, OnDestroy{
 
   directToRegister(){
     this.router.navigate(["/register"]);
+  }
+
+  toggleHowTo(){
+    if(this.showHost){
+      this.showHost = false;
+    }
+    else{
+      this.showHost = true;
+    }
   }
 
 }

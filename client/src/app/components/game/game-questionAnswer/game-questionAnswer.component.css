@@ -1,6 +1,68 @@
 .answerBox{
-    padding: 1.5em;
+    /* padding: 1.5em; */
+    padding: 0.8em;
     width: 100%;
+}
+
+.choice-container:hover {
+    
+    box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.178);
+}
+
+.red{
+    background-color: #ebc2ba;
+}
+
+.blue{
+    background-color: #cedeee
+}
+
+.pink{
+    background-color: #eed9e1;
+}
+
+.yellow{
+    background-color: #fef5d8;
+}
+
+/* .choice-prefix{
+    padding: 1.5rem 2.5rem;
+    background-color: #56a5eb;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
+
+/* .choice-container:hover .choice-prefix {
+    background-color: rgb(108, 123, 209);
+    color: black;
+} */
+
+
+
+.mascot{
+    /* width: 20%; */
+    width: 25%;
+    z-index: 99;
+}
+
+.choice-container{
+    display: flex;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    /* margin-bottom: 0.5rem; */
+    width: 100%;
+    font-size: 1.8rem;
+    border: 0.1rem solid rgb(86, 165, 235, 0.25);
+    border-radius: 25px;
+    /* background-color: cadetblue; */
+}
+
+.choice-container:hover{
     cursor: pointer;
 }
 
+.mascot:hover, .choice-container:hover .mascot, .choice-container:hover{
+    transform: scale(1.05);
+}

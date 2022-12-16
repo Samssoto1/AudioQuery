@@ -99,10 +99,13 @@ export class GameGameComponent implements OnInit, OnDestroy{
 
     // When ANY user receives a question back from the server
     this.subs.add(this.socketService.receiveCurrentQuestion().subscribe(async (res) =>{
+      this.showScoreboardScreen = false;
+      this.showAnswerScreen = false;
       this.handleQuestionDelivery(res); // process all requirements for the question to function
       this.selectedAnswer = ""
       // this.seconds = 10;
       this.seconds = 15;
+      // this.seconds = 16;
       this.showTimer = true;
       this.timerRunning = true;
 
@@ -164,10 +167,10 @@ export class GameGameComponent implements OnInit, OnDestroy{
       this.correctAnswer = res['correctAnswer']
       this.roomData = res['roomData']
       this.showAnswerScreen = true;
-      await this.sleep(1000)
+      // await this.sleep(1000)
       // Hide game but show correct answer
       this.showScoreboardScreen = true;
-      await this.sleep(4000)
+      await this.sleep(8000)
 
       // UNCOMMENT / COMMENT THIS IF YOU WANT AUDIO TO PAUSE BEFORE NEXT QUESTION
       this.audio.pause();

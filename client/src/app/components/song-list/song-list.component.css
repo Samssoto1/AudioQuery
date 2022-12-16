@@ -17,6 +17,12 @@ ul{
 }
 
 #selectionList{
-    max-height: 30em;
+    max-height: 50vh;
+    /* max-height: 30em; */
     overflow: auto;
+}
+
+#songListModal{
+    max-height: 100vh;
+    /* max-height: 40%; */
 }

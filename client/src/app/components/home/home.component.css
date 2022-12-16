@@ -2,23 +2,26 @@
  * Globals
  */
 
-/* Phone */
-#logo{
-  max-width: 10em;
-  margin-top: 8em;
+#howToPlay{
+  background: linear-gradient(140deg, rgba(143,147,184,1) 0%, rgba(185,131,164,1) 70%, rgba(251,196,198,1) 100%);
 }
 
-#heroMascotDiv{
-  display: flex;
-  justify-content: flex-end;
+/* Phone */
+#logo{
+  /* max-width: 10em; */
+  min-width: 15em;
+  margin-top: 8em;
 }
 
 #audioQueryMascot3D{
   max-width: 5em;
 }
 
-#audioQueryQuestionMark3D{
-  max-width: 5em;
+#audioQueryMascot2D{
+  /* max-width: 5em; */
+  margin-top: 4em;
+  /* max-width: 40em; */
+  max-width: 45em;
 }
 
 #pin{
@@ -40,20 +43,104 @@
   background-color: #f0ad4e;
 }
 
+.link{
+  color: #0000EE
+}
+
 .link:hover{
   cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Adjust for diff media queries */
+section{
+  height: 100vh;
+  width: 100%;
+  overflow-y: hidden;
+  box-sizing: border-box;
+  /* height: 980px; */
+}
+
+#howToBtn{
+  border-radius: 15px; min-height: 90px; min-width: 32px; background-color: white;
+}
+
+#howToBtn:hover{
+  background-color: #f0ad4e;
+  cursor: pointer;
+}
+
+#howToBtn:active{
+  background-color: #cc8828;
+}
+
+#cloudBackground{
+  background: url("../../../assets/images/cloudBackground.jpg");
+  background-size: top;
+  background-position: 100% 15%;
+}
+
+#heroLogoDiv{
+  width: 70%;
+  margin-bottom: 12em;
+}
+
+#logo{
+  max-width: 80%;
+}
+
+#heroMascotDiv{
+  display: none;
 }
 
 /* Medium  */
 @media only screen and (min-width: 523px) {
 
+  .spacer {
+    position: absolute;
+    aspect-ratio: 960/300;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.layer {
+    z-index: -1;
+    background-image: url(../../../assets/svgs/wavesOpacity.svg);
+}
+
+  #heroMascotDiv{
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  #cloudBackground{
+    background: url("../../../assets/images/cloudBackground.jpg");
+    background-repeat: no-repeat, repeat;
+    /* Resize the background image to cover the entire container */
+    background-size: cover;
+    background-position: 100% 15%;
+    /* background-size: 100% auto; */
+    /* background-size: 100% auto; */
+    /* background-size:100% 100%; */
+  }
+  
+  /* #audioQueryQuestionMark3D{
+    max-width: 5em;
+    margin-left: 21em;
+    position: absolute;
+  } */
+  
+  #audioQueryQuestionMark2D{
+    max-width: 8em;
+    margin-left: 25em;
+    position: absolute;
+  }
+
   #playGameDiv{
     margin-top: 25em;
     text-align: center;
-  }
-
-  #audioQueryQuestionMark3D{
-    margin-left: 40px;
   }
 
   #logo{
@@ -61,28 +148,21 @@
     margin-top: 8em;
   }
 
-/* Adjust for diff media queries */
-section{
-  height: 100vh;
-  /* height: 55em; */
-}
-
 #heroLogoDiv{
   width: 50%;
+  margin-bottom: 12em;
 }
 
 #logo{
-  /* max-width: 35%; */
-  max-width: 16em;
-  /* margin-top: 8em; */
+  max-width: 23em;
 }
 
-#audioQueryMascot3D{
+/* #audioQueryMascot3D{
   max-width: 17em;
 }
 
 #audioQueryQuestionMark3D{
-  max-width: 10em;
+  max-width: 10em; */
 }
 
 #hero{
@@ -95,18 +175,17 @@ section{
 }
 
 #hostGuestBox{
-  display: grid;
+  position: relative;
+  /* display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 0.5fr;
+  grid-gap: 0.5fr; */
 }
 
-#hostGuestBox div{
+#howToPlayBox{
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-}
-
 }
 
 /* Question Mark Animation */

@@ -1,0 +1,91 @@
+<section class="container-fluid" id="howToPlay">
+  <div id="howToPlayBox">
+    <span class="h1 text-center d-block" style="font-family: 'Lobster', cursive; font-size: 4em;
+    -webkit-text-stroke-width: 0.8px;
+    -webkit-text-stroke-color: black;">How To Play</span>
+
+    <div
+      style="background-color: #1D1428; height: 56.875em; min-width: 70em; margin-top: 1.25em; position: relative; display: flex; justify-content: center; align-items: center; box-shadow: 0 12px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);">
+      <div
+        style="z-index: 99; position: absolute; left:93%; border-radius: 0.9375em; min-height: 6.25em; min-width: 2.8125em; background-color: #090B1B; display: flex; justify-content: center;">
+        <!-- Switch Btn -->
+        <a (click)="toggleHowTo()" id="howToBtn"></a>
+      </div>
+      <div
+        style="background-color: #090B1B; height: 52.5em;  margin-top: 3.75em; min-width: 55em; border-radius: 1.5625em; display: flex; justify-content: center;">
+        <div
+          style="background-color: rgb(255, 255, 255); height: 51.875em; margin-top: 3.75em; min-width: 46.875em; display: flex; justify-content: center;">
+          <!-- Host -->
+          <div *ngIf="showHost">
+            <span class="h1 d-block text-center" style="font-family: 'Press Start 2P', cursive;">Host</span>
+            <ol style="max-width: 750px">
+              <li>Create an account or sign in</li>
+              <li>Create a Quiz</li>
+              <li>Create, Edit, Delete questions on your AudioQuery quiz by selecting a song, selecting the question,
+                filling out the inputs, and clicking the 'save quiz' button when your done.</li>
+              <li>Finally, redirect to your profile page and click on the 'play' button on the quiz you created to a
+                host a game lobby.</li>
+              <li>Next, send your friends the game pin and click the 'start' button when your ready to start the game!
+              </li>
+            </ol>
+          </div>
+          <!-- Guest -->
+          <div *ngIf="!showHost">
+            <span class="h1 d-block text-center" style="font-family: 'Press Start 2P', cursive;">Guest</span>
+            <ol style="max-width: 750px">
+              <li>Copy and paste the code the PIN from the game host's lobby.</li>
+              <li><span class="link" (click)="directToPin()">Click here</span> or redirect to <span class="link"
+                  (click)="directToPin()">https://www.AudioQuery.com/pin </span> to enter the pin.</li>
+              <li>After entering the correct game pin, choose a nickname for everyone else in the room to see you as
+              </li>
+              <li>Your in! Wait for the host to start the game to begin AudioQuerying!</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section style="background-color: #3165bb">
+  <div class="container d-flex flex-column">
+
+    <span class="h1 text-center d-block" style="font-family: 'Lobster', cursive; font-size: 5em;
+      color: white;
+      float: left;
+      ">How To Play</span>
+  
+  <div style="display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;">
+  
+    <div style="grid-column: 1; grid-row:1; background-color: white; border-radius: 25px;">
+      <span class="h1 d-block text-center" style="font-family: 'Press Start 2P', cursive;">Host</span>
+      <ol style="max-width: 750px">
+        <li>Create an account or sign in</li>
+        <li>Create a Quiz</li>
+        <li>Create, Edit, Delete questions on your AudioQuery quiz by selecting a song, selecting the question,
+          filling out the inputs, and clicking the 'save quiz' button when your done.</li>
+        <li>Finally, redirect to your profile page and click on the 'play' button on the quiz you created to a
+          host a game lobby.</li>
+        <li>Next, send your friends the game pin and click the 'start' button when your ready to start the game!
+        </li>
+      </ol>
+    </div>
+    <!-- Guest -->
+    <div style="grid-column: 2; grid-row: 2; background-color: white; border-radius: 25px;">
+      <span class="h1 d-block text-center" style="font-family: 'Press Start 2P', cursive;">Guest</span>
+      <ol style="max-width: 750px">
+        <li>Copy and paste the code the PIN from the game host's lobby.</li>
+        <li><span class="link" (click)="directToPin()">Click here</span> or redirect to <span class="link"
+            (click)="directToPin()">https://www.AudioQuery.com/pin </span> to enter the pin.</li>
+        <li>After entering the correct game pin, choose a nickname for everyone else in the room to see you as
+        </li>
+        <li>Your in! Wait for the host to start the game to begin AudioQuerying!</li>
+      </ol>
+    </div>
+  </div>
+
+</div>
+
+
+</section>

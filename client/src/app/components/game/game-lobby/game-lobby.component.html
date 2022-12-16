@@ -1,20 +1,51 @@
-<main *ngIf="isLoaded" class="container">
-    <div id="gamePinBox" class="text-center">
+<main *ngIf="isLoaded" class="container d-flex justify-content-between">
+    <!-- <div id="gamePinBox" class="text-center">
         <h1>Invite and play with your friends using:</h1>
         <span><strong>Game Pin</strong>: {{roomId}}</span>
         <button *ngIf="isHost" (click)="startGameBtn()" mat-button>Start</button>
-    </div>
-    <!-- IF HOST -->
-    <div>
-        <div *ngFor="let users of users$ | async">
-            <span>{{users}}</span>
+    </div> -->
 
-            <!-- OnHover have profile view if username avaliable -->
+
+    <!-- <a *ngIf="isHost" (click)="startGameBtn()">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <h1>Invite and play with your friends using:</h1>
+        <span><strong>Game Pin</strong>: {{roomId}}</span>    
+    
+    </a> -->
+    <!-- IF HOST -->
+    <div id="userList">
+        <!-- OnHover have profile view if username avaliable -->
             <!-- Title if username avaliable-->
             <!-- WinPoints if username avaliable -->
             <!-- Featured Achievement if username avaliable-->
-
-
+        <div *ngFor="let users of users$ | async" class="cloudBox">
+            <svg preserveAspectRatio="none" viewBox='4 4 100 75' class="cloud">
+                <path d='M 25,30 
+                        a 20,20 1 0,0 0,40 
+                        h 55 
+                        a 20,20 1 0,0 0,-40 
+                        a 15,10 1 0,0 -15,-10 
+                        a 20,15 1 0,0 -35,10  
+                        z' />
+            </svg>
+            <span class="username noSelect">{{users}}</span>
         </div>
     </div>
+
+    <div>
+        <div id="gamePinBox" class="d-flex">
+            <div>
+                <h1>Invite and play with your friends using:</h1>
+                <span><strong>Game Pin</strong>: {{roomId}}</span>
+
+            </div>
+        </div>
+        <button id="startBtn" class="btn btn-warning" *ngIf="isHost" (click)="startGameBtn()" mat-button>Start</button>
+    </div>
+    
+
+
 </main>
