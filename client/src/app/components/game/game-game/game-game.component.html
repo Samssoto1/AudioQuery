@@ -1,13 +1,11 @@
 <div class="container">
     <span id="timerAsync">{{timer | async}}</span>
 
-
-
-
-    <span *ngIf="showTimer">{{seconds}}</span>
-    <mat-progress-bar  *ngIf="showTimer" mode="buffer" [value]="seconds * 6.25"></mat-progress-bar>
-
     <div id="gameFrame">
+        <div>
+            <span class="text-white" *ngIf="showTimer">{{seconds}}</span>
+            <mat-progress-bar  class="gameTimer" *ngIf="showTimer" mode="buffer" [value]="seconds * 6.25"></mat-progress-bar>
+        </div>
 
         <!-- Game questions / answer selection -->
         <div id="game" class="justify-center flex-column" *ngIf="showGame">
@@ -37,9 +35,10 @@
         <div class="d-flex flex-column">
             <!-- Answer Screen -->
             <div id="answerScreen" *ngIf="showAnswerScreen">
-                <h1 class="title">Correct Answer is: </h1>
+                <h1 class="title text-white">Correct Answer is: </h1>
                 <!-- <h1 class="title">Correct Answer is: {{correctAnswer}}</h1> -->
-                <h1 class="title" style="margin-left: 0.3em"> {{correctAnswer}}</h1>
+                <h1 class="title" style="margin-left: 0.3em; color: #ffef94;"> {{correctAnswer}}</h1>
+
             </div>
     
             <!-- Scoreboard screen -->

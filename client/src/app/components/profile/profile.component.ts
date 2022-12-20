@@ -32,7 +32,7 @@ export class ProfileComponent implements OnInit {
   // }
 
   ngOnInit(): void {
-    this.appService.updateBackgroundColor("white", false);
+    // this.appService.updateBackgroundColor("white", false);
 
     this.subscription = this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
       this.username = params['params']['username'];

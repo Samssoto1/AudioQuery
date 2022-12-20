@@ -43,13 +43,14 @@ input.ng-invalid.ng-touched{
 }
 
 label{
+  color: white;
   float: left;
 }
 
 .requiredTag{
   float: left;
   margin-left: 0.3em;
-  color: rgb(72, 72, 72);
+  color: rgb(151, 151, 151);
 }
 
 /* Submit Button */

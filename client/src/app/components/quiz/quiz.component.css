@@ -1,9 +1,12 @@
 .quiz-cont{
-    background-color: lightblue;
+    /* color: white; */
+    color: black;
+    margin-bottom: 0.6em;
+    /* background-color: #333b43; */
+    background-color: #8fb8c9;;
     padding: 1em;
     overflow: auto;
     border-radius: 1% black;
-    border-style: outset;
     display: flex;
     justify-content: space-between;
 }

@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent{
   public showPassword: boolean = false; // Handles password toggle (Show / not show)
 
   @ViewChild('f') signinForm: NgForm;
@@ -22,11 +22,6 @@ export class LoginComponent implements OnInit{
   error: string;
 
   constructor(private authService: AuthService, private router: Router) { }
-
-  ngOnInit(): void {
-    // this.error$ = this.authService.errorMsg 
-    // Async Pipe setup for response from server if error occurs
-  }
 
   onLoginSubmit(){
     if(this.signinForm.valid){ // If form is valid, send login information to server

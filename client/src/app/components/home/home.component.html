@@ -1,27 +1,111 @@
-<div class="container-fluid" id="cloudBackground">
-  <div class="container">
-    <!-- <div class="row"> -->
-      <section class="row" id="hero" class="container-fluid">
-        <div id="heroLogoDiv" class="col-lg-6">
-          
-          <img class="d-flex justify-content-center" id="logo" src="../../../assets/images/audioQueryAltLogo.jpg" alt="AudioQuery Logo">
-          <p class="lead text-white">Create audio based quizzes for you and your friends to enjoy.</p>
-          <div id="btn-container" class="lead">
-            <a class="btn btn-lg btn-secondary fw-bold" (click)="directToPin()">Join a Game Lobby</a>
-          </div>
-        </div>
-        <div id="heroMascotDiv" class="col-lg-6">
+<div class="container-fluid">
+    <div>
+        <section style="position: relative" class="row" id="hero" class="container-fluid">
+            <div id="heroLogoDiv" class="container" style="display: flex; flex-direction: column; align-items: center">
+                <img class="" id="logo" src="../../../assets/images/audioQueryLogo(Small).png" alt="AudioQuery Logo"
+                    style=""/>
+                <div>
+                    <p class="lead text-white">
+                        Create audio based quizzes for you and your friends to enjoy.
+                    </p>
+                    <button class="btn btn-lg btn-secondary fw-bold" (click)="directToPin()">
+                        Join a Game Lobby
+                    </button>
+                </div>
+            </div>
+            <span>{{ isScreenSmall$ | async }}</span>
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; z-index: 1" class="container-audio">
+                <div class="colum1">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1" [hidden]="windowWidth < 480">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1" [hidden]="windowWidth < 550">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1" [hidden]="windowWidth < 600">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1" [hidden]="windowWidth < 650">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1" [hidden]="windowWidth < 700">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1" [hidden]="windowWidth < 780">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1" [hidden]="windowWidth < 900">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1" [hidden]="windowWidth < 1000">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1" [hidden]="windowWidth < 1000">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1" [hidden]="windowWidth < 1200">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1" [hidden]="windowWidth < 1200">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1" [hidden]="windowWidth < 1400">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1" [hidden]="windowWidth < 1400">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1" [hidden]="windowWidth < 1500">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1" [hidden]="windowWidth < 1600">
+                    <div class="row"></div>
+                </div>
+
+                <div class="colum1" [hidden]="windowWidth < 1600">
+                    <div class="row"></div>
+                </div>
+            </div>
+        </section>
+        <!-- <section style="background-color: white">
+            <div id="heroMascotDiv" class="col-lg-6">
           <div class="d-flex flex-column">
             <div>
               <img id="audioQueryQuestionMark2D" class="object"
                 src="../../../assets/images/audioQueryQuestionMark2D.jpg" alt="" style="z-index: 99">
-              <!-- <img id="audioQueryQuestionMark3D" class="object" src="../../../assets/images/audioQueryQuestionMark3D.jpg" alt=""> -->
             </div>
-            <!-- <img id="audioQueryMascot3D" src="../../../assets/images/audioQueryMascot3D.jpg" alt=""> -->
             <img id="audioQueryMascot2D" src="../../../assets/images/audioQueryMascot2D.jpg" alt="">
           </div>
         </div>
-      </section>
-    <!-- </div> -->
-  </div>
+        </section> -->
+    </div>
 </div>

@@ -15,6 +15,10 @@ input:focus, input.form-control:focus, textarea:focus, textarea.form-control:foc
   padding-bottom: 10%;
 }
 
+.card{
+  background-color: #333b43;
+}
+
 #formCreateQuiz {
   width: 100%;
   max-width: 30em;

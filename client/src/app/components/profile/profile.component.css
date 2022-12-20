@@ -14,7 +14,7 @@
 }
 
 .container-fluid{
-    background-color: white;
+    /* background-color: white; */
 }
 
 #profileContainer{
@@ -45,4 +45,12 @@
 
 .achievement{
     max-width: 2em;
+}
+
+#profileHero{
+    background-color: rgb(23 26 30 / 87%);
+}
+
+p, span, h1{
+    color: white;
 }

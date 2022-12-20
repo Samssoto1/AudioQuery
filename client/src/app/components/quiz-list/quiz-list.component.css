@@ -9,7 +9,7 @@
 }
 
 #quizList{
-    max-height: 14em;
+    max-height: 10em;
     overflow-y: auto;
     overflow-x: none;
 }

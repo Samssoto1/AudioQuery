@@ -1,3 +1,13 @@
+#question{
+  color: white;
+  text-align: center;
+  /* margin-left: 1em; */
+}
+
+.gameTimer{
+margin-bottom: 1em;
+}
+
 #scoreboardScreen{
     display: flex;
     grid-template-columns: 1fr 1fr 1fr 1fr;

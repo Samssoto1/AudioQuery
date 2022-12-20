@@ -83,10 +83,9 @@ form{
 
 .card{
   background-color: #ebb7a3 !important;
-  /* #ebb7a3 */
-  background: linear-gradient(0deg, rgba(183, 149, 237, 0.3), rgba(245, 238, 242, 0.3));
+  /* background: url(../../../assets/images/registerBackground.jpg); */
+  /* background: linear-gradient(0deg, rgba(183, 149, 237, 0.3), rgba(245, 238, 242, 0.3)); */
   border: 0px;
-  /* background: linear-gradient(0deg, rgba(183, 149, 237, 1), rgb(189, 185, 206)); */
   box-shadow: 0 12px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
 }
 
