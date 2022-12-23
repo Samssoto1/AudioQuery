@@ -24,6 +24,7 @@ export class GamePinComponent implements OnInit {
       this.httpService.get('getRoom', this.pinForm.value.pin).pipe(take(1)).subscribe((res) => {
         console.log(res);
         this.gameService.pinToNickname(res);
+        this.gameService.createAudioObject();
         this.router.navigate(['nickname']); // navigate to nickname
       }, error => {
         console.log(error)

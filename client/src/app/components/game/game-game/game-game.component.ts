@@ -81,7 +81,7 @@ export class GameGameComponent implements OnInit, OnDestroy{
     if(!localStorage.getItem("volume")){
       console.log("no localStorage volume found")
       localStorage.setItem("volume", "0.5");
-      this.volume = 0.5;
+     this.volume = 0.5;
     }
     else{
       this.volume = Number(localStorage.getItem("volume"));
@@ -158,11 +158,6 @@ export class GameGameComponent implements OnInit, OnDestroy{
       this.showTimer = false;
       
     this.timerRunning = false;
-      // this.showVolume = false;
-
-
-      // UNCOMMENT THIS IN ORDER TO PAUSE AFTER EVERYONE HAS CHOSEN
-      // this.audio.pause();  
       
       this.correctAnswer = res['correctAnswer']
       this.roomData = res['roomData']
@@ -173,7 +168,8 @@ export class GameGameComponent implements OnInit, OnDestroy{
       await this.sleep(8000)
 
       // UNCOMMENT / COMMENT THIS IF YOU WANT AUDIO TO PAUSE BEFORE NEXT QUESTION
-      this.audio.pause();
+      // this.audio.pause();
+      this.gameService.pauseAudio();
       
       
       // queue next question
@@ -193,7 +189,7 @@ export class GameGameComponent implements OnInit, OnDestroy{
         else{
           console.log("end game - in all answer received sub")
           this.socketService.emit("triggerEndOfQuiz", this.socketId);
-        }
+               }
       }
     }))
 
@@ -254,11 +250,14 @@ export class GameGameComponent implements OnInit, OnDestroy{
     this.showVolume = true;
 
     // Handle audio functionality
-    this.audio = new Audio(hostListOfQuestions.songId.audioFile)
+    // this.audio = new Audio(hostListOfQuestions.songId.audioFile) 
+    this.gameService.changeAudioSource(hostListOfQuestions.songId.audioFile);
     this.audioCreated = true;
-    this.audio.volume = Number(this.volume); 
-    this.audio.play();
-    console.log(this.audio.volume);
+    // this.audio.volume = Number(this.volume); 
+    this.gameService.changeAudioVolume(Number(this.volume));
+    // this.audio.play();
+    this.gameService.playAudio();
+    // console.log(this.audio.volume);
 
     // Set the game question
     this.selectedQuestion = hostListOfQuestions;
@@ -281,14 +280,16 @@ export class GameGameComponent implements OnInit, OnDestroy{
   if(this.audioCreated){
     localStorage.setItem("volume", String(volume));
     this.volume = volume;
-    this.audio.volume = volume;
+    // this.audio.volume = volume;
+    this.gameService.changeAudioVolume(volume)
   }
   }
 
   ngOnDestroy(){
     // If audio exists when leaving the page, pause.
     if(this.audioCreated){
-      this.audio.pause();
+      // this.audio.pause();
+      this.gameService.pauseAudio();
     }
 
     // All actions necessary if user is leaving the game

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject, ReplaySubject} from 'rxjs';
+import { threadId } from 'worker_threads';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,9 @@ export class GameService {
   // Game
   gameQuestions = new Subject();
   answerChosen = new Subject();
+
+  // Audio
+  audio
 
   constructor() { }
   
@@ -52,6 +56,41 @@ export class GameService {
 
   deliverAnswerChosen(){
     this.answerChosen.next("")
+  }
+
+  /* Experimental Audio Service.. */
+    // added because IOS does not allow autoplay audio unless triggered by action
+
+  // init Audio object
+  createAudioObject(){
+    this.audio = new Audio(); // Create the default audio object
+    // loading an init short audio src on button click allows us to play audio on IOS
+    this.audio.src = "https://github.com/Samssoto1/MyAudioAppSongDb/raw/main/test.mp3" // set the initial source to a very short 1 second silent audio
+    this.audio.load()
+    this.audio.play()
+  }
+
+  // change audio src to different songs
+  changeAudioSource(audioLink){
+    this.audio.src = audioLink;
+
+  }
+
+  // change audio volume
+  changeAudioVolume(amount){
+    this.audio.volume = amount;
+    console.log("changing amount")
+
+  }
+
+  // play audio
+  playAudio(){
+    this.audio.play();
+  }
+
+  // pause audio
+  pauseAudio(){
+    this.audio.pause();
   }
 
 }
