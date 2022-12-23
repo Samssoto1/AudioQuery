@@ -5,6 +5,7 @@ import { HttpService } from 'src/app/services/http.service';
 import { Router } from '@angular/router';
 import { QuizService } from '../../services/quiz.service';
 import { PlayQuizComponent} from '../play-quiz-component/play-quiz-component.component';
+import { GameService } from 'src/app/services/game.service';
 
 @Component({
   selector: 'app-quiz',

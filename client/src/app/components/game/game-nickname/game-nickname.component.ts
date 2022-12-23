@@ -66,6 +66,10 @@ export class GameNicknameComponent implements OnInit, OnDestroy {
   
 
   onFormSubmit(){
+    
+    this.gameService.createAudioObject();
+
+
     if(this.promptForNicknameForm.valid == true){
       console.log(this.promptForNicknameForm.value.nickname)
       if(this.quizId != undefined && this.quizId != "")
